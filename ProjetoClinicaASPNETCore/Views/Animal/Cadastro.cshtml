@@ -1,0 +1,47 @@
+﻿@model AnimalDTO
+
+<div class="row loginForm">
+    <div>
+        <h2>Registre seu animalzinho abaixo.</h2>
+        <div asp-validation-summary="All"></div>
+        <hr />
+        <form asp-controller="Animal" asp-action="Cadastro" method="post" class="form-horizontal" role="form">
+            <div class="form-group">
+                <label asp-for="AnimalNome" class="col-md-2 control-label"></label>
+                <div class="col-md-10">
+                    <input asp-for="AnimalNome" class="form-control" />
+                </div>
+            </div>
+            <div class="form-group">
+                <label asp-for="AnimalTipo" class="col-md-2 control-label"></label>
+                <div class="col-md-10">
+                    <input asp-for="AnimalTipo" class="form-control" />
+                </div>
+            </div>
+            <div class="form-group">
+                <label asp-for="AnimalRaca" class="col-md-2 control-label"></label>
+                <div class="col-md-10">
+                    <input asp-for="AnimalRaca" class="form-control" />
+                </div>
+            </div>
+            <div class="form-group">
+                <label asp-for="AnimalDataDeNascimento" class="col-md-2 control-label"></label>
+                <div class="col-md-10">
+                    <input asp-for="AnimalDataDeNascimento" class="form-control" />
+                </div>
+            </div>
+            <div class="form-group">
+                <label asp-for="Alergico" class="col-md-2 control-label"></label>
+                <div class="col-md-10">
+                    <input asp-for="Alergico" class="form-control" />
+                </div>
+            </div>
+            <div class="form-group pull-right formPullRightButton">
+                <div class="col-md-offset-2 col-md-10">
+                    <input type="submit" class="btn btn-success " value="Registrar" />
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+

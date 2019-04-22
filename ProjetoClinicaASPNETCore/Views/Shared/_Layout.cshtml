@@ -1,0 +1,44 @@
+﻿<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro">
+    <link href="~/lib/bootstrap/dist/css/bootstrap.css" rel="stylesheet" />
+    <link href="~/Content/site.css" rel="stylesheet" />
+    <script src="~/lib/jquery/dist/jquery.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.js"></script>
+    <title>Clínica Veterinária</title>
+</head>
+<body>
+    <nav class="navbar navbar-inverse navbar-fixed-top">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="#">Clínica Veterinária</a>
+            </div>
+            <div id="navbar" class="collapse navbar-collapse">
+                <ul class="nav navbar-nav">
+                    <li><a asp-controller="Home" asp-action="Index">Principal</a></li>
+                    @await Html.PartialAsync("ConsultaDropMenu")
+                    @await Html.PartialAsync("AnimalDropMenu")
+                    <li><a href="#contact">Contato</a></li>
+                </ul>
+                @await Html.PartialAsync("LoginPartial")
+            </div><!--/.nav-collapse -->
+        </div>
+    </nav>
+    <div class="container body-content" style="padding:50px" ;>
+        @RenderBody()
+        <hr />
+        <footer>
+            <p>2019 - Adriano Yanagida da Costa</p>
+        </footer>
+    </div>
+</body>
+</html>

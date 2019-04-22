@@ -1,0 +1,23 @@
+﻿<hr />
+<div>
+    <h3>Seus animais cadastrados estão listados abaixo:</h3>
+</div>
+<hr/>
+<table class="table">
+    <thead>
+        <tr>
+            @*<th>ID </th>*@
+            <th>Nome do Animal </th>
+            <th>Tipo do Animal </th>
+            <th>Raça do Animal </th>
+            <th>Data de Nascimento </th>
+            <th>Alergias </th>
+        </tr>
+    </thead>
+    @{
+        foreach (Animal animal in Model.Animais)
+        {
+            @Html.Partial("AnimalListPartial", animal);
+        }
+    }
+</table>

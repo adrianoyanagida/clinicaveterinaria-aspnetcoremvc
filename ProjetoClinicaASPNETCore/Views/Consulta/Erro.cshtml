@@ -1,0 +1,9 @@
+﻿<h1>Ocorreu um erro!</h1>
+@if (TempData["CadastroAnimal"] != null)
+{
+    <p class="alert alert-success">@TempData["CadastroAnimal"]</p>
+}
+@if (TempData["SemConsultas"] != null)
+{
+    <p class="alert alert-success">@TempData["SemConsultas"]</p>
+}

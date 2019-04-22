@@ -1,0 +1,40 @@
+﻿@model ConsultaViewModel
+
+<div class="row loginForm">
+    <div>
+        <h2>Escolha a data e o veterinário, verificaremos se está disponível ;)</h2>
+        <label>Cuidado, não trabalhamos em sábados, domingos e feriados.</label>
+        @if (TempData["ExisteNoBanco"] != null)
+        {<p class="alert alert-success" id="successMessage">@TempData["ExisteNoBanco"]</p>}
+        @if (TempData["Erro"] != null)
+        {<p class="alert alert-success" id="successMessage">@TempData["Erro"]</p>}
+        <hr />
+        <form asp-controller="Consulta" asp-action="Data" method="post" class="form-horizontal" role="form">
+            <div class="form-group">
+                <label asp-for="DataConsulta" class="col-md-2 control-label"></label>
+                <div class="col-md-10">
+                    <input asp-for="DataConsulta" class="form-control" />
+                    <span asp-validation-for="DataConsulta" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class=" col-md-2 control-label">Selecione o seu Veterinário</label>
+                <div class="col-md-10">
+                    <select asp-for="VeterinarioId" class="form-control">
+                        @foreach (Veterinario veterinario in Model.Veterinarios)
+                        {
+                            <option label="@veterinario.VetNome - @veterinario.VetFuncao">@veterinario.VeterinarioId</option>
+                        }
+                    </select>
+                    <span asp-validation-for="VeterinarioId" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="form-group pull-right formPullRightButton">
+                <div class="col-md-offset-2 col-md-10">
+                    <input type="submit" class="btn btn-success " value="Verificar" />
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+

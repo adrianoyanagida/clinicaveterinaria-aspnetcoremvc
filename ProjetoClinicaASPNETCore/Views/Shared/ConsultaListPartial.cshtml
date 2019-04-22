@@ -1,0 +1,32 @@
+﻿@model Consulta
+
+<tr>
+    @*<td>@Model.ConsultaId</td>*@
+    <td>@Model.Veterinario.VetNome</td>
+    <td>@Model.Animal.AnimalNome</td>
+    <td>@Model.DataConsulta</td>
+    <td>@Model.HorarioConsulta</td>
+    <td>@Model.DescricaoDoProblema</td>
+    @if (Model.IsActive == false)
+    {
+        <td>Não</td>
+    }
+    else
+    {
+        <td>Sim</td>
+    }
+    <td>@Model.Diagnostico</td>
+    <td>@Model.ValorConsulta</td>
+    <td>
+        <a class="btn btn-success" id="cartButton" asp-controller="Consulta" asp-action="Excluir"
+           asp-route-idConsulta="@Model.ConsultaId">
+            Excluir
+        </a>
+    </td>
+    <td>
+        <a class="btn btn-success" id="cartButton" asp-controller="Consulta" asp-action="Editar" 
+           asp-route-idConsulta="@Model.ConsultaId">
+            Editar problema
+        </a>
+    </td>
+</tr>
