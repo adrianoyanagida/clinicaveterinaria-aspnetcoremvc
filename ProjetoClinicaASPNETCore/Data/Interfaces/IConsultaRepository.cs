@@ -12,7 +12,7 @@ namespace ProjetoClinicaASPNETCore.Data.Interfaces
         IEnumerable<Animal> GetAnimaisByOwnerId(string userId);
         IEnumerable<Veterinario> Veterinarios { get; }
         IEnumerable<Consulta> Consultas { get; }
-        Veterinario GetVetById(int vetId);
+        Task<Veterinario> GetVetById(int vetId);
         //void CreateConsulta(ConsultaViewModel consultaViewModel, string userId);
         IEnumerable<Consulta> GetConsultaByDateAndVet(string date, int vetId);
         IEnumerable<Horario> Horarios { get; }

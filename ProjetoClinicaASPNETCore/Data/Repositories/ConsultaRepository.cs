@@ -24,7 +24,7 @@ namespace ProjetoClinicaASPNETCore.Data.Repositories
 
         public IEnumerable<Consulta> Consultas => _appDbContext.Consultas.Include(a => a.Animal).Include(v => v.Veterinario).Include(u => u.User);
 
-        public Veterinario GetVetById(int vetId) => _appDbContext.Veterinarios.FirstOrDefault(p => p.VeterinarioId == vetId);
+        public async Task<Veterinario> GetVetById(int vetId) => await _appDbContext.Veterinarios.FirstOrDefaultAsync(p => p.VeterinarioId == vetId);
 
         public IEnumerable<Horario> Horarios => _appDbContext.Horarios;
 
