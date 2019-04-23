@@ -72,6 +72,12 @@ namespace ProjetoClinicaASPNETCore.Controllers
 
             var fVM = instantiateFVM(dataEscolhida, veterinarioEscolhido);
 
+            if(fVM.HorariosFiltrados.Count <= 0)
+            {
+                TempData["Erro"] = "Desculpe, parece que não temos mais vagas nesse dia!";
+                return RedirectToAction("Data");
+            }
+
             CreateChoosenTempData(veterinarioEscolhido, dataEscolhida);
 
             return View(fVM);
@@ -88,9 +94,10 @@ namespace ProjetoClinicaASPNETCore.Controllers
 
             try
             {
-                string currentUserId = _userManager.GetUserId(User);
+                var currentUserId = _userManager.GetUserId(User);
                 _consultaRepository.CreateConsulta(fVM, currentUserId);
                 await _consultaRepository.SaveChangesAsync();
+
                 return RedirectToAction("Concluido");
             }
             catch (System.Exception ex)
@@ -108,6 +115,8 @@ namespace ProjetoClinicaASPNETCore.Controllers
         }
 
         public IActionResult Erro() => View();
+
+        public IActionResult Concluido() => View();
 
         // FUNÇÕES //
 
@@ -155,17 +164,14 @@ namespace ProjetoClinicaASPNETCore.Controllers
 
             foreach (Horario horario in horarios)
             {
-                if (consultas.LongCount() <= 0)
-                {
-                    HorariosFiltrados.Add(horario.Hora);
-                }
-                else
+                HorariosFiltrados.Add(horario.Hora);
+                if (consultas.LongCount() > 0)
                 {
                     foreach (Consulta consulta in consultas)
                     {
-                        if (horario.Hora != consulta.HorarioConsulta)
+                        if (horario.Hora == consulta.HorarioConsulta)
                         {
-                            HorariosFiltrados.Add(horario.Hora);
+                            HorariosFiltrados.Remove(horario.Hora);
                         }
                     }
                 }
