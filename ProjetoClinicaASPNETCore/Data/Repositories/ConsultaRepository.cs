@@ -18,6 +18,16 @@ namespace ProjetoClinicaASPNETCore.Data.Repositories
             _appDbContext = appDbContext;
         }
 
+        public void Add<T>(T entity) where T : class
+        {
+            _appDbContext.Add(entity);
+        }
+
+        public async Task<bool> SaveChangesAsync()
+        {
+            return (await _appDbContext.SaveChangesAsync()) > 0;
+        }
+
         public IEnumerable<Animal> GetAnimaisByOwnerId(string userId) => _appDbContext.Animais.Where(a => a.User.Id == userId);
 
         public IEnumerable<Veterinario> Veterinarios => _appDbContext.Veterinarios;
@@ -33,19 +43,19 @@ namespace ProjetoClinicaASPNETCore.Data.Repositories
             .Where(d => d.DataConsulta == date)
             .Where(v => v.VeterinarioId == vetId);
 
-        //public void CreateConsulta(ConsultaViewModel consultaViewModel, string userId)
-        //{
-        //    var consulta = new Consulta()
-        //    {
-        //        VeterinarioId = consultaViewModel.VeterinarioId,
-        //        UserId = userId,
-        //        AnimalId = consultaViewModel.AnimalId,
-        //        DataConsulta = consultaViewModel.DataConsulta,
-        //        HorarioConsulta = consultaViewModel.HorarioConsulta,
-        //        DescricaoDoProblema = consultaViewModel.DescricaoDoProblema,
-        //        IsActive = false
-        //    };
-        //    _appDbContext.Consultas.Add(consulta);
-        //}
+        public void CreateConsulta(FormularioViewModel fVM, string userId)
+        {
+            var consulta = new Consulta()
+            {
+                VeterinarioId = fVM.VeterinarioId,
+                UserId = userId,
+                AnimalId = fVM.AnimalId,
+                DataConsulta = fVM.DataConsulta,
+                HorarioConsulta = fVM.HorarioEscolhido,
+                DescricaoDoProblema = fVM.DescricaoDoProblema,
+                IsActive = false
+            };
+            Add(consulta);
+        }
     }
 }

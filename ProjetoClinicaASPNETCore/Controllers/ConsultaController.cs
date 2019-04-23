@@ -48,42 +48,114 @@ namespace ProjetoClinicaASPNETCore.Controllers
             return View(consultaViewModel);
         }
 
-        public IActionResult Formulario(ConsultaViewModel cVM)
+        [HttpPost]
+        public IActionResult Data(ConsultaViewModel cVM)
         {
             if (!ModelState.IsValid)
             {
                 return RedirectToAction("Data");
             }
+            CreateChoosenTempData(cVM.VeterinarioId, cVM.DataConsulta);
 
-            var consultas = _consultaRepository.GetConsultaByDateAndVet(cVM.DataConsulta, cVM.VeterinarioId);
-            var horarios = _consultaRepository.Horarios;
-            var animais = _consultaRepository.GetAnimaisByOwnerId(_userManager.GetUserId(User));
+            return RedirectToAction("Formulario");
+        }
 
-            var veterinario = GetVeterinario(cVM.VeterinarioId).Result;
-            var horariosFiltrados = GetHorariosFiltrados(consultas, horarios);
-
-            var formularioViewModel = new FormularioViewModel
+        public IActionResult Formulario()
+        {
+            if (TempData["VeterinarioIdEscolhido"] == null || TempData["DataEscolhida"] == null)
             {
-                HorariosFiltrados = horariosFiltrados,
-                Animais = animais,
-                Veterinario = veterinario,
-                DataConsulta = cVM.DataConsulta
-            };
+                return RedirectToAction("Data");
+            }
 
-            return View(formularioViewModel);
+            var dataEscolhida = GetDataChoosenFromTemp();
+            var veterinarioEscolhido = GetVetIdChoosenFromTemp();
+
+            var fVM = instantiateFVM(dataEscolhida, veterinarioEscolhido);
+
+            CreateChoosenTempData(veterinarioEscolhido, dataEscolhida);
+
+            return View(fVM);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Formulario(FormularioViewModel fVM)
+        {
+            if(!ModelState.IsValid)
+            {
+                ModelValidation(fVM);
+                return RedirectToAction("Formulario");
+            }
+
+            try
+            {
+                string currentUserId = _userManager.GetUserId(User);
+                _consultaRepository.CreateConsulta(fVM, currentUserId);
+                await _consultaRepository.SaveChangesAsync();
+                return RedirectToAction("Concluido");
+            }
+            catch (System.Exception ex)
+            {
+                //Procura na mensagem se ele contém a seguinte string IX_Consultas_VeterinarioId_DataConsulta_HorarioConsulta
+                var message = ex.ToString();
+                if (message.Contains("IX_Consultas_VeterinarioId_DataConsulta_HorarioConsulta"))
+                {
+                    TempData["Erro"] = "Que pena! Parece que alguém agendou primeiro que você, tente outro horário.";
+                    return RedirectToAction("Parte1");
+                }
+                else
+                    return BadRequest();
+            }
         }
 
         public IActionResult Erro() => View();
 
-        public List<string> GetHorariosFiltrados(
-            IEnumerable<Consulta> consultas,
-            IEnumerable<Horario> horarios)
+        // FUNÇÕES //
+
+        private void CreateChoosenTempData(int veterinarioEscolhido, string dataEscolhida)
+        {
+            var tempVetId = Newtonsoft.Json.JsonConvert.SerializeObject(veterinarioEscolhido);
+            TempData["VeterinarioIdEscolhido"] = tempVetId;
+            TempData["DataEscolhida"] = dataEscolhida;
+        }
+
+        private string GetDataChoosenFromTemp()
+        {
+            return TempData["DataEscolhida"].ToString();
+        }
+
+        private int GetVetIdChoosenFromTemp()
+        {
+            return JsonConvert.DeserializeObject<int>(TempData["VeterinarioIdEscolhido"].ToString());
+        }
+
+        private FormularioViewModel instantiateFVM(string dataEscolhida, int veterinarioEscolhido)
+        {
+            var consultas = _consultaRepository.GetConsultaByDateAndVet(dataEscolhida, veterinarioEscolhido);
+            var horarios = _consultaRepository.Horarios;
+            var animais = _consultaRepository.GetAnimaisByOwnerId(_userManager.GetUserId(User));
+
+            var veterinario = GetVeterinario(veterinarioEscolhido).Result;
+            var horariosFiltrados = GetHorariosFiltrados(consultas, horarios);
+
+            var formularioViewModel = new FormularioViewModel()
+            {
+                HorariosFiltrados = horariosFiltrados,
+                Animais = animais,
+                Veterinario = veterinario,
+                VeterinarioId = veterinario.VeterinarioId,
+                DataConsulta = dataEscolhida
+            };
+
+            return formularioViewModel;
+        }
+
+        private List<string> GetHorariosFiltrados(IEnumerable<Consulta> consultas, IEnumerable<Horario> horarios)
         {
             List<string> HorariosFiltrados = new List<string>();
 
             foreach (Horario horario in horarios)
             {
-                if(consultas.LongCount() <= 0)
+                if (consultas.LongCount() <= 0)
                 {
                     HorariosFiltrados.Add(horario.Hora);
                 }
@@ -102,9 +174,25 @@ namespace ProjetoClinicaASPNETCore.Controllers
             return HorariosFiltrados;
         }
 
-        public async Task<Veterinario> GetVeterinario(int vetId)
+        private async Task<Veterinario> GetVeterinario(int vetId)
         {
             return await _consultaRepository.GetVetById(vetId);
+        }
+
+        private void ModelValidation(FormularioViewModel fVM)
+        {
+            if (fVM.DescricaoDoProblema == null)
+            {
+                TempData["DescricaoValidator"] = "Descrição do problema necessário!";
+            }
+            else if (fVM.DescricaoDoProblema.Length < 30)
+            {
+                TempData["DescricaoValidator"] = "Necessário mínimo de 20 caracteres!";
+            }
+            else
+            {
+                TempData["DescricaoValidator"] = "Ocorreu um erro não esperado! Caso persistir faça contato com a gente!";
+            }
         }
     }
 }
