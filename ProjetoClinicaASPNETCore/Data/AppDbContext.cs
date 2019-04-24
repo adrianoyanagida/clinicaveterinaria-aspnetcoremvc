@@ -18,7 +18,6 @@ namespace ProjetoClinicaASPNETCore.Data
         public DbSet<Animal> Animais { get; set; }
         public DbSet<Consulta> Consultas { get; set; }
         public DbSet<Horario> Horarios { get; set; }
-        public DbSet<ConsultaMarcada> ConsultaMarcadas { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {

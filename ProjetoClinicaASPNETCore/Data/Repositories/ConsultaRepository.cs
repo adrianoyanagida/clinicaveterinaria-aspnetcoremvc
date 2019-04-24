@@ -28,13 +28,14 @@ namespace ProjetoClinicaASPNETCore.Data.Repositories
             return (await _appDbContext.SaveChangesAsync()) > 0;
         }
 
-        public IEnumerable<Animal> GetAnimaisByOwnerId(string userId) => _appDbContext.Animais.Where(a => a.User.Id == userId);
-
         public IEnumerable<Veterinario> Veterinarios => _appDbContext.Veterinarios;
 
-        public IEnumerable<Consulta> Consultas => _appDbContext.Consultas.Include(a => a.Animal).Include(v => v.Veterinario).Include(u => u.User);
-
         public async Task<Veterinario> GetVetById(int vetId) => await _appDbContext.Veterinarios.FirstOrDefaultAsync(p => p.VeterinarioId == vetId);
+
+
+        public async Task<ApplicationUser> GetUser(string userId) => await _appDbContext.Users.Where(u => u.Id == userId)
+            .Include(a => a.Animais)
+            .FirstOrDefaultAsync();
 
         public IEnumerable<Horario> Horarios => _appDbContext.Horarios;
 
@@ -43,16 +44,18 @@ namespace ProjetoClinicaASPNETCore.Data.Repositories
             .Where(d => d.DataConsulta == date)
             .Where(v => v.VeterinarioId == vetId);
 
-        public void CreateConsulta(FormularioViewModel fVM, string userId)
+        public async Task<Animal> GetAnimalById(int animalId) => await _appDbContext.Animais.FirstOrDefaultAsync(a => a.AnimalId == animalId);
+
+        public void CreateConsulta(FormularioViewModel fVM, ApplicationUser user)
         {
             var consulta = new Consulta()
             {
-                VeterinarioId = fVM.VeterinarioId,
-                UserId = userId,
-                AnimalId = fVM.AnimalId,
+                Veterinario = GetVetById(fVM.VeterinarioId).Result,
+                Animal = GetAnimalById(fVM.AnimalId).Result,
                 DataConsulta = fVM.DataConsulta,
                 HorarioConsulta = fVM.HorarioEscolhido,
                 DescricaoDoProblema = fVM.DescricaoDoProblema,
+                User = user,
                 IsActive = false
             };
             Add(consulta);

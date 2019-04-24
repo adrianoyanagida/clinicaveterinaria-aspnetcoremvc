@@ -90,11 +90,13 @@ namespace ProjetoClinicaASPNETCore.Data
                 (
                     new Veterinario
                     {
-                        VetNome = "Vitor Bruno Guimarães"
+                        VetNome = "Vitor Bruno Guimarães",
+                        VetFuncao = "Cirurgião Geral"
                     },
                     new Veterinario
                     {
-                        VetNome = "Adriano Japon da Costa"
+                        VetNome = "Adriano Japon da Costa",
+                        VetFuncao = "Clínico Geral"
                     }
                 );
             }

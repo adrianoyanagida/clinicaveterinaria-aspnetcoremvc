@@ -1,4 +1,5 @@
-﻿using ProjetoClinicaASPNETCore.Data.Models;
+﻿using Microsoft.AspNetCore.Identity;
+using ProjetoClinicaASPNETCore.Data.Models;
 using ProjetoClinicaASPNETCore.ViewModels;
 using System;
 using System.Collections.Generic;
@@ -12,12 +13,11 @@ namespace ProjetoClinicaASPNETCore.Data.Interfaces
         void Add<T>(T entity) where T : class;
         Task<bool> SaveChangesAsync();
 
-        IEnumerable<Animal> GetAnimaisByOwnerId(string userId);
         IEnumerable<Veterinario> Veterinarios { get; }
-        IEnumerable<Consulta> Consultas { get; }
         Task<Veterinario> GetVetById(int vetId);
-        void CreateConsulta(FormularioViewModel fVM, string userId);
+        Task<ApplicationUser> GetUser(string userId);
+        IEnumerable<Horario> Horarios { get; }
         IEnumerable<Consulta> GetConsultaByDateAndVet(string date, int vetId);
-        IEnumerable<Horario> Horarios { get; }   
+        void CreateConsulta(FormularioViewModel fVM, ApplicationUser user);
     }
 }

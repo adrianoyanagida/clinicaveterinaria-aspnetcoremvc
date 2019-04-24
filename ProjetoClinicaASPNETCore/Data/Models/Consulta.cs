@@ -20,9 +20,8 @@ namespace ProjetoClinicaASPNETCore.Data.Models
         public int AnimalId { get; set; }
         public virtual Animal Animal { get; set; }
         public int VeterinarioId { get; set; }
-        public virtual Veterinario Veterinario { get; set; }
+        public Veterinario Veterinario { get; set; }
         public string UserId { get; set; }
-        public virtual ApplicationUser User { get; set; }
-        public virtual ConsultaMarcada ConsultaMarcada { get; set; }
+        public ApplicationUser User { get; set; }
     }
 }

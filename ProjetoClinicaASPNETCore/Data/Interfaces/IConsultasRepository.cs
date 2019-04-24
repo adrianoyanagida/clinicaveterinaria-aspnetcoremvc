@@ -6,10 +6,8 @@ using System.Threading.Tasks;
 
 namespace ProjetoClinicaASPNETCore.Data.Interfaces
 {
-    public interface IAnimalRepository
+    public interface IConsultasRepository
     {
-        IEnumerable<Animal> Animais { get; }
-        IEnumerable<Animal> AllAnimais { get; }
-        void RegisterAnimal(Animal animal, ApplicationUser user);
+        IEnumerable<Consulta> GetConsultasByOwnerId(string userId);
     }
 }

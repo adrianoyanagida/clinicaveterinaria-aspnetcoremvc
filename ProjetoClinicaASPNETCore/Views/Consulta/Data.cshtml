@@ -14,11 +14,10 @@
                 <label asp-for="DataConsulta" class="col-md-2 control-label"></label>
                 <div class="col-md-10">
                     <input asp-for="DataConsulta" class="form-control" />
-                    <span asp-validation-for="DataConsulta" class="text-danger"></span>
                 </div>
             </div>
             <div class="form-group">
-                <label class=" col-md-2 control-label">Selecione o seu Veterinário</label>
+                <label asp-for="VeterinarioId" class="col-md-2 control-label"></label>
                 <div class="col-md-10">
                     <select asp-for="VeterinarioId" class="form-control">
                         @foreach (Veterinario veterinario in Model.Veterinarios)
@@ -26,7 +25,6 @@
                             <option label="@veterinario.VetNome - @veterinario.VetFuncao">@veterinario.VeterinarioId</option>
                         }
                     </select>
-                    <span asp-validation-for="VeterinarioId" class="text-danger"></span>
                 </div>
             </div>
             <div class="form-group pull-right formPullRightButton">

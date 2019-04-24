@@ -1,10 +1,19 @@
 ﻿@model Consulta
 
+@functions {
+    public string GetDateLocal()
+    {
+        var date = Model.DataConsulta;
+        DateTime convertedDate = Convert.ToDateTime(date);
+        return convertedDate.ToLongDateString();
+    }
+}
+
 <tr>
-    @*<td>@Model.ConsultaId</td>*@
-    <td>@Model.Veterinario.VetNome</td>
+    <td>@Model.ConsultaId</td>
     <td>@Model.Animal.AnimalNome</td>
-    <td>@Model.DataConsulta</td>
+    <td>@Model.Veterinario.VetNome</td>
+    <td>@GetDateLocal()</td>
     <td>@Model.HorarioConsulta</td>
     <td>@Model.DescricaoDoProblema</td>
     @if (Model.IsActive == false)
@@ -23,10 +32,10 @@
             Excluir
         </a>
     </td>
-    <td>
-        <a class="btn btn-success" id="cartButton" asp-controller="Consulta" asp-action="Editar" 
+    @*<td>
+        <a class="btn btn-success" id="cartButton" asp-controller="Consulta" asp-action="Editar"
            asp-route-idConsulta="@Model.ConsultaId">
             Editar problema
         </a>
-    </td>
+    </td>*@
 </tr>

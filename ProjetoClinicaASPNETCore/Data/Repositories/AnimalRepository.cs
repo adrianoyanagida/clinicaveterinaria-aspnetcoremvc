@@ -22,9 +22,9 @@ namespace ProjetoClinicaASPNETCore.Data.Repositories
 
         public IEnumerable<Animal> AllAnimais => _appDbContext.Animais;
 
-        public void RegisterAnimal(Animal animal, string Id)
+        public void RegisterAnimal(Animal animal, ApplicationUser user)
         {
-            animal.UserId = Id;
+            animal.User = user;
             _appDbContext.Animais.Add(animal);
         }
     }

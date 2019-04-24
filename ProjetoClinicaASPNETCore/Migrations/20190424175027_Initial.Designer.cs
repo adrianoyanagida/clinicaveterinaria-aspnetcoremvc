@@ -10,8 +10,8 @@ using ProjetoClinicaASPNETCore.Data;
 namespace ProjetoClinicaASPNETCore.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20190422144446_initial")]
-    partial class initial
+    [Migration("20190424175027_Initial")]
+    partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -258,22 +258,6 @@ namespace ProjetoClinicaASPNETCore.Migrations
                     b.ToTable("Consultas");
                 });
 
-            modelBuilder.Entity("ProjetoClinicaASPNETCore.Data.Models.ConsultaMarcada", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<int>("ConsultaId");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ConsultaId")
-                        .IsUnique();
-
-                    b.ToTable("ConsultaMarcadas");
-                });
-
             modelBuilder.Entity("ProjetoClinicaASPNETCore.Data.Models.Horario", b =>
                 {
                     b.Property<int>("HorarioId")
@@ -372,14 +356,6 @@ namespace ProjetoClinicaASPNETCore.Migrations
                     b.HasOne("ProjetoClinicaASPNETCore.Data.Models.Veterinario", "Veterinario")
                         .WithMany("Consultas")
                         .HasForeignKey("VeterinarioId")
-                        .OnDelete(DeleteBehavior.Cascade);
-                });
-
-            modelBuilder.Entity("ProjetoClinicaASPNETCore.Data.Models.ConsultaMarcada", b =>
-                {
-                    b.HasOne("ProjetoClinicaASPNETCore.Data.Models.Consulta", "Consulta")
-                        .WithOne("ConsultaMarcada")
-                        .HasForeignKey("ProjetoClinicaASPNETCore.Data.Models.ConsultaMarcada", "ConsultaId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 #pragma warning restore 612, 618

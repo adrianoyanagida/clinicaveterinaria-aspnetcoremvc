@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace ProjetoClinicaASPNETCore.Migrations
 {
-    public partial class initial : Migration
+    public partial class Initial : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -250,25 +250,6 @@ namespace ProjetoClinicaASPNETCore.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
-            migrationBuilder.CreateTable(
-                name: "ConsultaMarcadas",
-                columns: table => new
-                {
-                    Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    ConsultaId = table.Column<int>(nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_ConsultaMarcadas", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_ConsultaMarcadas_Consultas_ConsultaId",
-                        column: x => x.ConsultaId,
-                        principalTable: "Consultas",
-                        principalColumn: "ConsultaId",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
             migrationBuilder.CreateIndex(
                 name: "IX_Animais_UserId",
                 table: "Animais",
@@ -321,12 +302,6 @@ namespace ProjetoClinicaASPNETCore.Migrations
                 filter: "[NormalizedUserName] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
-                name: "IX_ConsultaMarcadas_ConsultaId",
-                table: "ConsultaMarcadas",
-                column: "ConsultaId",
-                unique: true);
-
-            migrationBuilder.CreateIndex(
                 name: "IX_Consultas_AnimalId",
                 table: "Consultas",
                 column: "AnimalId");
@@ -362,16 +337,13 @@ namespace ProjetoClinicaASPNETCore.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
-                name: "ConsultaMarcadas");
+                name: "Consultas");
 
             migrationBuilder.DropTable(
                 name: "Horarios");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");
-
-            migrationBuilder.DropTable(
-                name: "Consultas");
 
             migrationBuilder.DropTable(
                 name: "Animais");

@@ -1,0 +1,29 @@
+﻿<hr />
+<div>
+    <h3>Suas consultas estão listadas abaixo:</h3>
+
+    "Consulta verificada" significa que sua consulta já foi visualizada e aprovada por um de nossos funcionários.<br/>
+    É esperado que em 1 dia útil sua consulta seja validada, caso não for, entre em contato por telefone.
+</div>
+<hr />
+<table class="table">
+    <thead>
+        <tr>
+            <th>#</th>
+            <th>Nome do Animal </th>
+            <th>Nome do Veterinario </th>
+            <th>Data da Consulta </th>
+            <th>Horario da Consulta </th>
+            <th>Descrição do Problema </th>
+            <th>Consulta verificada </th>
+            <th>Disgnóstico </th>
+            <th>Valor da Consulta </th>
+        </tr>
+    </thead>
+    @{
+        foreach (Consulta consulta in Model.Consultas)
+        {
+            <partial name="SuasConsultasPartial" model="consulta"/>
+        }
+     }
+</table>

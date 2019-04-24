@@ -45,9 +45,9 @@ namespace ProjetoClinicaASPNETCore.Controllers
             if(ModelState.IsValid)
             {
                 var animal = _mapper.Map<Animal>(animalDTO);
-                var userId = _userManager.GetUserId(User);
+                var user = await _userManager.GetUserAsync(User);
 
-                _animalRepository.RegisterAnimal(animal, userId);
+                _animalRepository.RegisterAnimal(animal, user);
                 await _appDbContext.SaveChangesAsync(); 
                 return RedirectToAction("CadastroCompleto");
             }

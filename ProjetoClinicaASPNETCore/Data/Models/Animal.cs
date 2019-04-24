@@ -12,7 +12,7 @@ namespace ProjetoClinicaASPNETCore.Data.Models
         [Key]
         public int AnimalId { get; set; }
         public string UserId { get; set; }
-        public virtual ApplicationUser User { get; set; }
+        public ApplicationUser User { get; set; }
         public string AnimalNome { get; set; }
         public string AnimalTipo { get; set; }
         public string AnimalRaca { get; set; }

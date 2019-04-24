@@ -49,6 +49,7 @@ namespace ProjetoClinicaASPNETCore
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             services.AddTransient<IAnimalRepository, AnimalRepository>();
             services.AddTransient<IConsultaRepository, ConsultaRepository>();
+            services.AddTransient<IConsultasRepository, ConsultasRepository>();
             services.AddTransient<ITempRepository, TempRepository>();
 
             services.AddSession();
