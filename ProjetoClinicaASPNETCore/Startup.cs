@@ -69,12 +69,6 @@ namespace ProjetoClinicaASPNETCore
             app.UseAuthentication();
             app.UseSession();
             app.UseStaticFiles();
-            app.UseStaticFiles(new StaticFileOptions()
-            {
-                FileProvider = new PhysicalFileProvider(
-                Path.Combine(Directory.GetCurrentDirectory(), @"node_modules")),
-                RequestPath = new PathString("/vendor")
-            });
             app.UseMvc(routes =>
             {
                 routes.MapRoute(name: "EditId", template: "Consulta/{action}/{idConsulta?}", defaults: new { Controller = "Consulta", action = "Editar" });
