@@ -1,47 +1,72 @@
 ﻿@model AnimalDTO
 
-<div class="row loginForm">
-    <div>
-        <h2>Registre seu animalzinho abaixo.</h2>
-        <div asp-validation-summary="All"></div>
-        <hr />
-        <form asp-controller="Animal" asp-action="Cadastro" method="post" class="form-horizontal" role="form">
-            <div class="form-group">
-                <label asp-for="AnimalNome" class="col-md-2 control-label"></label>
-                <div class="col-md-10">
-                    <input asp-for="AnimalNome" class="form-control" />
+<div class="text-center">
+    <div class="pt-md-2 pb-md-2 mx-auto">
+        <h1 class="display-4">Cadastro de Animais</h1>
+    </div>
+    <div class="lead">
+        Preencha o formulário abaixo para cadastrar seu animal
+    </div>
+</div>
+
+<br><br>
+
+<div class="row">
+    <div class="col-sm-8 offset-sm-2">
+        <form asp-controller="Animal" asp-action="Cadastro" onsubmit="button.disabled = true; return true;">
+            <div class="form-row loginForm">
+                <div class="form-group col-md-6">
+                    <label asp-for="AnimalNome"></label>
+                    <input asp-for="AnimalNome" class="form-control" placeholder="Nome do Animal" />
+                    <span asp-validation-for="AnimalNome" class="text-danger"></span>
+                </div>
+                <div class="form-group col-md-6">
+                    <label asp-for="AnimalTipo"></label>
+                    <input asp-for="AnimalTipo" class="form-control" placeholder="Cachorro / Gato / Coelho" />
+                    <span asp-validation-for="AnimalTipo" class="text-danger"></span>
                 </div>
             </div>
-            <div class="form-group">
-                <label asp-for="AnimalTipo" class="col-md-2 control-label"></label>
-                <div class="col-md-10">
-                    <input asp-for="AnimalTipo" class="form-control" />
+            <div class="form-row loginForm">
+                <div class="form-group col-md-6">
+                    <label asp-for="AnimalRaca"></label>
+                    <input asp-for="AnimalRaca" class="form-control" placeholder="Poodle, Pastor alemão, etc." />
                 </div>
-            </div>
-            <div class="form-group">
-                <label asp-for="AnimalRaca" class="col-md-2 control-label"></label>
-                <div class="col-md-10">
-                    <input asp-for="AnimalRaca" class="form-control" />
-                </div>
-            </div>
-            <div class="form-group">
-                <label asp-for="AnimalDataDeNascimento" class="col-md-2 control-label"></label>
-                <div class="col-md-10">
+                <div class="form-group col-md-6">
+                    <label asp-for="AnimalDataDeNascimento"></label>
                     <input asp-for="AnimalDataDeNascimento" class="form-control" />
                 </div>
             </div>
-            <div class="form-group">
-                <label asp-for="Alergico" class="col-md-2 control-label"></label>
-                <div class="col-md-10">
-                    <input asp-for="Alergico" class="form-control" />
-                </div>
+            <div class="form-group col-md-12">
+                <label asp-for="Alergico"></label>
+                <textarea asp-for="Alergico" class="form-control" rows="2" placeholder="Digite aqui..."></textarea>
             </div>
-            <div class="form-group pull-right formPullRightButton">
-                <div class="col-md-offset-2 col-md-10">
-                    <input type="submit" class="btn btn-success " value="Registrar" />
+            <div class="text-center">
+                <button type="button" class="btn btn-outline-success" data-toggle="modal" data-target="#confirmCadastroAnimal">
+                    Cadastrar
+                </button>
+            </div>
+            <!-- Modal -->
+            <div class="modal fade" id="confirmCadastroAnimal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">Confirmar Cadastro</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body text-center">
+                            Tem certeza que deseja cadastrar?<br />
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">Voltar</button>
+                            <input type="submit" class="btn btn-outline-success" name="button" value="Confirmar" />
+                        </div>
+                    </div>
                 </div>
             </div>
         </form>
     </div>
 </div>
+
 

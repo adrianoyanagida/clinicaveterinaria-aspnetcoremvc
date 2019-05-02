@@ -1,23 +1,28 @@
-﻿<hr />
-<div>
-    <h3>Seus animais cadastrados estão listados abaixo:</h3>
+﻿<div class="pt-md-2 pb-md-2 mx-auto text-center">
+    <h1 class="display-4">Seus Animais</h1>
 </div>
-<hr/>
-<table class="table">
-    <thead>
-        <tr>
-            @*<th>ID </th>*@
-            <th>Nome do Animal </th>
-            <th>Tipo do Animal </th>
-            <th>Raça do Animal </th>
-            <th>Data de Nascimento </th>
-            <th>Alergias </th>
-        </tr>
-    </thead>
-    @{
-        foreach (Animal animal in Model.Animais)
-        {
-            @Html.Partial("AnimalListPartial", animal);
+<div class="text-center">
+    Abaixo você confere todos os seus animais cadastrados no nosso site.
+</div>
+
+<br>
+
+<div class="table-responsive">
+    <table class="table table-borderless">
+        <thead class="thead-dark">
+            <tr class="text-center">
+                <th>Nome do Animal </th>
+                <th>Tipo do Animal </th>
+                <th>Raça do Animal </th>
+                <th>Data de Nascimento </th>
+                <th>Alergias </th>
+            </tr>
+        </thead>
+        @{
+            foreach (Animal animal in Model.Animais)
+            {
+                @Html.Partial("AnimalListPartial", animal);
+            }
         }
-    }
-</table>
+    </table>
+</div>

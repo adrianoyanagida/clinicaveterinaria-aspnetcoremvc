@@ -1,20 +1,43 @@
 ﻿@model FormularioViewModel
+
+@functions {
+public string GetDateLocal()
+{
+    var date = Model.DataConsulta;
+    DateTime convertedDate = Convert.ToDateTime(date);
+    return convertedDate.ToLongDateString();
+}
+}
+
+<div class="text-center">
+    <div class="pt-md-2 pb-md-2 mx-auto">
+        <h1 class="display-4">Horários disponíveis</h1>
+    </div>
+    <div class="lead">
+        Preecha o formulário abaixo para marcar sua consulta
+    </div>
+</div>
+
+<hr />
+
+<div class="text-center">
+    @if (TempData["Erro"] != null)
+    {<p class="alert alert-success" id="successMessage">@TempData["Erro"]</p>}
+    <p>
+        Veterinário: @Model.Veterinario.VetNome - @Model.Veterinario.VetFuncao<br />
+        Data: @GetDateLocal()
+    </p>
+</div>
+
+
 <div class="row loginForm">
-    <div>
-        <h2>Escolha seu animal e preencha o formulário abaixo.</h2>
-        @if (TempData["Erro"] != null) { <p class="alert alert-success" id="successMessage">@TempData["Erro"]</p> }
-        <hr />
-        <label>Veterinário escolhido: @Model.Veterinario.VetNome</label><p></p>
-        <label>Data escolhida: @Model.DataConsulta</label>
-        <hr />
-        <form asp-controller="Consulta" asp-action="Formulario" method="post" class="form-horizontal" role="form">
+    <div class="col-sm-6 offset-sm-3 text-center">
+        <form asp-controller="Consulta" asp-action="Formulario" onsubmit="button.disabled = true; return true;">
+            <input asp-for="DataConsulta" type="hidden" />
+            <input asp-for="VeterinarioId" type="hidden" />
             <div class="form-group">
-                <input asp-for="DataConsulta" type="hidden" />
-                <input asp-for="VeterinarioId" type="hidden" />
-            </div>
-            <div class="form-group">
-                <label class=" col-md-2 control-label">Horários disponíveis</label>
-                <div class="col-md-10">
+                <label>Horário (Formato 24 horas)</label>
+                <div class="col-sm-4 col-centered">
                     <select asp-for="HorarioEscolhido" class="form-control">
                         @foreach (String horario in Model.HorariosFiltrados)
                         {
@@ -24,8 +47,8 @@
                 </div>
             </div>
             <div class="form-group">
-                <label class=" col-md-2 control-label">Selecione o seu animalzinho</label>
-                <div class="col-md-10">
+                <label>Selecione o seu animal</label>
+                <div class="col-sm-4 col-centered">
                     <select asp-for="AnimalId" class="form-control">
                         @foreach (Animal animal in Model.Animais)
                         {
@@ -35,18 +58,12 @@
                 </div>
             </div>
             <div class="form-group">
-                <label asp-for="DescricaoDoProblema" class="col-md-2 control-label"></label>
-                <div class="col-md-10">
-                    <textarea asp-for="DescricaoDoProblema" class="form-control" placeholder="Necessário mínimo de 20 caracteres" rows="3"></textarea>
-                    @if (TempData["DescricaoValidator"] != null)
-                    {<p class="alert alert-success" id="successMessage">@TempData["DescricaoValidator"]</p>}
-                </div>
+                <label>Descreva o problema</label>
+                <textarea asp-for="DescricaoDoProblema" class="form-control text-center" placeholder="Necessário mínimo de 20 caracteres" rows="5"></textarea>
+                @if (TempData["DescricaoValidator"] != null)
+                {<p class="text-danger" id="successMessage">@TempData["DescricaoValidator"]</p>}
             </div>
-            <div class="form-group pull-right formPullRightButton">
-                <div class="col-md-offset-2 col-md-10">
-                    <input type="submit" class="btn btn-success " value="Marcar Consulta" />
-                </div>
-            </div>
+            <input type="submit" class="btn btn-outline-success" name="button" value="Marcar Consulta" />
         </form>
     </div>
 </div>

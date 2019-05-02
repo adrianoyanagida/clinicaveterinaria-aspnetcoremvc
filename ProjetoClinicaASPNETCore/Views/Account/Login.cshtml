@@ -1,29 +1,33 @@
 ﻿@model LoginViewModel
 
+
+<div class="pt-md-2 pb-md-2 mx-auto text-center">
+    <h1 class="display-4">Entrar</h1><br />
+</div>
+
 <div class="row loginForm">
-    <div>
-        <h2>Digite seus dados abaixo para logar.</h2>
-        <div asp-validation-summary="All"></div>
-        <form asp-controller="Account" asp-action="Login" method="post" class="form-horizontal" role="form">
-            <hr />
-            <input type="hidden" asp-for="ReturnUrl" />
+    <div class="col-sm-6 offset-sm-3">
+        <form asp-controller="Account" asp-action="Login" onsubmit="button.disabled = true; return true;">
             <div class="form-group">
-                <label asp-for="UsuarioOuEmail" class="col-md-2 control-label"></label>
-                <div class="col-md-10">
-                    <input asp-for="UsuarioOuEmail" class="form-control" />
-                </div>
+                <i class="fa fa-user"></i>
+                <label asp-for="UsuarioOuEmail"></label>
+                <input asp-for="UsuarioOuEmail" type="text" class="form-control" placeholder="Usuário / E-mail">
+                <span asp-validation-for="UsuarioOuEmail" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Senha" class="col-md-2 control-label"></label>
-                <div class="col-md-10">
-                    <input asp-for="Senha" class="form-control" />
-                </div>
+                <i class="fa fa-lock"></i>
+                <label asp-for="Senha"></label>
+                <input asp-for="Senha" type="password" class="form-control" placeholder="Senha">
+                <span asp-validation-for="Senha" class="text-danger"></span>
             </div>
-            <div class="form-group pull-right formPullRightButton">
-                <div class="col-md-offset-2 col-md-10">
-                    <input type="submit" class="btn btn-success" value="Logar" />
-                </div>
+            <div class="text-center">
+                <input type="submit" class="btn btn-lg btn-outline-success" name="button" value="Logar" />
             </div>
         </form>
     </div>
+</div>
+<div class="text-center">
+    <hr />
+    <p class="mt-5 mb-3">Não tem uma conta? Cadastre-se abaixo</p>
+    <a class="btn btn-outline-secondary" asp-controller="Account" asp-action="Register">Registrar</a>
 </div>

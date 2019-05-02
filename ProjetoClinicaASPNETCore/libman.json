@@ -3,11 +3,17 @@
   "defaultProvider": "unpkg",
   "libraries": [
     {
-      "library": "bootstrap@3.3.7",
+      "provider": "unpkg",
+      "library": "bootstrap@4.3.1",
       "destination": "wwwroot/lib/bootstrap/"
     },
     {
-      "provider": "unpkg",
+      "provider": "cdnjs",
+      "library": "font-awesome@5.8.1",
+      "destination": "wwwroot/lib/font-awesome/"
+    },
+    {
+      "provider": "cdnjs",
       "library": "jquery@3.3.1",
       "destination": "wwwroot/lib/jquery/"
     }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
@@ -10,7 +11,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-
+using Microsoft.Extensions.FileProviders;
 using ProjetoClinicaASPNETCore.Data;
 using ProjetoClinicaASPNETCore.Data.Interfaces;
 using ProjetoClinicaASPNETCore.Data.Models;
@@ -68,6 +69,12 @@ namespace ProjetoClinicaASPNETCore
             app.UseAuthentication();
             app.UseSession();
             app.UseStaticFiles();
+            app.UseStaticFiles(new StaticFileOptions()
+            {
+                FileProvider = new PhysicalFileProvider(
+                Path.Combine(Directory.GetCurrentDirectory(), @"node_modules")),
+                RequestPath = new PathString("/vendor")
+            });
             app.UseMvc(routes =>
             {
                 routes.MapRoute(name: "EditId", template: "Consulta/{action}/{idConsulta?}", defaults: new { Controller = "Consulta", action = "Editar" });

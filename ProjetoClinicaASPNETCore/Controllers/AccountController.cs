@@ -22,12 +22,9 @@ namespace ProjetoClinicaASPNETCore.Controllers
             _signInManager = signInManager;
         }
 
-        public IActionResult Login(string returnUrl)
+        public IActionResult Login()
         {
-            return View(new LoginViewModel
-            {
-                ReturnUrl = returnUrl
-            });
+            return View();
         }
 
         [HttpPost]
@@ -50,10 +47,7 @@ namespace ProjetoClinicaASPNETCore.Controllers
                     var result = await _signInManager.PasswordSignInAsync(user, loginViewModel.Senha, false, false);
                     if (result.Succeeded)
                     {
-                        if (string.IsNullOrEmpty(loginViewModel.ReturnUrl))
-                            return RedirectToAction("Index", "Home");
-
-                        return Redirect(loginViewModel.ReturnUrl);
+                        return RedirectToAction("Index", "Home");
                     }
                 }
             }
@@ -67,10 +61,7 @@ namespace ProjetoClinicaASPNETCore.Controllers
                     var result = await _signInManager.PasswordSignInAsync(user, loginViewModel.Senha, false, false);
                     if (result.Succeeded)
                     {
-                        if (string.IsNullOrEmpty(loginViewModel.ReturnUrl))
-                            return RedirectToAction("Index", "Home");
-
-                        return Redirect(loginViewModel.ReturnUrl);
+                        return RedirectToAction("Index", "Home");
                     }
                 }
             }

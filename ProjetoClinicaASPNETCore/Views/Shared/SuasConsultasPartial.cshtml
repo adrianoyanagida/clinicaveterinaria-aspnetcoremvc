@@ -9,10 +9,10 @@
     }
 }
 
-<tr>
+<tr class="text-center">
     <td>@Model.ConsultaId</td>
     <td>@Model.Animal.AnimalNome</td>
-    <td>@Model.Veterinario.VetNome</td>
+    <td>@Model.Veterinario.VetNome - @Model.Veterinario.VetFuncao</td>
     <td>@GetDateLocal()</td>
     <td>@Model.HorarioConsulta</td>
     <td>@Model.DescricaoDoProblema</td>

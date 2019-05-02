@@ -9,29 +9,29 @@
     @if (User.IsInRole("Administrador"))
     {
         <ul class="nav navbar-nav">
-            <li><a asp-controller="VerificaRole" asp-action="Index">Verifica Role</a></li>
+            <li><a class="nav-link" asp-controller="VerificaRole" asp-action="Index">Verifica Role</a></li>
         </ul>
         <ul class="nav navbar-nav navbar-right">
-            <li><a id="logoutLink" asp-controller="Account" asp-action="Logout"> (Administrador) Sair </a></li>
+            <li><a class="nav-link" asp-controller="Account" asp-action="Logout"> (Administrador) Sair </a></li>
         </ul>
     }
     else if (User.IsInRole("Funcionario"))
     {
         <ul class="nav navbar-nav">
-            <li><a asp-controller="VerificaRole" asp-action="Index">Verifica Role</a></li>
+            <li><a class="nav-link" asp-controller="VerificaRole" asp-action="Index">Verifica Role</a></li>
         </ul>
         <ul class="nav navbar-nav navbar-right">
-            <li><a id="logoutLink" asp-controller="Account" asp-action="Logout"> (Funcionario) Sair </a></li>
+            <li><a class="nav-link" asp-controller="Account" asp-action="Logout"> (Funcionario) Sair </a></li>
         </ul>
     }
     else
     {
         <ul class="nav navbar-nav navbar-right">
             <li>
-                <a>Olá @UserManager.GetUserName(User)!</a>
+                <a class="nav-link">Olá @UserManager.GetUserName(User)!</a>
             </li>
             <li>
-                <a id="logoutLink" asp-controller="Account" asp-action="Logout"> Sair </a>
+                <a class="nav-link" asp-controller="Account" asp-action="Logout"> Sair </a>
             </li>
         </ul>
     }
@@ -39,7 +39,7 @@
 else
 {
     <ul class="nav navbar-nav navbar-right">
-        <li><a id="registerLink" asp-controller="Account" asp-action="Register"> Registrar </a></li>
-        <li><a id="loginLink" asp-controller="Account" asp-action="Login"> Entrar </a></li>
+        <li><a class="nav-link" asp-controller="Account" asp-action="Register"> Registrar </a></li>
+        <li><a class="nav-link" asp-controller="Account" asp-action="Login"> Entrar </a></li>
     </ul>
 }

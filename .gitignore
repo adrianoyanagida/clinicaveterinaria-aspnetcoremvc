@@ -13,6 +13,7 @@ obj
 
 # dependencies
 node_modules
+**/wwwroot/lib
 
 # profiling files
 chrome-profiler-events.json

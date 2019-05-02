@@ -4,10 +4,11 @@
 
 nav {
     padding: 8px;
+    background-color: #000000;
 }
 
 .loginForm {
-    margin: 5%;
+    margin: 1%;
 }
 
 .checkoutForm {
@@ -35,7 +36,7 @@ a.remove {
 }
 
 .marginTop {
-    margin-top: 5%;
+    margin-top: 3%;
 }
 
 .marginTop1 {
@@ -48,4 +49,60 @@ a.remove {
 
 .carousel img {
     min-width: 100%;
+}
+
+body {
+    margin: 0;
+    margin-bottom: 280px;
+    font-family: 'Nunito Sans', sans-serif;
+    font-size: 1rem;
+    font-weight: 400;
+    line-height: 1.5;
+    color: #212529;
+    text-align: left;
+    background-color: #fbfbfb;
+}
+
+html {
+    position: relative;
+    min-height: 100%;
+}
+
+.footer {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    /* Set the fixed height of the footer here */
+    height: 175px;
+    background-color: #000000;
+}
+
+body > .container {
+    padding: 60px 15px;
+}
+
+.footer > .container {
+    padding-right: 15px;
+    padding-left: 15px;
+}
+
+code {
+    font-size: 80%;
+}
+
+.btn{
+    border-radius: 15px;
+}
+
+.alert, .form-control {
+    border-radius: 25px;
+}
+
+.fa-linkedin {
+    font-size: 25px;
+}
+
+.col-centered {
+    float: none;
+    margin: 0 auto;
 }

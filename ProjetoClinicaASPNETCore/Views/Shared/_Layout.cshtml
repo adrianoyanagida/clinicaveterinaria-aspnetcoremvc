@@ -3,42 +3,69 @@
 <html>
 <head>
     <meta name="viewport" content="width=device-width" />
-    <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro">
+    <link href="https://fonts.googleapis.com/css?family=Nunito+Sans" rel="stylesheet">
+    <link rel="stylesheet" href="~/lib/font-awesome/css/all.css">
     <link href="~/lib/bootstrap/dist/css/bootstrap.css" rel="stylesheet" />
     <link href="~/Content/site.css" rel="stylesheet" />
-    <script src="~/lib/jquery/dist/jquery.js"></script>
-    <script src="~/lib/bootstrap/dist/js/bootstrap.js"></script>
     <title>Clínica Veterinária</title>
 </head>
 <body>
-    <nav class="navbar navbar-inverse navbar-fixed-top">
-        <div class="container">
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
-                    <span class="sr-only">Toggle navigation</span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-                <a class="navbar-brand" href="#">Clínica Veterinária</a>
-            </div>
-            <div id="navbar" class="collapse navbar-collapse">
-                <ul class="nav navbar-nav">
-                    <li><a asp-controller="Home" asp-action="Index">Principal</a></li>
-                    @await Html.PartialAsync("ConsultaDropMenu")
-                    @await Html.PartialAsync("AnimalDropMenu")
-                    <li><a href="#contact">Contato</a></li>
-                </ul>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-custom">
+        <a class="navbar-brand" href="#">Clínica Veterinária</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item">
+                    <a class="nav-link" asp-controller="Home" asp-action="Index">Principal</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" asp-controller="" asp-action="">Sobre</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" asp-controller="" asp-action="">Contato</a>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Consultas
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        <a class="dropdown-item" asp-controller="Consulta" asp-action="Data" asp-route-category="">Cadastrar consulta</a>
+                        <a class="dropdown-item" asp-controller="Consultas" asp-action="SuasConsultas" asp-route-category="">Suas consultas</a>
+                    </div>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Animais
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        <a class="dropdown-item" asp-controller="Animal" asp-action="Cadastro" asp-route-category="">Cadastrar animal</a>
+                        <a class="dropdown-item" asp-controller="Animal" asp-action="Lista" asp-route-category="">Seus animais</a>
+                    </div>
+                </li>
+            </ul>
+            <form class="form-inline my-2 my-lg-0">
                 @await Html.PartialAsync("LoginPartial")
-            </div><!--/.nav-collapse -->
+            </form>
         </div>
     </nav>
-    <div class="container body-content" style="padding:50px" ;>
+    <div class="container" style="padding: 15px">
         @RenderBody()
-        <hr />
-        <footer>
-            <p>2019 - Adriano Yanagida da Costa</p>
-        </footer>
     </div>
+    <footer class="footer page-footer font-small teal pt-4 text-secondary">
+        <div class="container text-center">
+            <h5 class="text-uppercase font-weight-bold">Clínica Veterinária</h5>
+            <p>Projeto criado com o objetivo de adquirir experiência em ASP.NET Core</p>
+        </div>
+        <div class="footer-copyright text-center py-3">
+            © 2019 Adriano Yanagida da Costa &ensp;
+            <a href="https://www.linkedin.com/in/adrianoyanagida" class="fab fa-linkedin" style="text-decoration: none"></a>
+        </div>
+    </footer>
+    <script src="~/lib/jquery/jquery.slim.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.min.js"></script>
+    <script src="~/Content/script_jquery.js"></script>
 </body>
 </html>
