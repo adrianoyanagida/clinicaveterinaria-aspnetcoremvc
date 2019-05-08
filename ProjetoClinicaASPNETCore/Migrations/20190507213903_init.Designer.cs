@@ -10,8 +10,8 @@ using ProjetoClinicaASPNETCore.Data;
 namespace ProjetoClinicaASPNETCore.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20190424175027_Initial")]
-    partial class Initial
+    [Migration("20190507213903_init")]
+    partial class init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -237,7 +237,9 @@ namespace ProjetoClinicaASPNETCore.Migrations
 
                     b.Property<string>("HorarioConsulta");
 
-                    b.Property<bool>("IsActive");
+                    b.Property<bool>("IsConcluido");
+
+                    b.Property<bool>("IsVerificado");
 
                     b.Property<string>("UserId");
 
@@ -345,12 +347,12 @@ namespace ProjetoClinicaASPNETCore.Migrations
             modelBuilder.Entity("ProjetoClinicaASPNETCore.Data.Models.Consulta", b =>
                 {
                     b.HasOne("ProjetoClinicaASPNETCore.Data.Models.Animal", "Animal")
-                        .WithMany()
+                        .WithMany("Consultas")
                         .HasForeignKey("AnimalId")
                         .OnDelete(DeleteBehavior.Cascade);
 
                     b.HasOne("ProjetoClinicaASPNETCore.Data.Models.ApplicationUser", "User")
-                        .WithMany()
+                        .WithMany("Consultas")
                         .HasForeignKey("UserId");
 
                     b.HasOne("ProjetoClinicaASPNETCore.Data.Models.Veterinario", "Veterinario")

@@ -1,5 +1,11 @@
 ﻿@model AnimalDTO
 
+<!-- Este "TempData" vem de ConsultaController caso o usuário não tenha animal cadastrado -->
+@if (TempData["error"] != null)
+{
+    <p class="alert alert-danger text-center">@TempData["error"]</p>
+}
+
 <div class="text-center">
     <div class="pt-md-2 pb-md-2 mx-auto">
         <h1 class="display-4">Cadastro de Animais</h1>
@@ -8,6 +14,7 @@
         Preencha o formulário abaixo para cadastrar seu animal
     </div>
 </div>
+
 
 <br><br>
 

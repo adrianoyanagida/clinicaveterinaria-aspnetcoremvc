@@ -51,7 +51,7 @@ namespace ProjetoClinicaASPNETCore
             services.AddTransient<IAnimalRepository, AnimalRepository>();
             services.AddTransient<IConsultaRepository, ConsultaRepository>();
             services.AddTransient<IConsultasRepository, ConsultasRepository>();
-            services.AddTransient<ITempRepository, TempRepository>();
+            services.AddTransient<IAnimaisRepository, AnimaisRepository>();
 
             services.AddSession();
             services.AddMvc();

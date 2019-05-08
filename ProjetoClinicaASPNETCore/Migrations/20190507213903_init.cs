@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace ProjetoClinicaASPNETCore.Migrations
 {
-    public partial class Initial : Migration
+    public partial class init : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -222,7 +222,8 @@ namespace ProjetoClinicaASPNETCore.Migrations
                     DescricaoDoProblema = table.Column<string>(nullable: true),
                     ValorConsulta = table.Column<string>(nullable: true),
                     Diagnostico = table.Column<string>(nullable: true),
-                    IsActive = table.Column<bool>(nullable: false),
+                    IsVerificado = table.Column<bool>(nullable: false),
+                    IsConcluido = table.Column<bool>(nullable: false),
                     AnimalId = table.Column<int>(nullable: false),
                     VeterinarioId = table.Column<int>(nullable: false),
                     UserId = table.Column<string>(nullable: true)

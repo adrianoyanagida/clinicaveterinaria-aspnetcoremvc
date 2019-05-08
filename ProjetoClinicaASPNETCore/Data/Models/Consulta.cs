@@ -15,12 +15,15 @@ namespace ProjetoClinicaASPNETCore.Data.Models
         public string DescricaoDoProblema { get; set; }
         public string ValorConsulta { get; set; }
         public string Diagnostico { get; set; }
-        public bool IsActive { get; set; }
+        public bool IsVerificado { get; set; }
+        public bool IsConcluido { get; set;}
 
         public int AnimalId { get; set; }
-        public virtual Animal Animal { get; set; }
+        public Animal Animal { get; set; }
+        
         public int VeterinarioId { get; set; }
         public Veterinario Veterinario { get; set; }
+        
         public string UserId { get; set; }
         public ApplicationUser User { get; set; }
     }

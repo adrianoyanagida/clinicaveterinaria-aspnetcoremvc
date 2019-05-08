@@ -61,6 +61,7 @@ namespace ProjetoClinicaASPNETCore.Controllers
                     var result = await _signInManager.PasswordSignInAsync(user, loginViewModel.Senha, false, false);
                     if (result.Succeeded)
                     {
+                        TempData["success"] = "Logado com sucesso";
                         return RedirectToAction("Index", "Home");
                     }
                 }
@@ -106,14 +107,20 @@ namespace ProjetoClinicaASPNETCore.Controllers
                         var role = new AllRoles();
                         var resultRole = await _userManager.AddToRoleAsync(user, role.GetDefaultRole());
                         if (resultRole.Succeeded)
+                        {
+                            TempData["success"] = "Registro feito com sucesso";
                             return RedirectToAction(actionName: "Index", controllerName: "Home");
+                        }
                     }
                     else
                     {
                         //Mostra erros padrão como exemplo: A senha é menor que 4 linhas
                         foreach (var err in result.Errors)
                         {
-                            ModelState.AddModelError("", $"{err.Description}");
+                            if(err.Description.Contains("User name"))
+                            {
+                                TempData["errorUserName"] = "Nome de usuário indisponível";
+                            }
                         }
                     }
                 }
@@ -123,7 +130,7 @@ namespace ProjetoClinicaASPNETCore.Controllers
                     var message = ex.ToString();
                     if (message.Contains("IX_AspNetUsers_Email"))
                     {
-                        ModelState.AddModelError("", "E-mail já cadastrado, tente outro!");
+                        TempData["errorEmail"] = "E-mail já cadastrado, tente outro!";
                     }
                     else
                     return BadRequest();
@@ -132,14 +139,11 @@ namespace ProjetoClinicaASPNETCore.Controllers
             return View(registerViewModel);
         }
 
-        public ViewResult LoggedIn() => View();
-
-        public ViewResult AccessDenied() => View();
-
         [Authorize]
         public async Task<IActionResult> Logout()
         {
             await _signInManager.SignOutAsync();
+            TempData["success"] = "Saiu com sucesso";
             return RedirectToAction("Index", "Home");
         }
     }

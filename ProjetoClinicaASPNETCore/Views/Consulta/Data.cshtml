@@ -13,10 +13,8 @@
 <br />
 
 <div class="form-group">
-    @if (TempData["ExisteNoBanco"] != null)
-    {<p class="alert alert-success" id="successMessage">@TempData["ExisteNoBanco"]</p>}
-    @if (TempData["Erro"] != null)
-    {<p class="alert alert-danger" id="successMessage">@TempData["Erro"]</p>}
+    @if (TempData["error"] != null)
+    {<p class="alert alert-danger" id="successMessage">@TempData["error"]</p>}
     <form asp-controller="Consulta" asp-action="Data" onsubmit="button.disabled = true; return true;">
         <div class="form-row loginForm">
             <div class="form-group col-md-3">

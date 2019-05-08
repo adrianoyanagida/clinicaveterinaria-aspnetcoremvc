@@ -107,15 +107,15 @@ namespace ProjetoClinicaASPNETCore.Data
                 (
                     new Horario
                     {
-                        Hora = "7:00"
+                        Hora = "07:00"
                     },
                     new Horario
                     {
-                        Hora = "8:00"
+                        Hora = "08:00"
                     },
                     new Horario
                     {
-                        Hora = "9:00"
+                        Hora = "09:00"
                     },
                     new Horario
                     {
@@ -128,6 +128,30 @@ namespace ProjetoClinicaASPNETCore.Data
                     new Horario
                     {
                         Hora = "12:00"
+                    },
+                    new Horario
+                    {
+                        Hora = "07:30"
+                    },
+                    new Horario
+                    {
+                        Hora = "08:30"
+                    },
+                    new Horario
+                    {
+                        Hora = "09:30"
+                    },
+                    new Horario
+                    {
+                        Hora = "10:30"
+                    },
+                    new Horario
+                    {
+                        Hora = "11:30"
+                    },
+                    new Horario
+                    {
+                        Hora = "12:30"
                     }
                 );
             }

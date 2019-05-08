@@ -235,7 +235,9 @@ namespace ProjetoClinicaASPNETCore.Migrations
 
                     b.Property<string>("HorarioConsulta");
 
-                    b.Property<bool>("IsActive");
+                    b.Property<bool>("IsConcluido");
+
+                    b.Property<bool>("IsVerificado");
 
                     b.Property<string>("UserId");
 
@@ -343,12 +345,12 @@ namespace ProjetoClinicaASPNETCore.Migrations
             modelBuilder.Entity("ProjetoClinicaASPNETCore.Data.Models.Consulta", b =>
                 {
                     b.HasOne("ProjetoClinicaASPNETCore.Data.Models.Animal", "Animal")
-                        .WithMany()
+                        .WithMany("Consultas")
                         .HasForeignKey("AnimalId")
                         .OnDelete(DeleteBehavior.Cascade);
 
                     b.HasOne("ProjetoClinicaASPNETCore.Data.Models.ApplicationUser", "User")
-                        .WithMany()
+                        .WithMany("Consultas")
                         .HasForeignKey("UserId");
 
                     b.HasOne("ProjetoClinicaASPNETCore.Data.Models.Veterinario", "Veterinario")

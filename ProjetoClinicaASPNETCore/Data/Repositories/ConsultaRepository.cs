@@ -32,12 +32,20 @@ namespace ProjetoClinicaASPNETCore.Data.Repositories
 
         public async Task<Veterinario> GetVetById(int vetId) => await _appDbContext.Veterinarios.FirstOrDefaultAsync(p => p.VeterinarioId == vetId);
 
-
         public async Task<ApplicationUser> GetUser(string userId) => await _appDbContext.Users.Where(u => u.Id == userId)
             .Include(a => a.Animais)
             .FirstOrDefaultAsync();
 
-        public IEnumerable<Horario> Horarios => _appDbContext.Horarios;
+        public IEnumerable<Horario> Horarios => _appDbContext.Horarios.OrderBy(h => h.Hora);
+
+        public IEnumerable<Consulta> GetConsultasByOwnerId(string userId)
+        {
+            return _appDbContext.Consultas
+                .Where(i => i.UserId == userId)
+                .Include(a => a.Animal)
+                .Include(u => u.User)
+                .Include(v => v.Veterinario);
+        }
 
         public IEnumerable<Consulta> GetConsultaByDateAndVet(string date, int vetId) =>
             _appDbContext.Consultas
@@ -56,7 +64,8 @@ namespace ProjetoClinicaASPNETCore.Data.Repositories
                 HorarioConsulta = fVM.HorarioEscolhido,
                 DescricaoDoProblema = fVM.DescricaoDoProblema,
                 User = user,
-                IsActive = false
+                IsVerificado = false,
+                IsConcluido = false
             };
             Add(consulta);
         }

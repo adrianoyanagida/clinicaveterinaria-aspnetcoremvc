@@ -17,6 +17,7 @@ namespace ProjetoClinicaASPNETCore.Data.Interfaces
         Task<Veterinario> GetVetById(int vetId);
         Task<ApplicationUser> GetUser(string userId);
         IEnumerable<Horario> Horarios { get; }
+        IEnumerable<Consulta> GetConsultasByOwnerId(string userId);
         IEnumerable<Consulta> GetConsultaByDateAndVet(string date, int vetId);
         void CreateConsulta(FormularioViewModel fVM, ApplicationUser user);
     }

@@ -1,6 +1,4 @@
-﻿#cartButton {
-    margin-right: 8px;
-}
+﻿/* CSS */
 
 nav {
     padding: 8px;
@@ -11,49 +9,14 @@ nav {
     margin: 1%;
 }
 
-.checkoutForm {
-    margin-top: 5%;
-}
-
-.orderForm {
-    margin-top: 5%;
-    border-radius: 20px;
-    border-style: solid;
-    border-color: #2fa4e7;
-}
-
-a.remove {
-    text-decoration: none;
-}
-
-    a.remove:hover {
-        color: blue;
-    }
-
 .center_div {
     margin: 0 auto;
     width: 80% /* value of your choice which suits your alignment */
-}
-
-.marginTop {
-    margin-top: 3%;
-}
-
-.marginTop1 {
-    margin-top: 2%;
-}
-
-.formPullRightButton {
-    margin-right: 10px !important
-}
-
-.carousel img {
-    min-width: 100%;
-}
+}   
 
 body {
     margin: 0;
-    margin-bottom: 280px;
+    margin-bottom: 230px;
     font-family: 'Nunito Sans', sans-serif;
     font-size: 1rem;
     font-weight: 400;
@@ -86,10 +49,6 @@ body > .container {
     padding-left: 15px;
 }
 
-code {
-    font-size: 80%;
-}
-
 .btn{
     border-radius: 15px;
 }
@@ -98,11 +57,18 @@ code {
     border-radius: 25px;
 }
 
+/* FA CSS */
+
 .fa-linkedin {
     font-size: 25px;
 }
 
-.col-centered {
-    float: none;
-    margin: 0 auto;
+/* TOAST CSS */
+
+.toast {
+    opacity: 1 !important;
+}
+
+#toast-container > div {
+    opacity: 1 !important;
 }

@@ -18,13 +18,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Content Update="Views\Account\AccessDenied.cshtml">
-      <Pack>$(IncludeRazorContentInPack)</Pack>
-    </Content>
     <Content Update="Views\Account\Register.cshtml">
-      <Pack>$(IncludeRazorContentInPack)</Pack>
-    </Content>
-    <Content Update="Views\Account\Logout.cshtml">
       <Pack>$(IncludeRazorContentInPack)</Pack>
     </Content>
     <Content Update="Views\Animal\ListaTodos.cshtml">

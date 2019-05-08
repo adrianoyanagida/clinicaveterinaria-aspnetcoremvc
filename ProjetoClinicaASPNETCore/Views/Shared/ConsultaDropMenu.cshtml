@@ -1,17 +1,19 @@
-﻿<li class="dropdown"> 
-    <a asp-controller=""
-       asp-action=""
-       class="dropdown-toggle" data-toggle="dropdown">Guia de Consultas<b class="caret"></b></a>
-    <ul class="dropdown-menu">
-        <li>
-            <a asp-controller="Consulta" asp-action="Data" asp-route-category="">Cadastrar consulta</a>
-        </li>
-        <li>
-            <a asp-controller="Consultas" asp-action="SuasConsultas" asp-route-category="">Suas consultas</a>
-        </li>
-        @*<li class="divider"></li>
-        <li>
-            <a asp-controller="Drink" asp-action="List" asp-route-category="">View all drinks</a>
-        </li>*@
-    </ul>
-</li>
+﻿@using Microsoft.AspNetCore.Identity
+@using Microsoft.AspNetCore.Identity.EntityFrameworkCore
+
+
+@inject SignInManager<ApplicationUser> SignInManager
+@inject UserManager<ApplicationUser> UserManager
+
+@if (SignInManager.IsSignedIn(User))
+{
+    <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            Consultas
+        </a>
+        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+            <a class="dropdown-item" asp-controller="Consulta" asp-action="Data" asp-route-category="">Nova consulta</a>
+            <a class="dropdown-item" asp-controller="Consultas" asp-action="SuasConsultas" asp-route-category="">Suas consultas</a>
+        </div>
+    </li>
+}

@@ -48,50 +48,12 @@ namespace ProjetoClinicaASPNETCore.Controllers
                 var user = await _userManager.GetUserAsync(User);
 
                 _animalRepository.RegisterAnimal(animal, user);
-                await _appDbContext.SaveChangesAsync(); 
-                return RedirectToAction("CadastroCompleto");
+                await _appDbContext.SaveChangesAsync();
+                TempData["success"] = "Animal cadastrado com sucesso";
+                return RedirectToAction(actionName: "Index", controllerName: "Home");
             }
 
             return View(animalDTO);
-        }
-
-        public IActionResult CadastroCompleto() => View();
-
-        [Authorize(Roles = "Administrador, Funcionario")]
-        public IActionResult ListaTodos()
-        {
-            IEnumerable<Animal> allAnimais;
-
-            allAnimais = _animalRepository.AllAnimais.OrderBy(n => n.AnimalNome);
-
-            var animalListViewModel = new AnimalListViewModel
-            {
-                AllAnimais = allAnimais
-            };
-
-            return View(animalListViewModel);
-        }
-
-        public IActionResult Lista()
-        {
-            string currentUserId = _userManager.GetUserId(User);
-            IEnumerable<Animal> animais;
-
-            if (string.IsNullOrEmpty(currentUserId))
-            {
-                return BadRequest();
-            }
-            else
-            {
-                animais = _animalRepository.Animais.Where(p => p.UserId.Equals(currentUserId)).OrderBy(p => p.AnimalNome);
-            }
-
-            var animalListViewModel = new AnimalListViewModel
-            {
-                Animais = animais
-            };
-
-            return View(animalListViewModel);
         }
     }
 }

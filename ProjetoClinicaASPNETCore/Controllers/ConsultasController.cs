@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using ProjetoClinicaASPNETCore.Data.Interfaces;
@@ -35,6 +36,29 @@ namespace ProjetoClinicaASPNETCore.Controllers
             };
 
             return View(sCVM);
+        }
+
+        public async Task<IActionResult> Delete(int idConsulta)
+        {
+            var currentUserId = _userManager.GetUserId(User);
+            var consulta = await _consultasRepository.GetConsultaById(idConsulta);
+
+            if (consulta.UserId == currentUserId && consulta.IsVerificado == false)
+            {
+                try
+                {
+                    _consultasRepository.Remove(consulta);
+                    await _consultasRepository.SaveChangesAsync();
+                    TempData["success"] = "Consulta excluída com sucesso!";
+                    return RedirectToAction("SuasConsultas");
+                }
+                catch (System.Exception)
+                {
+                    return this.StatusCode(StatusCodes.Status500InternalServerError, "Banco de dados falhou");
+                }
+            }
+
+            return BadRequest();
         }
     }
 }

@@ -1,32 +1,35 @@
-﻿<div class="pt-md-2 pb-md-2 mx-auto text-center">
+﻿@if (TempData["error"] != null)
+{<p class="alert alert-danger" id="successMessage">@TempData["error"]</p>}
+
+<div class="pt-md-2 pb-md-2 mx-auto text-center">
     <h1 class="display-4">Suas consultas</h1>
 </div>
 <div class="text-center">
-    "Consulta verificada" significa que sua consulta já foi visualizada e aprovada por um de nossos funcionários.<br />
-    É esperado que em 1 dia útil sua consulta seja validada, caso não for, entre em contato por telefone.
+    "Consulta aprovada" significa que sua consulta já foi visualizada e aprovada por um de nossos funcionários.<br />
+    É esperado que em 1 dia útil sua consulta seja validada, caso não for, entre em contato por telefone (00) 00000-0000.
 </div>
 <br>
 <div class="table-responsive">
     <table class="table table-borderless">
         <thead class="thead-dark">
             <tr class="text-center">
-                <th>#</th>
                 <th>Animal </th>
                 <th>Veterinario </th>
                 <th>Data</th>
                 <th>Horario</th>
                 <th>Problema </th>
-                <th>Verificada </th>
                 <th>Disgnóstico </th>
                 <th>Preço</th>
+                <th>Consulta Aprovada </th>
+                <th>Consulta Concluída </th>
                 <th>Opções</th>
             </tr>
         </thead>
-        @{
-        foreach (Consulta consulta in Model.Consultas)
-        {
-        <partial name="SuasConsultasPartial" model="consulta" />
-        }
+       @{
+            foreach (Consulta consulta in Model.Consultas)
+            {
+                <partial name="SuasConsultasPartial" model="consulta" />
+            }
         }
     </table>
 </div>

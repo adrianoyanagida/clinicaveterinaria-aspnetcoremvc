@@ -35,8 +35,14 @@ namespace ProjetoClinicaASPNETCore.Controllers
 
             if (animais.LongCount() == 0)
             {
-                TempData["CadastroAnimal"] = "Você não tem um animalzinho cadastrado, cadastre um primeiro.";
-                return RedirectToAction("Erro");
+                TempData["error"] = "Você não tem um animalzinho cadastrado, cadastre um primeiro.";
+                return RedirectToAction(actionName: "Cadastro", controllerName: "Animal");
+            }
+            
+            if(TemConsultasPendentes() == true)
+            {
+                TempData["error"] = "Você tem consultas pendentes, consulte primeiro antes de criar uma nova consulta!";
+                return RedirectToAction(actionName: "SuasConsultas", controllerName: "Consultas");
             }
 
             var veterinarios = _consultaRepository.Veterinarios.OrderBy(n => n.VetNome);
@@ -51,13 +57,13 @@ namespace ProjetoClinicaASPNETCore.Controllers
         {
             if (!ModelState.IsValid)
             {
-                TempData["Erro"] = "Por favor selecionar a data da consulta";
+                TempData["error"] = "Por favor selecionar a data da consulta";
                 return RedirectToAction("Data");
             }
 
             if(DateOnPast(cVM.DataConsulta))
             {
-                TempData["Erro"] = "Não pode marcar uma consulta no passado";
+                TempData["error"] = "Não pode marcar uma consulta no passado";
                 return RedirectToAction("Data");
             }
 
@@ -68,7 +74,7 @@ namespace ProjetoClinicaASPNETCore.Controllers
 
         public IActionResult Formulario()
         {
-            if (TempData["VeterinarioIdEscolhido"] == null || TempData["DataEscolhida"] == null)
+            if (TempData["veterinarioIdEscolhido"] == null || TempData["dataEscolhida"] == null)
             {
                 return RedirectToAction("Data");
             }
@@ -80,7 +86,7 @@ namespace ProjetoClinicaASPNETCore.Controllers
 
             if(fVM.HorariosFiltrados.Count <= 0)
             {
-                TempData["Erro"] = "Desculpe, parece que não temos mais vagas nesse dia!";
+                TempData["erro"] = "Desculpe, parece que não temos mais vagas nesse dia!";
                 return RedirectToAction("Data");
             }
 
@@ -97,6 +103,11 @@ namespace ProjetoClinicaASPNETCore.Controllers
                 ModelValidation(fVM);
                 return RedirectToAction("Formulario");
             }
+            else if(TemConsultasPendentes() == true)
+            {
+                TempData["error"] = "Você tem consultas pendentes, consulte primeiro antes de criar uma nova consulta!";
+                return RedirectToAction(actionName: "SuasConsultas", controllerName: "Consultas");
+            }
 
             try
             {
@@ -104,7 +115,8 @@ namespace ProjetoClinicaASPNETCore.Controllers
                 _consultaRepository.CreateConsulta(fVM, user);
                 await _consultaRepository.SaveChangesAsync();
 
-                return RedirectToAction("Concluido");
+                TempData["success"] = "Consulta marcada com sucesso";
+                return RedirectToAction(actionName: "SuasConsultas", controllerName: "Consultas");
             }
             catch (System.Exception ex)
             {
@@ -112,35 +124,31 @@ namespace ProjetoClinicaASPNETCore.Controllers
                 var message = ex.ToString();
                 if (message.Contains("IX_Consultas_VeterinarioId_DataConsulta_HorarioConsulta"))
                 {
-                    TempData["Erro"] = "Que pena! Parece que alguém agendou primeiro que você, tente outro horário.";
-                    return RedirectToAction("Parte1");
+                    TempData["error"] = "Que pena! Parece que alguém agendou primeiro que você, tente outro horário.";
+                    return RedirectToAction("Data");
                 }
                 else
                     return BadRequest();
             }
         }
 
-        public IActionResult Erro() => View();
-
-        public IActionResult Concluido() => View();
-
         // FUNÇÕES //
 
         private void CreateChoosenTempData(int veterinarioEscolhido, string dataEscolhida)
         {
             var tempVetId = Newtonsoft.Json.JsonConvert.SerializeObject(veterinarioEscolhido);
-            TempData["VeterinarioIdEscolhido"] = tempVetId;
-            TempData["DataEscolhida"] = dataEscolhida;
+            TempData["veterinarioIdEscolhido"] = tempVetId;
+            TempData["dataEscolhida"] = dataEscolhida;
         }
 
         private string GetDataChoosenFromTemp()
         {
-            return TempData["DataEscolhida"].ToString();
+            return TempData["dataEscolhida"].ToString();
         }
 
         private int GetVetIdChoosenFromTemp()
         {
-            return JsonConvert.DeserializeObject<int>(TempData["VeterinarioIdEscolhido"].ToString());
+            return JsonConvert.DeserializeObject<int>(TempData["veterinarioIdEscolhido"].ToString());
         }
 
         private FormularioViewModel InstantiateFVM(string dataEscolhida, int veterinarioEscolhido)
@@ -198,15 +206,15 @@ namespace ProjetoClinicaASPNETCore.Controllers
         {
             if (fVM.DescricaoDoProblema == null)
             {
-                TempData["DescricaoValidator"] = "Descrição do problema necessário!";
+                TempData["descricaoValidator"] = "Descrição do problema necessário!";
             }
-            else if (fVM.DescricaoDoProblema.Length < 30)
+            else if (fVM.DescricaoDoProblema.Length < 20)
             {
-                TempData["DescricaoValidator"] = "Necessário mínimo de 20 caracteres!";
+                TempData["descricaoValidator"] = "Necessário mínimo de 20 caracteres!";
             }
             else
             {
-                TempData["DescricaoValidator"] = "Ocorreu um erro não esperado! Caso persistir faça contato com a gente!";
+                TempData["descricaoValidator"] = "Ocorreu um erro não esperado! Caso persistir faça contato com a gente!";
             }
         }
 
@@ -224,6 +232,25 @@ namespace ProjetoClinicaASPNETCore.Controllers
         private async Task<ApplicationUser> GetUser()
         {
             return await _consultaRepository.GetUser(_userManager.GetUserId(HttpContext.User));
+        }
+
+        private bool TemConsultasPendentes()
+        {
+            var user = _userManager.GetUserId(User);
+            
+            var consultas = _consultaRepository.GetConsultasByOwnerId(user);
+
+            if(consultas.Where(v => v.IsVerificado == false).Count() > 0)
+            {
+                return true;
+            } 
+
+            if(consultas.Where(a => a.IsConcluido == false).Count() > 0)
+            {
+                return true;
+            }
+
+            return false;
         }
     }
 }

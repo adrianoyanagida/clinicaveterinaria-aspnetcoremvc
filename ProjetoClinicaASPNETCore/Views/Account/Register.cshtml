@@ -3,7 +3,6 @@
 <div class="pt-md-2 pb-md-2 mx-auto text-center">
     <h1 class="display-4">Registrar-se</h1><br />
 </div>
-
 <div class="form-group">
     <form asp-controller="Account" asp-action="Register" onsubmit="button.disabled = true; return true;">
         <h3 class="lead">Informações da conta</h3>
@@ -13,11 +12,19 @@
                 <label asp-for="NomeDeUsuario"></label>
                 <input asp-for="NomeDeUsuario" type="text" class="form-control" placeholder="exemplo123">
                 <span asp-validation-for="NomeDeUsuario" class="text-danger"></span>
+                @if (TempData["errorUserName"] != null)
+                {
+                    <p class="text-danger">@TempData["errorUserName"]</p>
+                }
             </div>
             <div class="form-group col-md-5">
                 <label asp-for="Email"></label>
                 <input asp-for="Email" type="text" class="form-control" placeholder="exemplo@email.com">
                 <span asp-validation-for="Email" class="text-danger"></span>
+                @if (TempData["errorEmail"] != null)
+                {
+                    <p class="text-danger">@TempData["errorEmail"]</p>
+                }
             </div>
             <div class="form-group col-md-3">
                 <label asp-for="Senha"></label>
@@ -52,4 +59,3 @@
         <input type="submit" class="btn btn-outline-success" name="button" value="Registrar" />
     </form>
 </div>
-

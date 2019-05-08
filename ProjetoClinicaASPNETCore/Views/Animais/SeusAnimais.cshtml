@@ -1,4 +1,4 @@
-﻿<div class="pt-md-2 pb-md-2 mx-auto text-center">
+<div class="pt-md-2 pb-md-2 mx-auto text-center">
     <h1 class="display-4">Seus Animais</h1>
 </div>
 <div class="text-center">
@@ -21,7 +21,7 @@
         @{
             foreach (Animal animal in Model.Animais)
             {
-                @Html.Partial("AnimalListPartial", animal);
+                <partial name="SeusAnimaisPartial" model="animal" />
             }
         }
     </table>

@@ -14,5 +14,6 @@ namespace ProjetoClinicaASPNETCore.Data.Models
         public string NomeCompleto { get; set; }
         public string CPF { get; set; }
         public List<Animal> Animais { get; set; }
+        public List<Consulta> Consultas { get; set; }
     }
 }

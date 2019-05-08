@@ -1,6 +1,12 @@
 ﻿@model Consulta
 
 @functions {
+    public string Modal()
+    {
+        var modal = $"modalId{@Model.ConsultaId.ToString()}";;
+        return modal;
+    }
+
     public string GetDateLocal()
     {
         var date = Model.DataConsulta;
@@ -10,13 +16,14 @@
 }
 
 <tr class="text-center">
-    <td>@Model.ConsultaId</td>
     <td>@Model.Animal.AnimalNome</td>
     <td>@Model.Veterinario.VetNome - @Model.Veterinario.VetFuncao</td>
     <td>@GetDateLocal()</td>
     <td>@Model.HorarioConsulta</td>
     <td>@Model.DescricaoDoProblema</td>
-    @if (Model.IsActive == false)
+    <td>@Model.Diagnostico</td>
+    <td>@Model.ValorConsulta</td>
+    @if (Model.IsVerificado == false)
     {
         <td>Não</td>
     }
@@ -24,18 +31,62 @@
     {
         <td>Sim</td>
     }
-    <td>@Model.Diagnostico</td>
-    <td>@Model.ValorConsulta</td>
-    <td>
-        <a class="btn btn-success" id="cartButton" asp-controller="Consulta" asp-action="Excluir"
-           asp-route-idConsulta="@Model.ConsultaId">
-            Excluir
-        </a>
-    </td>
+    @if (Model.IsConcluido == false)
+    {
+        <td>Não</td>
+    }
+    else
+    {
+        <td>Sim</td>
+    }
+    @if (Model.IsVerificado == false)
+    {
+        <td>
+            <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#@Modal()">
+                <i class="fa fa-eraser"></i>
+            </button>
+        </td>
+    }
+    else
+    {
+        <td>
+            <button type="button" class="btn btn-danger disabled" disabled>
+                <i class="fa fa-eraser"></i>
+            </button>
+        </td>
+    }
+
     @*<td>
-        <a class="btn btn-success" id="cartButton" asp-controller="Consulta" asp-action="Editar"
-           asp-route-idConsulta="@Model.ConsultaId">
-            Editar problema
-        </a>
-    </td>*@
+            <a class="btn btn-success" asp-controller="Consulta" asp-action="Editar"
+               asp-route-idConsulta="@Model.ConsultaId">
+                Editar problema
+            </a>
+        </td>*@
 </tr>
+
+<div class="modal fade" id="@Modal()" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Excluir consulta</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body text-center">
+                <p class="lead">Tem certeza que deseja excluir?</p>
+                Consulta: @Model.ConsultaId<br />
+                Veterinário: @Model.Veterinario.VetNome<br />
+                Data: @GetDateLocal()<br />
+                Horário: @Model.HorarioConsulta
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">Voltar</button>
+                <a class="btn btn-outline-success" asp-controller="Consultas" asp-action="Delete"
+                   asp-route-idConsulta="@Model.ConsultaId">
+                    Excluir
+                </a>
+            </div>
+        </div>
+    </div>
+</div>

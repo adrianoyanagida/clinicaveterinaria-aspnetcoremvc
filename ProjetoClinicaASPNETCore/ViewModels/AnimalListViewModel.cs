@@ -8,7 +8,6 @@ namespace ProjetoClinicaASPNETCore.ViewModels
 {
     public class AnimalListViewModel
     {
-        public IEnumerable<Animal> AllAnimais { get; set; }
         public IEnumerable<Animal> Animais { get; set; }
     }
 }

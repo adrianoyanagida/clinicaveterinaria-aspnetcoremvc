@@ -7,13 +7,15 @@ namespace ProjetoClinicaASPNETCore.ViewModels
     public class FormularioViewModel
     {
         [Required]
+        [Range(1, int.MaxValue)]
         public int AnimalId { get; set; }
         [Required]
-        [StringLength(500, MinimumLength = 30)]
+        [StringLength(5000, MinimumLength = 20)]
         public string DescricaoDoProblema { get; set; }
         [Required]
         public string HorarioEscolhido {get;set;}
         [Required]
+        [Range(1, int.MaxValue)]
         public int VeterinarioId { get; set; }
         [Required]
         public string DataConsulta { get; set; }
