@@ -66,7 +66,8 @@ namespace ProjetoClinicaASPNETCore.Controllers
                     }
                 }
             }
-            ModelState.AddModelError("", "Nome de usuário ou senha incorreto!");
+            //ModelState.AddModelError("", "Nome de usuário ou senha incorreto!");
+            TempData["error"] = "Usuário/E-mail ou senha incorreto!";
             return View(loginViewModel);
         }
 

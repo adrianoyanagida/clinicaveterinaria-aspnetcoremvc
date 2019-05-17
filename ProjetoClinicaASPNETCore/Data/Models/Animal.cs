@@ -11,13 +11,19 @@ namespace ProjetoClinicaASPNETCore.Data.Models
     {
         [Key]
         public int AnimalId { get; set; }
-        public string UserId { get; set; }
-        public ApplicationUser User { get; set; }
+        [Required]
         public string AnimalNome { get; set; }
+        [Required]
         public string AnimalTipo { get; set; }
         public string AnimalRaca { get; set; }
+        [DataType(DataType.Date)]
         public string AnimalDataDeNascimento { get; set; }
         public string Alergico { get; set; }
         public List<Consulta> Consultas { get; set; }
+
+        //FK
+        [Required]
+        public string UserId { get; set; }
+        public ApplicationUser User { get; set; }
     }
 }

@@ -18,6 +18,7 @@ namespace ProjetoClinicaASPNETCore.ViewModels
         [Range(1, int.MaxValue)]
         public int VeterinarioId { get; set; }
         [Required]
+        [DataType(DataType.Date)]
         public string DataConsulta { get; set; }
         
         public List<string> HorariosFiltrados {get; set;}

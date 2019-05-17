@@ -18,6 +18,8 @@ namespace ProjetoClinicaASPNETCore.Data
         public DbSet<Animal> Animais { get; set; }
         public DbSet<Consulta> Consultas { get; set; }
         public DbSet<Horario> Horarios { get; set; }
+        public DbSet<VeterinarioHorario> VeterinarioHorarios { get; set; }
+        public DbSet<FeriadoERecesso> FeriadoERecessos { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
@@ -29,6 +31,8 @@ namespace ProjetoClinicaASPNETCore.Data
             builder.Entity<Consulta>()
                 .HasIndex(u => new { u.VeterinarioId, u.DataConsulta, u.HorarioConsulta })
                 .IsUnique();
+
+            builder.Entity<VeterinarioHorario>().HasKey(VE => new { VE.VeterinarioId, VE.HorarioId });
         }
     }
 }

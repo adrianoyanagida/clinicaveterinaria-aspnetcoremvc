@@ -12,7 +12,7 @@ namespace ProjetoClinicaASPNETCore.ViewModels
         [Required]
         [Display(Name = "Veterinário: ")]
         public int VeterinarioId { get; set; }
-        [Required,]
+        [Required]
         [DataType(DataType.Date)]
         [Display(Name = "Data da Consulta: ")]
         public string DataConsulta { get; set; }

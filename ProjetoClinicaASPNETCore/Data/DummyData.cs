@@ -12,6 +12,16 @@ namespace ProjetoClinicaASPNETCore.Data
         public static async Task Initialize(AppDbContext context, UserManager<ApplicationUser> userManager, RoleManager<ApplicationRole> roleManager)
         {
             context.Database.EnsureCreated();
+            
+            Veterinario GetVet(int vetId)
+            {
+                return context.Veterinarios.FirstOrDefault(v => v.VeterinarioId == vetId);
+            }
+
+            Horario GetHorario(int hrId)
+            {
+                return context.Horarios.FirstOrDefault(h => h.HorarioId == hrId);
+            }
 
             //Instanciando as roles
             var adm = new AllRoles.Administrador();
@@ -152,6 +162,43 @@ namespace ProjetoClinicaASPNETCore.Data
                     new Horario
                     {
                         Hora = "12:30"
+                    }
+                );
+            }
+
+            if (!context.VeterinarioHorarios.Any())
+            {
+                context.AddRange
+                (
+                    new VeterinarioHorario
+                    {
+                        Veterinario = GetVet(1),
+                        Horario = GetHorario(1)
+                    },
+                    new VeterinarioHorario
+                    {
+                        Veterinario = GetVet(1),
+                        Horario = GetHorario(2)
+                    },
+                    new VeterinarioHorario
+                    {
+                        Veterinario = GetVet(1),
+                        Horario = GetHorario(3)
+                    },
+                    new VeterinarioHorario
+                    {
+                        Veterinario = GetVet(2),
+                        Horario = GetHorario(4)
+                    },
+                    new VeterinarioHorario
+                    {
+                        Veterinario = GetVet(2),
+                        Horario = GetHorario(5)
+                    },
+                    new VeterinarioHorario
+                    {
+                        Veterinario = GetVet(2),
+                        Horario = GetHorario(6)
                     }
                 );
             }

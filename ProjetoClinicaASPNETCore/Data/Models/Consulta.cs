@@ -10,7 +10,9 @@ namespace ProjetoClinicaASPNETCore.Data.Models
     {
         [Key]
         public int ConsultaId { get; set; }
+        [Required]
         public string DataConsulta { get; set; }
+        [Required]
         public string HorarioConsulta { get; set; }
         public string DescricaoDoProblema { get; set; }
         public string ValorConsulta { get; set; }
@@ -18,13 +20,13 @@ namespace ProjetoClinicaASPNETCore.Data.Models
         public bool IsVerificado { get; set; }
         public bool IsConcluido { get; set;}
 
+        [Required]
         public int AnimalId { get; set; }
         public Animal Animal { get; set; }
-        
+
+        [Required]
         public int VeterinarioId { get; set; }
         public Veterinario Veterinario { get; set; }
-        
-        public string UserId { get; set; }
-        public ApplicationUser User { get; set; }
+
     }
 }

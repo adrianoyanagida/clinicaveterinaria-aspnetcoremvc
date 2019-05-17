@@ -17,18 +17,18 @@ namespace ProjetoClinicaASPNETCore.Controllers
     [Authorize]
     public class ConsultasController : Controller
     {
-        private readonly IConsultasRepository _consultasRepository;
+        private readonly IConsultaRepository _consultaRepository;
         private readonly UserManager<ApplicationUser> _userManager;
 
-        public ConsultasController(IConsultasRepository consultasRepository, UserManager<ApplicationUser> userManager)
+        public ConsultasController(IConsultaRepository consultaRepository, UserManager<ApplicationUser> userManager)
         {
-            _consultasRepository = consultasRepository;
+            _consultaRepository = consultaRepository;
             _userManager = userManager;
         }
 
         public IActionResult SuasConsultas()
         {
-            var consultas = _consultasRepository.GetConsultasByOwnerId(_userManager.GetUserId(User));
+            var consultas = _consultaRepository.GetConsultasByOwnerId(_userManager.GetUserId(User));
 
             var sCVM = new SuasConsultasViewModel()
             {
@@ -41,14 +41,14 @@ namespace ProjetoClinicaASPNETCore.Controllers
         public async Task<IActionResult> Delete(int idConsulta)
         {
             var currentUserId = _userManager.GetUserId(User);
-            var consulta = await _consultasRepository.GetConsultaById(idConsulta);
+            var consulta = await _consultaRepository.GetConsultaById(idConsulta);
 
-            if (consulta.UserId == currentUserId && consulta.IsVerificado == false)
+            if (consulta.Animal.UserId == currentUserId && consulta.IsVerificado == false)
             {
                 try
                 {
-                    _consultasRepository.Remove(consulta);
-                    await _consultasRepository.SaveChangesAsync();
+                    _consultaRepository.Remove(consulta);
+                    await _consultaRepository.SaveChangesAsync();
                     TempData["success"] = "Consulta excluída com sucesso!";
                     return RedirectToAction("SuasConsultas");
                 }

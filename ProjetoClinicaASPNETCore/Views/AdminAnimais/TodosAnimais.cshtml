@@ -1,0 +1,38 @@
+@{
+    Layout = "_AdminLayout";
+}
+
+<div class="pt-md-2 pb-md-2 mx-auto text-center">
+    <h1 class="display-4">Animais</h1>
+</div>
+<div class="text-center">
+    Abaixo você confere todos os animais cadastrados.
+</div>
+
+<br>
+
+<div class="table-responsive">
+    <table class="table table-borderless">
+        <thead class="thead-dark">
+            <tr class="text-center">
+                <th>Id </th>
+                <th>Dono do Animal </th>
+                <th>Nome do Animal </th>
+                <th>Tipo do Animal </th>
+                <th>Raça do Animal </th>
+                <th>Data de Nascimento </th>
+                <th>Alergias </th>
+                <th>Editar</th>
+                <th>Consultas</th>
+                <th>Dono</th>
+                <th>Excluir</th>
+            </tr>
+        </thead>
+        @{
+            foreach (Animal animal in Model.Animais)
+            {
+                <partial name="TodosAnimaisPartial" model="animal" />
+            }
+        }
+    </table>
+</div>

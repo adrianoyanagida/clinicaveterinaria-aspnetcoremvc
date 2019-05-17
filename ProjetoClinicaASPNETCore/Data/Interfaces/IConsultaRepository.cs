@@ -11,14 +11,12 @@ namespace ProjetoClinicaASPNETCore.Data.Interfaces
     public interface IConsultaRepository
     {
         void Add<T>(T entity) where T : class;
+        void Remove<T>(T entity) where T : class;
         Task<bool> SaveChangesAsync();
 
-        IEnumerable<Veterinario> Veterinarios { get; }
-        Task<Veterinario> GetVetById(int vetId);
-        Task<ApplicationUser> GetUser(string userId);
-        IEnumerable<Horario> Horarios { get; }
+        Task<Consulta> GetConsultaById(int id);
         IEnumerable<Consulta> GetConsultasByOwnerId(string userId);
         IEnumerable<Consulta> GetConsultaByDateAndVet(string date, int vetId);
-        void CreateConsulta(FormularioViewModel fVM, ApplicationUser user);
+        void CreateConsulta(FormularioViewModel fVM);
     }
 }

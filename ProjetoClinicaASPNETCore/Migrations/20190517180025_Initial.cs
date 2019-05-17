@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace ProjetoClinicaASPNETCore.Migrations
 {
-    public partial class init : Migration
+    public partial class Initial : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -53,12 +53,25 @@ namespace ProjetoClinicaASPNETCore.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "FeriadoERecessos",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    Data = table.Column<DateTime>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_FeriadoERecessos", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Horarios",
                 columns: table => new
                 {
                     HorarioId = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    Hora = table.Column<string>(nullable: true)
+                    Hora = table.Column<string>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -108,12 +121,12 @@ namespace ProjetoClinicaASPNETCore.Migrations
                 {
                     AnimalId = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    UserId = table.Column<string>(nullable: true),
-                    AnimalNome = table.Column<string>(nullable: true),
-                    AnimalTipo = table.Column<string>(nullable: true),
+                    AnimalNome = table.Column<string>(nullable: false),
+                    AnimalTipo = table.Column<string>(nullable: false),
                     AnimalRaca = table.Column<string>(nullable: true),
                     AnimalDataDeNascimento = table.Column<string>(nullable: true),
-                    Alergico = table.Column<string>(nullable: true)
+                    Alergico = table.Column<string>(nullable: true),
+                    UserId = table.Column<string>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -123,7 +136,7 @@ namespace ProjetoClinicaASPNETCore.Migrations
                         column: x => x.UserId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -212,13 +225,37 @@ namespace ProjetoClinicaASPNETCore.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "VeterinarioHorarios",
+                columns: table => new
+                {
+                    VeterinarioId = table.Column<int>(nullable: false),
+                    HorarioId = table.Column<int>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_VeterinarioHorarios", x => new { x.VeterinarioId, x.HorarioId });
+                    table.ForeignKey(
+                        name: "FK_VeterinarioHorarios_Horarios_HorarioId",
+                        column: x => x.HorarioId,
+                        principalTable: "Horarios",
+                        principalColumn: "HorarioId",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_VeterinarioHorarios_Veterinarios_VeterinarioId",
+                        column: x => x.VeterinarioId,
+                        principalTable: "Veterinarios",
+                        principalColumn: "VeterinarioId",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Consultas",
                 columns: table => new
                 {
                     ConsultaId = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    DataConsulta = table.Column<string>(nullable: true),
-                    HorarioConsulta = table.Column<string>(nullable: true),
+                    DataConsulta = table.Column<string>(nullable: false),
+                    HorarioConsulta = table.Column<string>(nullable: false),
                     DescricaoDoProblema = table.Column<string>(nullable: true),
                     ValorConsulta = table.Column<string>(nullable: true),
                     Diagnostico = table.Column<string>(nullable: true),
@@ -226,7 +263,7 @@ namespace ProjetoClinicaASPNETCore.Migrations
                     IsConcluido = table.Column<bool>(nullable: false),
                     AnimalId = table.Column<int>(nullable: false),
                     VeterinarioId = table.Column<int>(nullable: false),
-                    UserId = table.Column<string>(nullable: true)
+                    ApplicationUserId = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
@@ -238,8 +275,8 @@ namespace ProjetoClinicaASPNETCore.Migrations
                         principalColumn: "AnimalId",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_Consultas_AspNetUsers_UserId",
-                        column: x => x.UserId,
+                        name: "FK_Consultas_AspNetUsers_ApplicationUserId",
+                        column: x => x.ApplicationUserId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
@@ -308,16 +345,20 @@ namespace ProjetoClinicaASPNETCore.Migrations
                 column: "AnimalId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Consultas_UserId",
+                name: "IX_Consultas_ApplicationUserId",
                 table: "Consultas",
-                column: "UserId");
+                column: "ApplicationUserId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Consultas_VeterinarioId_DataConsulta_HorarioConsulta",
                 table: "Consultas",
                 columns: new[] { "VeterinarioId", "DataConsulta", "HorarioConsulta" },
-                unique: true,
-                filter: "[DataConsulta] IS NOT NULL AND [HorarioConsulta] IS NOT NULL");
+                unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_VeterinarioHorarios_HorarioId",
+                table: "VeterinarioHorarios",
+                column: "HorarioId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -341,13 +382,19 @@ namespace ProjetoClinicaASPNETCore.Migrations
                 name: "Consultas");
 
             migrationBuilder.DropTable(
-                name: "Horarios");
+                name: "FeriadoERecessos");
+
+            migrationBuilder.DropTable(
+                name: "VeterinarioHorarios");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");
 
             migrationBuilder.DropTable(
                 name: "Animais");
+
+            migrationBuilder.DropTable(
+                name: "Horarios");
 
             migrationBuilder.DropTable(
                 name: "Veterinarios");

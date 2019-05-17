@@ -6,13 +6,12 @@ using System.Threading.Tasks;
 
 namespace ProjetoClinicaASPNETCore.Data.Models
 {
-    public class Horario
+    public class FeriadoERecesso
     {
-        public int HorarioId { get; set; }
+        public int Id { get; set; }
 
         [Required]
-        public string Hora { get; set; }
-
-        public List<VeterinarioHorario> VeterinarioHorarios { get; set; }
+        [DataType(DataType.Date)]
+        public DateTime Data { get; set; }
     }
 }

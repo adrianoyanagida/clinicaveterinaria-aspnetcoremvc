@@ -11,21 +11,21 @@ namespace ProjetoClinicaASPNETCore.Controllers
     public class AnimaisController : Controller
     {
         private readonly UserManager<ApplicationUser> _userManager;
-        private readonly IAnimaisRepository _animaisRepository;
+        private readonly IAnimalRepository _animalRepository;
 
         public AnimaisController(
             UserManager<ApplicationUser> userManager,
-            IAnimaisRepository animaisRepository
+            IAnimalRepository animalRepository
         )
         {
             _userManager = userManager;
-            _animaisRepository = animaisRepository;
+            _animalRepository = animalRepository;
         }
 
         public IActionResult SeusAnimais() {
             var userId = _userManager.GetUserId(User);
             
-            var animais = _animaisRepository.GetAnimaisById(userId);
+            var animais = _animalRepository.GetAnimaisByUserId(userId);
 
             var animalListViewModel = new AnimalListViewModel
             {

@@ -18,14 +18,23 @@ namespace ProjetoClinicaASPNETCore.Controllers
     public class ConsultaController : Controller
     {
         private readonly IConsultaRepository _consultaRepository;
+        private readonly IVeterinarioRepository _veterinarioRepository;
+        private readonly IUserRepository _userRepository;
+        private readonly IVeterinarioHorarioRepository _veterinarioHorarioRepository;
         private readonly UserManager<ApplicationUser> _userManager;
 
         public ConsultaController(
             IConsultaRepository consultaRepository,
+            IVeterinarioRepository veterinarioRepository,
+            IUserRepository userRepository,
+            IVeterinarioHorarioRepository veterinarioHorarioRepository,
             UserManager<ApplicationUser> userManager
         )
         {
             _consultaRepository = consultaRepository;
+            _userRepository = userRepository;
+            _veterinarioRepository = veterinarioRepository;
+            _veterinarioHorarioRepository = veterinarioHorarioRepository;
             _userManager = userManager;
         }
 
@@ -45,7 +54,7 @@ namespace ProjetoClinicaASPNETCore.Controllers
                 return RedirectToAction(actionName: "SuasConsultas", controllerName: "Consultas");
             }
 
-            var veterinarios = _consultaRepository.Veterinarios.OrderBy(n => n.VetNome);
+            var veterinarios = _veterinarioRepository.Veterinarios.OrderBy(n => n.VetNome);
 
             var consultaViewModel = new ConsultaViewModel { Veterinarios = veterinarios };
 
@@ -61,13 +70,18 @@ namespace ProjetoClinicaASPNETCore.Controllers
                 return RedirectToAction("Data");
             }
 
-            if(DateOnPast(cVM.DataConsulta))
+            //Converter a data para um formato adequado
+            var dataConsulta = DateConverter(cVM.DataConsulta);
+
+            //Verifico se a data esta no passado
+            if(DateOnPast(dataConsulta))
             {
                 TempData["error"] = "Não pode marcar uma consulta no passado";
                 return RedirectToAction("Data");
             }
 
-            CreateChoosenTempData(cVM.VeterinarioId, cVM.DataConsulta);
+            //Crio arquivo temporário já com a data formatada para trabalhar com a mesma
+            CreateChoosenTempData(cVM.VeterinarioId, dataConsulta.ToShortDateString());
 
             return RedirectToAction("Formulario");
         }
@@ -82,6 +96,7 @@ namespace ProjetoClinicaASPNETCore.Controllers
             var dataEscolhida = GetDataChoosenFromTemp();
             var veterinarioEscolhido = GetVetIdChoosenFromTemp();
 
+            //Instancio a ViewModel com as informações
             var fVM = InstantiateFVM(dataEscolhida, veterinarioEscolhido);
 
             if(fVM.HorariosFiltrados.Count <= 0)
@@ -111,8 +126,11 @@ namespace ProjetoClinicaASPNETCore.Controllers
 
             try
             {
+                if(!CheckIfHorarioExists(fVM.HorarioEscolhido, fVM.VeterinarioId))
+                    return BadRequest();
+
                 var user = await _userManager.GetUserAsync(HttpContext.User);
-                _consultaRepository.CreateConsulta(fVM, user);
+                _consultaRepository.CreateConsulta(fVM);
                 await _consultaRepository.SaveChangesAsync();
 
                 TempData["success"] = "Consulta marcada com sucesso";
@@ -154,14 +172,14 @@ namespace ProjetoClinicaASPNETCore.Controllers
         private FormularioViewModel InstantiateFVM(string dataEscolhida, int veterinarioEscolhido)
         {
             var consultas = _consultaRepository.GetConsultaByDateAndVet(dataEscolhida, veterinarioEscolhido);
-            var horarios = _consultaRepository.Horarios;
+            var veterinarioHorarios = _veterinarioHorarioRepository.VeterinarioHorariosById(veterinarioEscolhido);
 
             var user = GetUser().Result;
 
             var animais = user.Animais;
 
             var veterinario = GetVeterinario(veterinarioEscolhido).Result;
-            var horariosFiltrados = GetHorariosFiltrados(consultas, horarios);
+            var horariosFiltrados = GetHorariosFiltrados(consultas, veterinarioHorarios);
 
             var formularioViewModel = new FormularioViewModel()
             {
@@ -175,20 +193,20 @@ namespace ProjetoClinicaASPNETCore.Controllers
             return formularioViewModel;
         }
 
-        private List<string> GetHorariosFiltrados(IEnumerable<Consulta> consultas, IEnumerable<Horario> horarios)
+        private List<string> GetHorariosFiltrados(IEnumerable<Consulta> consultas, IEnumerable<VeterinarioHorario> veterinarioHorarios)
         {
             List<string> HorariosFiltrados = new List<string>();
 
-            foreach (Horario horario in horarios)
+            foreach (VeterinarioHorario vetHorarios in veterinarioHorarios)
             {
-                HorariosFiltrados.Add(horario.Hora);
+                HorariosFiltrados.Add(vetHorarios.Horario.Hora);
                 if (consultas.LongCount() > 0)
                 {
                     foreach (Consulta consulta in consultas)
                     {
-                        if (horario.Hora == consulta.HorarioConsulta)
+                        if (vetHorarios.Horario.Hora == consulta.HorarioConsulta)
                         {
-                            HorariosFiltrados.Remove(horario.Hora);
+                            HorariosFiltrados.Remove(vetHorarios.Horario.Hora);
                         }
                     }
                 }
@@ -197,9 +215,31 @@ namespace ProjetoClinicaASPNETCore.Controllers
             return HorariosFiltrados;
         }
 
+        //private List<string> GetHorariosFiltrados(IEnumerable<Consulta> consultas, IEnumerable<Horario> horarios)
+        //{
+        //    List<string> HorariosFiltrados = new List<string>();
+
+        //    foreach (Horario horario in horarios)
+        //    {
+        //        HorariosFiltrados.Add(horario.Hora);
+        //        if (consultas.LongCount() > 0)
+        //        {
+        //            foreach (Consulta consulta in consultas)
+        //            {
+        //                if (horario.Hora == consulta.HorarioConsulta)
+        //                {
+        //                    HorariosFiltrados.Remove(horario.Hora);
+        //                }
+        //            }
+        //        }
+        //    }
+
+        //    return HorariosFiltrados;
+        //}
+
         private async Task<Veterinario> GetVeterinario(int vetId)
         {
-            return await _consultaRepository.GetVetById(vetId);
+            return await _veterinarioRepository.GetVetById(vetId);
         }
 
         private void ModelValidation(FormularioViewModel fVM)
@@ -218,10 +258,16 @@ namespace ProjetoClinicaASPNETCore.Controllers
             }
         }
 
-        private bool DateOnPast(string dataEscolhida)
+        private DateTime DateConverter(string dataConsulta)
         {
-            DateTime dateConverted = Convert.ToDateTime(dataEscolhida);
-            if (dateConverted < DateTime.Now.Date)
+            DateTime dateConverted = Convert.ToDateTime(dataConsulta);
+
+            return dateConverted;
+        }
+
+        private bool DateOnPast(DateTime dataConsulta)
+        {
+            if (dataConsulta < DateTime.Now.Date)
             {
                 return true;
             }
@@ -231,7 +277,7 @@ namespace ProjetoClinicaASPNETCore.Controllers
 
         private async Task<ApplicationUser> GetUser()
         {
-            return await _consultaRepository.GetUser(_userManager.GetUserId(HttpContext.User));
+            return await _userRepository.GetUser(_userManager.GetUserId(HttpContext.User));
         }
 
         private bool TemConsultasPendentes()
@@ -250,6 +296,18 @@ namespace ProjetoClinicaASPNETCore.Controllers
                 return true;
             }
 
+            return false;
+        }
+
+        private bool CheckIfHorarioExists(string horario, int veterinarioEscolhido)
+        {
+            var veterinarioHorarios = _veterinarioHorarioRepository.VeterinarioHorariosById(veterinarioEscolhido);
+
+            foreach(VeterinarioHorario vetHorarios in veterinarioHorarios)
+            {
+                if(vetHorarios.Horario.Hora == horario)
+                    return true;
+            }
             return false;
         }
     }

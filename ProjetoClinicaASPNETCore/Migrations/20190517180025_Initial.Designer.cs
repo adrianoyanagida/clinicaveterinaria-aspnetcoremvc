@@ -10,8 +10,8 @@ using ProjetoClinicaASPNETCore.Data;
 namespace ProjetoClinicaASPNETCore.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20190507213903_init")]
-    partial class init
+    [Migration("20190517180025_Initial")]
+    partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -117,13 +117,16 @@ namespace ProjetoClinicaASPNETCore.Migrations
 
                     b.Property<string>("AnimalDataDeNascimento");
 
-                    b.Property<string>("AnimalNome");
+                    b.Property<string>("AnimalNome")
+                        .IsRequired();
 
                     b.Property<string>("AnimalRaca");
 
-                    b.Property<string>("AnimalTipo");
+                    b.Property<string>("AnimalTipo")
+                        .IsRequired();
 
-                    b.Property<string>("UserId");
+                    b.Property<string>("UserId")
+                        .IsRequired();
 
                     b.HasKey("AnimalId");
 
@@ -229,19 +232,21 @@ namespace ProjetoClinicaASPNETCore.Migrations
 
                     b.Property<int>("AnimalId");
 
-                    b.Property<string>("DataConsulta");
+                    b.Property<string>("ApplicationUserId");
+
+                    b.Property<string>("DataConsulta")
+                        .IsRequired();
 
                     b.Property<string>("DescricaoDoProblema");
 
                     b.Property<string>("Diagnostico");
 
-                    b.Property<string>("HorarioConsulta");
+                    b.Property<string>("HorarioConsulta")
+                        .IsRequired();
 
                     b.Property<bool>("IsConcluido");
 
                     b.Property<bool>("IsVerificado");
-
-                    b.Property<string>("UserId");
 
                     b.Property<string>("ValorConsulta");
 
@@ -251,13 +256,25 @@ namespace ProjetoClinicaASPNETCore.Migrations
 
                     b.HasIndex("AnimalId");
 
-                    b.HasIndex("UserId");
+                    b.HasIndex("ApplicationUserId");
 
                     b.HasIndex("VeterinarioId", "DataConsulta", "HorarioConsulta")
-                        .IsUnique()
-                        .HasFilter("[DataConsulta] IS NOT NULL AND [HorarioConsulta] IS NOT NULL");
+                        .IsUnique();
 
                     b.ToTable("Consultas");
+                });
+
+            modelBuilder.Entity("ProjetoClinicaASPNETCore.Data.Models.FeriadoERecesso", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<DateTime>("Data");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("FeriadoERecessos");
                 });
 
             modelBuilder.Entity("ProjetoClinicaASPNETCore.Data.Models.Horario", b =>
@@ -266,7 +283,8 @@ namespace ProjetoClinicaASPNETCore.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<string>("Hora");
+                    b.Property<string>("Hora")
+                        .IsRequired();
 
                     b.HasKey("HorarioId");
 
@@ -290,6 +308,19 @@ namespace ProjetoClinicaASPNETCore.Migrations
                     b.HasKey("VeterinarioId");
 
                     b.ToTable("Veterinarios");
+                });
+
+            modelBuilder.Entity("ProjetoClinicaASPNETCore.Data.Models.VeterinarioHorario", b =>
+                {
+                    b.Property<int>("VeterinarioId");
+
+                    b.Property<int>("HorarioId");
+
+                    b.HasKey("VeterinarioId", "HorarioId");
+
+                    b.HasIndex("HorarioId");
+
+                    b.ToTable("VeterinarioHorarios");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -341,7 +372,8 @@ namespace ProjetoClinicaASPNETCore.Migrations
                 {
                     b.HasOne("ProjetoClinicaASPNETCore.Data.Models.ApplicationUser", "User")
                         .WithMany("Animais")
-                        .HasForeignKey("UserId");
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("ProjetoClinicaASPNETCore.Data.Models.Consulta", b =>
@@ -351,12 +383,25 @@ namespace ProjetoClinicaASPNETCore.Migrations
                         .HasForeignKey("AnimalId")
                         .OnDelete(DeleteBehavior.Cascade);
 
-                    b.HasOne("ProjetoClinicaASPNETCore.Data.Models.ApplicationUser", "User")
+                    b.HasOne("ProjetoClinicaASPNETCore.Data.Models.ApplicationUser")
                         .WithMany("Consultas")
-                        .HasForeignKey("UserId");
+                        .HasForeignKey("ApplicationUserId");
 
                     b.HasOne("ProjetoClinicaASPNETCore.Data.Models.Veterinario", "Veterinario")
                         .WithMany("Consultas")
+                        .HasForeignKey("VeterinarioId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("ProjetoClinicaASPNETCore.Data.Models.VeterinarioHorario", b =>
+                {
+                    b.HasOne("ProjetoClinicaASPNETCore.Data.Models.Horario", "Horario")
+                        .WithMany("VeterinarioHorarios")
+                        .HasForeignKey("HorarioId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("ProjetoClinicaASPNETCore.Data.Models.Veterinario", "Veterinario")
+                        .WithMany("VeterinarioHorarios")
                         .HasForeignKey("VeterinarioId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });

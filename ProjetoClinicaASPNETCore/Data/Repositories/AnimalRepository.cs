@@ -27,5 +27,48 @@ namespace ProjetoClinicaASPNETCore.Data.Repositories
             animal.User = user;
             _appDbContext.Animais.Add(animal);
         }
+
+        //
+        public void Update<T>(T entity) where T : class
+        {
+            _appDbContext.Update(entity);
+        }
+
+        public void Remove<T>(T entity) where T : class
+        {
+            _appDbContext.Remove(entity);
+        }
+
+        public async Task<bool> SaveChangesAsync()
+        {
+            return (await _appDbContext.SaveChangesAsync()) > 0;
+        }
+
+        public async Task<Animal> GetAnimalById(int id)
+        {
+            var animais = _appDbContext.Animais
+                .Include(u => u.User)
+                .Include(c => c.Consultas);
+
+            var animalById = await animais.FirstOrDefaultAsync(a => a.AnimalId == id);
+
+            return animalById;
+        }
+
+        public IEnumerable<Animal> GetAnimaisByUserId(string id)
+        {
+            var animais = _appDbContext.Animais
+                .Include(u => u.User)
+                .Include(c => c.Consultas);
+
+            var animaisByUserId = animais.Where(i => i.UserId == id);
+
+            return animaisByUserId;
+        }
+
+        public IEnumerable<Animal> GetAllAnimais() =>
+            _appDbContext.Animais
+                .Include(u => u.User)
+                .Include(c => c.Consultas);
     }
 }

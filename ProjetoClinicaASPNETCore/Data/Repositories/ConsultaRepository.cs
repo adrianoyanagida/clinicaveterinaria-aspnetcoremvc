@@ -12,10 +12,18 @@ namespace ProjetoClinicaASPNETCore.Data.Repositories
     public class ConsultaRepository : IConsultaRepository
     {
         private readonly AppDbContext _appDbContext;
+        private readonly IVeterinarioRepository _veterinarioRepository;
+        private readonly IAnimalRepository _animalRepository;
 
-        public ConsultaRepository(AppDbContext appDbContext)
+        public ConsultaRepository(
+            AppDbContext appDbContext,
+            IVeterinarioRepository veterinarioRepository,
+            IAnimalRepository animalRepository
+            )
         {
             _appDbContext = appDbContext;
+            _veterinarioRepository = veterinarioRepository;
+            _animalRepository = animalRepository;
         }
 
         public void Add<T>(T entity) where T : class
@@ -23,47 +31,71 @@ namespace ProjetoClinicaASPNETCore.Data.Repositories
             _appDbContext.Add(entity);
         }
 
+        public void Remove<T>(T entity) where T : class
+        {
+            _appDbContext.Remove(entity);
+        }
+
         public async Task<bool> SaveChangesAsync()
         {
             return (await _appDbContext.SaveChangesAsync()) > 0;
         }
 
-        public IEnumerable<Veterinario> Veterinarios => _appDbContext.Veterinarios;
+        public async Task<Consulta> GetConsultaById(int id)
+        {
+            var consultas = _appDbContext.Consultas
+                .Include(v => v.Veterinario)
+                .Include(a => a.Animal)
+                .ThenInclude(a => a.User);
 
-        public async Task<Veterinario> GetVetById(int vetId) => await _appDbContext.Veterinarios.FirstOrDefaultAsync(p => p.VeterinarioId == vetId);
+            var consultaById = await consultas.FirstOrDefaultAsync(i => i.ConsultaId == id);
 
-        public async Task<ApplicationUser> GetUser(string userId) => await _appDbContext.Users.Where(u => u.Id == userId)
-            .Include(a => a.Animais)
-            .FirstOrDefaultAsync();
-
-        public IEnumerable<Horario> Horarios => _appDbContext.Horarios.OrderBy(h => h.Hora);
+            return consultaById;
+        }
 
         public IEnumerable<Consulta> GetConsultasByOwnerId(string userId)
         {
-            return _appDbContext.Consultas
-                .Where(i => i.UserId == userId)
+            var consultas = _appDbContext.Consultas
+                .Include(v => v.Veterinario)
                 .Include(a => a.Animal)
-                .Include(u => u.User)
-                .Include(v => v.Veterinario);
+                .ThenInclude(a => a.User);
+
+            var consultasByUser = consultas.Where(i => i.Animal.UserId == userId);
+
+            var consultasByUserOrdered = consultasByUser
+                .OrderBy(d => d.DataConsulta)
+                .ThenBy(h => h.HorarioConsulta);
+
+            return consultasByUserOrdered;
         }
 
-        public IEnumerable<Consulta> GetConsultaByDateAndVet(string date, int vetId) =>
-            _appDbContext.Consultas
-            .Where(d => d.DataConsulta == date)
-            .Where(v => v.VeterinarioId == vetId);
-
-        public async Task<Animal> GetAnimalById(int animalId) => await _appDbContext.Animais.FirstOrDefaultAsync(a => a.AnimalId == animalId);
-
-        public void CreateConsulta(FormularioViewModel fVM, ApplicationUser user)
+        public IEnumerable<Consulta> GetConsultaByDateAndVet(string date, int vetId)
         {
+            var consultas = _appDbContext.Consultas
+                .Include(v => v.Veterinario)
+                .Include(a => a.Animal)
+                .ThenInclude(a => a.User);
+            
+            var consultasByDataAndVet = consultas
+                .Where(d => d.DataConsulta == date)
+                .Where(v => v.VeterinarioId == vetId);
+
+            return consultasByDataAndVet;
+        }
+
+        public void CreateConsulta(FormularioViewModel fVM)
+        {
+            DateTime dateConverted = Convert.ToDateTime(fVM.DataConsulta);
+            var dataConsulta = dateConverted.ToShortDateString();
+
+
             var consulta = new Consulta()
             {
-                Veterinario = GetVetById(fVM.VeterinarioId).Result,
-                Animal = GetAnimalById(fVM.AnimalId).Result,
-                DataConsulta = fVM.DataConsulta,
+                Veterinario = _veterinarioRepository.GetVetById(fVM.VeterinarioId).Result,
+                Animal = _animalRepository.GetAnimalById(fVM.AnimalId).Result,
+                DataConsulta = dataConsulta,
                 HorarioConsulta = fVM.HorarioEscolhido,
                 DescricaoDoProblema = fVM.DescricaoDoProblema,
-                User = user,
                 IsVerificado = false,
                 IsConcluido = false
             };
