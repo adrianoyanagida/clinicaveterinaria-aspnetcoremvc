@@ -41,6 +41,21 @@ namespace ProjetoClinicaASPNETCore.Data.Repositories
             return (await _appDbContext.SaveChangesAsync()) > 0;
         }
 
+        public IEnumerable<Consulta> GetConsultas()
+        {
+            var consultas = _appDbContext.Consultas
+                .Include(v => v.Veterinario)
+                .Include(a => a.Animal)
+                .ThenInclude(a => a.User);
+
+            var consultasOrdered = consultas
+                .OrderBy(c => c.IsConcluido)
+                .ThenBy(d => d.DataConsulta)
+                .ThenBy(h => h.HorarioConsulta);
+
+            return consultasOrdered;
+        }
+
         public async Task<Consulta> GetConsultaById(int id)
         {
             var consultas = _appDbContext.Consultas

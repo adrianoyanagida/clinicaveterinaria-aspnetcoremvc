@@ -4,18 +4,13 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace ProjetoClinicaASPNETCore.ViewModels
+namespace ProjetoClinicaASPNETCore.Data.DTOs
 {
-    public class RegisterViewModel
+    public class ApplicationUserDTO
     {
         [Required(ErrorMessage = "É necessário preencher o campo 'Usuário'!")]
         [Display(Name = "Nome de Usuário*")]
-        public string NomeDeUsuario { get; set; }
-
-        [Required(ErrorMessage = "É necessário preencher o campo 'Senha'!")]
-        [Display(Name = "Senha*")]
-        [DataType(DataType.Password)]
-        public string Senha { get; set; }
+        public string UserName { get; set; }
 
         [Required(ErrorMessage = "É necessário preencher o campo 'Nome Completo'!")]
         [Display(Name = "Nome Completo*")]
@@ -24,7 +19,7 @@ namespace ProjetoClinicaASPNETCore.ViewModels
         [Display(Name = "Data de Nascimento*")]
         [Required(ErrorMessage = "É necessário preencher o campo 'Data de Nascimento'!")]
         [DataType(DataType.Date)]
-        [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}", ApplyFormatInEditMode = true)]
+        //[DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}", ApplyFormatInEditMode = true)]
         public string DataDeNascimento { get; set; }
 
         [Required(ErrorMessage = "É necessário preencher o campo 'E-mail'!")]
@@ -39,8 +34,11 @@ namespace ProjetoClinicaASPNETCore.ViewModels
         [Required(ErrorMessage = "É necessário preencher o campo 'Telefone'!")]
         [Display(Name = "Telefone*")]
         [DataType(DataType.PhoneNumber)]
-        public string Telefone { get; set; }
+        public string PhoneNumber { get; set; }
 
-        public string ReturnUrl { get; set; }
+        [Required(ErrorMessage = "É necessário preencher o campo 'Senha'!")]
+        [Display(Name = "Senha*")]
+        [DataType(DataType.Password)]
+        public string Senha { get; set; }
     }
 }

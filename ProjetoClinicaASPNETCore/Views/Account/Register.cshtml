@@ -1,4 +1,4 @@
-﻿@model RegisterViewModel
+﻿@model ApplicationUserDTO
 
 <div class="pt-md-2 pb-md-2 mx-auto text-center">
     <h1 class="display-4">Registrar-se</h1><br />
@@ -9,9 +9,9 @@
         <hr>
         <div class="form-row loginForm">
             <div class="form-group col-md-4">
-                <label asp-for="NomeDeUsuario"></label>
-                <input asp-for="NomeDeUsuario" type="text" class="form-control" placeholder="exemplo123">
-                <span asp-validation-for="NomeDeUsuario" class="text-danger"></span>
+                <label asp-for="UserName"></label>
+                <input asp-for="UserName" type="text" class="form-control" placeholder="exemplo123">
+                <span asp-validation-for="UserName" class="text-danger"></span>
                 @if (TempData["errorUserName"] != null)
                 {
                     <p class="text-danger">@TempData["errorUserName"]</p>
@@ -51,9 +51,9 @@
                 <span asp-validation-for="CPF" class="text-danger"></span>
             </div>
             <div class="form-group col-md-4">
-                <label asp-for="Telefone"></label>
-                <input asp-for="Telefone" type="text" class="form-control" placeholder="00 00000 0000">
-                <span asp-validation-for="Telefone" class="text-danger"></span>
+                <label asp-for="PhoneNumber"></label>
+                <input asp-for="PhoneNumber" type="text" class="form-control" placeholder="00 00000 0000">
+                <span asp-validation-for="PhoneNumber" class="text-danger"></span>
             </div>
         </div>
         <input type="submit" class="btn btn-outline-success" name="button" value="Registrar" />

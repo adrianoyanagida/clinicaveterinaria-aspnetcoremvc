@@ -1,0 +1,40 @@
+﻿@{
+    Layout = "_AdminLayout";
+}
+
+@if (TempData["error"] != null)
+{<p class="alert alert-danger" id="successMessage">@TempData["error"]</p>}
+
+<div class="pt-md-2 pb-md-2 mx-auto text-center">
+    <h1 class="display-4">Todas as consultas</h1>
+</div>
+
+<div class="text-center">
+    Abaixo você confere todas as consultas cadastradas.
+</div>
+
+<br>
+<div class="table-responsive">
+    <table class="table table-borderless">
+        <thead class="thead-dark">
+            <tr class="text-center">
+                <th>ID</th>
+                <th>CPF do cliente</th>
+                <th>Animal </th>
+                <th>Veterinario </th>
+                <th>Data</th>
+                <th>Horario</th>
+                <th>Aprovada </th>
+                <th>Concluída </th>
+                <th colspan="2">Opções</th>
+            </tr>
+        </thead>
+        @{
+            foreach (Consulta consulta in Model.Consultas)
+            {
+                <partial name="TodasConsultasPartial" model="consulta" />
+            }
+        }
+    </table>
+</div>
+

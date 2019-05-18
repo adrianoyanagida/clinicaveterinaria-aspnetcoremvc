@@ -15,6 +15,7 @@ namespace ProjetoClinicaASPNETCore.Data.Interfaces
         Task<bool> SaveChangesAsync();
 
         Task<Consulta> GetConsultaById(int id);
+        IEnumerable<Consulta> GetConsultas();
         IEnumerable<Consulta> GetConsultasByOwnerId(string userId);
         IEnumerable<Consulta> GetConsultaByDateAndVet(string date, int vetId);
         void CreateConsulta(FormularioViewModel fVM);

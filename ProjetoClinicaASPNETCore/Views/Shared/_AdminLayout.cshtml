@@ -20,7 +20,10 @@
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav mr-auto">
                 <li class="nav-item">
-                    <a class="nav-link" asp-controller="AdminAnimais" asp-action="TodosAnimais">Todos Animais</a>
+                    <a class="nav-link" asp-controller="AdminAnimais" asp-action="TodosAnimais">Animais</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" asp-controller="AdminConsultas" asp-action="TodasConsultas">Consultas</a>
                 </li>
             </ul>
             <form class="form-inline my-2 my-lg-0">
@@ -30,7 +33,7 @@
     </nav>
     <div class="container" style="padding: 15px">
         @if (TempData["error"] != null)
-        {<input type="hidden" id="success" value="@TempData["error"]" />}
+        {<input type="hidden" id="error" value="@TempData["error"]" />}
         @if (TempData["success"] != null)
         {<input type="hidden" id="success" value="@TempData["success"]" />}
         @RenderBody()

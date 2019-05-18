@@ -13,6 +13,7 @@ namespace ProjetoClinicaASPNETCore.Helpers
         public AutoMapperProfiles()
         {
             CreateMap<Animal, AnimalDTO>().ReverseMap();
+            CreateMap<ApplicationUser, ApplicationUserDTO>().ReverseMap();
         }
     }
 }

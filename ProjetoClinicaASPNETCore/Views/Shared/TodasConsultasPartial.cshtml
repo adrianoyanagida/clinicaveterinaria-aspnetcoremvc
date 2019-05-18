@@ -1,0 +1,158 @@
+﻿@model Consulta
+
+@functions {
+    public string ModalConsultaDetalhes()
+    {
+        var modal = $"modalConsultaDetalhesId{@Model.ConsultaId.ToString()}";
+        return modal;
+    }
+
+    public string ModalExcluir()
+    {
+        var modal = $"modalExcluirlId{@Model.ConsultaId.ToString()}";
+        return modal;
+    }
+
+    public string GetDateLocal(string toConvert)
+    {
+        if (toConvert != null)
+        {
+            var date = toConvert;
+            DateTime convertedDate = Convert.ToDateTime(date);
+            return convertedDate.ToShortDateString();
+        }
+        else
+            return "";
+    }
+}
+
+<tr class="text-center">
+    <td>@Model.ConsultaId</td>
+    <td>@Model.Animal.User.CPF</td>
+    <td>@Model.Animal.AnimalNome</td>
+    <td>@Model.Veterinario.VetNome - @Model.Veterinario.VetFuncao</td>
+    <td>@GetDateLocal(Model.DataConsulta)</td>
+    <td>@Model.HorarioConsulta</td>
+    @if (Model.IsVerificado == false)
+    {
+        <td>Não</td>
+    }
+    else
+    {
+        <td>Sim</td>
+    }
+    @if (Model.IsConcluido == false)
+    {
+        <td>Não</td>
+    }
+    else
+    {
+        <td>Sim</td>
+    }
+    <td>
+        <button type="button" class="btn btn-outline-primary" data-toggle="modal" data-target="#@ModalConsultaDetalhes()">
+            <i class="fa fa-eye"></i>
+        </button>
+
+        <button type="button" class="btn btn-outline-danger" data-toggle="modal" data-target="#@ModalExcluir()">
+            <i class="fa fa-eraser"></i>
+        </button>
+    </td>
+
+    @*<td>
+            <a class="btn btn-success" asp-controller="Consulta" asp-action="Editar"
+               asp-route-idConsulta="@Model.ConsultaId">
+                Editar problema
+            </a>
+        </td>*@
+</tr>
+
+<div class="modal fade" id="@ModalConsultaDetalhes()" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Detalhes da consulta</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body text-center">
+                <div>
+                    <div class="lead">Detalhes (Consulta @Model.ConsultaId)</div>
+                    Identificador Veterinário: @Model.VeterinarioId <br />
+                    Função do Veterinário: @Model.Veterinario.VetFuncao <br />
+                    Nome do Veterinário: @Model.Veterinario.VetNome <br />
+                    Data da Consulta: @Model.DataConsulta <br />
+                    Horário da Consulta: @Model.HorarioConsulta <br />
+                    Descrição do problema: @Model.DescricaoDoProblema <br />
+                    Diagnóstico: @Model.Diagnostico <br />
+                    Valor: @Model.ValorConsulta<br />
+                    @if (Model.IsVerificado == false)
+                    {
+                        <div>Verificado: Não</div>
+                    }
+                    else
+                    {
+                        <div>Verificado: Sim</div>
+                    }
+                    @if (Model.IsConcluido == false)
+                    {
+                        <div>Concluído: Não</div>
+                    }
+                    else
+                    {
+                        <div>Concluído: Sim</div>
+                    }
+                    <hr />
+
+                    <div class="lead">Animal da consulta (Animal @Model.Animal.AnimalId)</div>
+                    Nome do Animal: @Model.Animal.AnimalNome <br />
+                    Data de Nascimento: @Model.Animal.AnimalDataDeNascimento <br />
+                    Tipo: @Model.Animal.AnimalTipo <br />
+                    Raça: @Model.Animal.AnimalRaca <br />
+                    Alergias: @Model.Animal.Alergico <hr />
+
+                    <div class="lead">Cliente da consulta <br /> (Usuário @Model.Animal.User.Id)</div>
+                    Nome: @Model.Animal.User.NomeCompleto <br />
+                    Email: @Model.Animal.User.Email <br />
+                    CPF: @Model.Animal.User.CPF <br />
+                    Telefone: @Model.Animal.User.PhoneNumber <br />
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">Voltar</button>
+                @*<a class="btn btn-outline-success" asp-controller="AdminAnimais" asp-action="Delete"
+                       asp-route-idAnimal="@Model.AnimalId">
+                        Editar
+                    </a>*@
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="@ModalExcluir()" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Excluir consulta</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body text-center">
+                <p class="lead">Tem certeza que deseja excluir essa consulta?</p>
+                Identificador: @Model.ConsultaId<br />
+                Veterinário: @Model.Veterinario.VetNome<br />
+                Data: @GetDateLocal(Model.DataConsulta)<br />
+                Horário: @Model.HorarioConsulta
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">Voltar</button>
+                <a class="btn btn-outline-success" asp-controller="AdminConsultas" asp-action="Delete"
+                   asp-route-idConsulta="@Model.ConsultaId">
+                    Excluir
+                </a>
+            </div>
+        </div>
+    </div>
+</div>

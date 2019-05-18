@@ -34,6 +34,12 @@ namespace ProjetoClinicaASPNETCore.Controllers
         {
             var animal = _animalRepository.GetAnimalById(animalId).Result;
 
+            if(animal == null)
+            {
+                TempData["error"] = "Animal não encontrado!";
+                return RedirectToAction(actionName: "TodosAnimais", controllerName: "AdminAnimais");
+            }
+
             var animalDTO = _mapper.Map<AnimalDTO>(animal);
 
             TempData["animalId"] = animal.AnimalId;

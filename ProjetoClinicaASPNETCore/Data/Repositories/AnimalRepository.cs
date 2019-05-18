@@ -69,6 +69,7 @@ namespace ProjetoClinicaASPNETCore.Data.Repositories
         public IEnumerable<Animal> GetAllAnimais() =>
             _appDbContext.Animais
                 .Include(u => u.User)
-                .Include(c => c.Consultas);
+                .Include(c => c.Consultas)
+                .ThenInclude(v => v.Veterinario);
     }
 }

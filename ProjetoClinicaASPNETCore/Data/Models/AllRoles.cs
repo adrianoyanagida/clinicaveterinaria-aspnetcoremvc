@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace ProjetoClinicaASPNETCore.Data.Models
 {
-    public class AllRoles
+    public static class AllRoles
     {
         public class Administrador
         {
@@ -25,7 +25,7 @@ namespace ProjetoClinicaASPNETCore.Data.Models
             public string descricao = "Cliente do aplicativo";
         }
 
-        public string GetDefaultRole()
+        public static string GetDefaultRole()
         {
             return "Cliente";
         }

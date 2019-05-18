@@ -28,6 +28,10 @@ namespace ProjetoClinicaASPNETCore.Data
                 .HasIndex(u => u.Email)
                 .IsUnique();
 
+            builder.Entity<ApplicationUser>()
+                .HasIndex(u => u.CPF)
+                .IsUnique();
+
             builder.Entity<Consulta>()
                 .HasIndex(u => new { u.VeterinarioId, u.DataConsulta, u.HorarioConsulta })
                 .IsUnique();

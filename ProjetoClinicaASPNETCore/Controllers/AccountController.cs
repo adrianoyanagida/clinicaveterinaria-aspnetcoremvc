@@ -1,12 +1,16 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using ProjetoClinicaASPNETCore.Data.DTOs;
 using ProjetoClinicaASPNETCore.Data.Models;
 using ProjetoClinicaASPNETCore.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace ProjetoClinicaASPNETCore.Controllers
@@ -15,17 +19,20 @@ namespace ProjetoClinicaASPNETCore.Controllers
     {
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly SignInManager<ApplicationUser> _signInManager;
+        private readonly IMapper _mapper;
 
-        public AccountController(UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager)
+        public AccountController(
+            UserManager<ApplicationUser> userManager,
+            SignInManager<ApplicationUser> signInManager,
+            IMapper mapper
+            )
         {
             _userManager = userManager;
             _signInManager = signInManager;
+            _mapper = mapper;
         }
 
-        public IActionResult Login()
-        {
-            return View();
-        }
+        public IActionResult Login() => View();
 
         [HttpPost]
         public async Task<IActionResult> Login(LoginViewModel loginViewModel)
@@ -35,109 +42,96 @@ namespace ProjetoClinicaASPNETCore.Controllers
                 return View(loginViewModel);
             }
 
-            var userInput = loginViewModel.UsuarioOuEmail;
-            //Verifica se tem @ no userInput
-            if (userInput.IndexOf('@') > -1)
+            try
             {
-                //Procura o usuario pelo Email
-                var user = await _userManager.FindByEmailAsync(userInput);
-                if(user != null)
+                var user = new ApplicationUser();
+                user = await _userManager.FindByNameAsync(loginViewModel.UsuarioOuEmail);
+                if(user == null)
                 {
-                    //Faz login do usuario passando os dados de user
-                    var result = await _signInManager.PasswordSignInAsync(user, loginViewModel.Senha, false, false);
-                    if (result.Succeeded)
+                    user = await _userManager.FindByEmailAsync(loginViewModel.UsuarioOuEmail);
+                    if (user == null)
                     {
-                        return RedirectToAction("Index", "Home");
+                        TempData["error"] = "Usuário/E-mail ou senha incorreto!";
+                        return View(loginViewModel);
                     }
                 }
-            }
-            else
-            {
-                //Procura o usuario pelo UserName
-                var user = await _userManager.FindByNameAsync(loginViewModel.UsuarioOuEmail);
-                if (user != null)
+
+                var result = await _signInManager.PasswordSignInAsync(user, loginViewModel.Senha, false, false);
+                if(result.Succeeded)
                 {
-                    //Faz login do usuario passando os dados de user
-                    var result = await _signInManager.PasswordSignInAsync(user, loginViewModel.Senha, false, false);
-                    if (result.Succeeded)
-                    {
-                        TempData["success"] = "Logado com sucesso";
-                        return RedirectToAction("Index", "Home");
-                    }
+                    TempData["success"] = "Logado com sucesso";
+                    return RedirectToAction("Index", "Home");
                 }
+
+                TempData["error"] = "Usuário/E-mail ou senha incorreto!";
+                return View(loginViewModel);
             }
-            //ModelState.AddModelError("", "Nome de usuário ou senha incorreto!");
-            TempData["error"] = "Usuário/E-mail ou senha incorreto!";
-            return View(loginViewModel);
+            catch
+            {
+                return this.StatusCode(StatusCodes.Status500InternalServerError, "Banco falhou");
+            }
         }
 
         public IActionResult Register() => View();
 
         [HttpPost, ValidateAntiForgeryToken]
-        public async Task<IActionResult> Register(RegisterViewModel registerViewModel)
+        public async Task<IActionResult> Register(ApplicationUserDTO applicationUserDTO)
         {
-            if(ModelState.IsValid)
+            var validator = new CPFValidator();
+            if (!validator.IsCpf(applicationUserDTO.CPF))
             {
-                //Verifica o CPF se é válido ou não
-                var cpf = new CPFValidator();
-                if(!cpf.IsCpf(registerViewModel.CPF))
+                ModelState.AddModelError("CPF", "O CPF fornecido é inválido!");
+            }
+
+            if (!ModelState.IsValid)
+            {
+                return View(applicationUserDTO);
+            }
+
+            applicationUserDTO.CPF = new String(applicationUserDTO.CPF.Where(Char.IsDigit).ToArray());
+
+            try
+            {
+                var user = _mapper.Map<ApplicationUser>(applicationUserDTO);
+
+                //Cria uma variável result e passa os valores para o banco, criando um novo usuario
+                var result = await _userManager.CreateAsync(user, applicationUserDTO.Senha);
+
+                if (result.Succeeded)
                 {
-                    ModelState.AddModelError("", "O CPF fornecido é inválido!");
-                    return View(registerViewModel);
+                    var resultRole = await _userManager.AddToRoleAsync(user, AllRoles.GetDefaultRole());
+                    if (resultRole.Succeeded)
+                    {
+                        TempData["success"] = "Registro feito com sucesso";
+                        return RedirectToAction(actionName: "Index", controllerName: "Home");
+                    }
+
+                    TempData["success"] = "Registro feito, porém falha em adicionar uma função ao usuário, caso persista, contate o suporte.";
+                    return RedirectToAction(actionName: "Index", controllerName: "Home");
                 }
-
-                //Caso for válido entra nesse try catch
-                try
+                else
                 {
-                    //É preechido o ApplicationUser com os valores da nossa View
-                    var user = new ApplicationUser()
+                    foreach (var err in result.Errors)
                     {
-                        UserName = registerViewModel.NomeDeUsuario,
-                        NomeCompleto = registerViewModel.NomeCompleto,
-                        DataDeNascimento = registerViewModel.DataDeNascimento,
-                        Email = registerViewModel.Email,
-                        CPF = registerViewModel.CPF,
-                        PhoneNumber = registerViewModel.Telefone
-                    };
-
-                    //Cria uma variável result e passa os valores para o banco, criando um novo usuario
-                    var result = await _userManager.CreateAsync(user, registerViewModel.Senha);
-
-                    if (result.Succeeded)
-                    {
-                        var role = new AllRoles();
-                        var resultRole = await _userManager.AddToRoleAsync(user, role.GetDefaultRole());
-                        if (resultRole.Succeeded)
-                        {
-                            TempData["success"] = "Registro feito com sucesso";
-                            return RedirectToAction(actionName: "Index", controllerName: "Home");
-                        }
+                        if (err.Description.Contains("User name"))
+                            ModelState.AddModelError("UserName", "Nome de usuário indisponível");
+                        if (err.Code == "PasswordTooShort")
+                            ModelState.AddModelError("Senha", "Tamanho mínimo de 4 caracteres");
                     }
-                    else
-                    {
-                        //Mostra erros padrão como exemplo: A senha é menor que 4 linhas
-                        foreach (var err in result.Errors)
-                        {
-                            if(err.Description.Contains("User name"))
-                            {
-                                TempData["errorUserName"] = "Nome de usuário indisponível";
-                            }
-                        }
-                    }
-                }
-                catch (System.Exception ex)
-                {
-                    //Procura na mensagem se ele contém a seguinte string IX_AspNetUsers_Email
-                    var message = ex.ToString();
-                    if (message.Contains("IX_AspNetUsers_Email"))
-                    {
-                        TempData["errorEmail"] = "E-mail já cadastrado, tente outro!";
-                    }
-                    else
-                    return BadRequest();
                 }
             }
-            return View(registerViewModel);
+            catch (System.Exception ex)
+            {
+                var message = ex.ToString();
+                if (message.Contains("IX_AspNetUsers_Email"))
+                    ModelState.AddModelError("Email", "E-mail já cadastrado, tente outro!");
+                else 
+                if(message.Contains("CPF"))
+                    ModelState.AddModelError("CPF", "CPF já cadastrado");
+                else
+                    return this.StatusCode(StatusCodes.Status500InternalServerError, ex);
+            }
+            return View(applicationUserDTO);
         }
 
         [Authorize]
