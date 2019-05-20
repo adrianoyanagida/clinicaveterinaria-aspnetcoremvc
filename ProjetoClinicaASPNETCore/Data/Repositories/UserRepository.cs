@@ -17,9 +17,15 @@ namespace ProjetoClinicaASPNETCore.Data.Repositories
             _appDbContext = appDbContext;
         }
 
-        public async Task<ApplicationUser> GetUser(string userId) => await _appDbContext.Users.Where(u => u.Id == userId)
-            .Include(a => a.Animais)
-            .ThenInclude(c => c.Consultas)
-            .FirstOrDefaultAsync();
+        public async Task<ApplicationUser> GetUser(string userId)
+        {
+            var users = _appDbContext.Users
+                .Include(a => a.Animais)
+                .ThenInclude(c => c.Consultas);
+
+            var usuarioById = users.Where(u => u.Id == userId);
+
+            return await usuarioById.FirstOrDefaultAsync();
+        }
     }
 }

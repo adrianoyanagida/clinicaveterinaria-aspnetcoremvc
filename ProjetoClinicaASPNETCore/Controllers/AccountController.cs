@@ -59,6 +59,11 @@ namespace ProjetoClinicaASPNETCore.Controllers
                 var result = await _signInManager.PasswordSignInAsync(user, loginViewModel.Senha, false, false);
                 if(result.Succeeded)
                 {
+                    if(CheckIfIsAdminOrFuncionario(user))
+                    {
+                        TempData["success"] = "Logado com sucesso";
+                        return RedirectToAction("Index", "AdminHome");
+                    }
                     TempData["success"] = "Logado com sucesso";
                     return RedirectToAction("Index", "Home");
                 }
@@ -140,6 +145,19 @@ namespace ProjetoClinicaASPNETCore.Controllers
             await _signInManager.SignOutAsync();
             TempData["success"] = "Saiu com sucesso";
             return RedirectToAction("Index", "Home");
+        }
+
+        //
+
+        private bool CheckIfIsAdminOrFuncionario(ApplicationUser user)
+        {
+            if(_userManager.IsInRoleAsync(user, "Funcionario").Result == true
+               ||
+               _userManager.IsInRoleAsync(user, "Administrador").Result == true)
+            {
+                return true;
+            }
+            return false;
         }
     }
 }
