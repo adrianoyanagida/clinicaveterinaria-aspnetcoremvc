@@ -32,7 +32,7 @@
 
 <tr class="text-center">
     <td>@Model.AnimalId</td>
-    <td>@Model.User.NomeCompleto</td>
+    <td>@Model.User.CPF</td>
     <td>@Model.AnimalNome</td>
     <td>@Model.AnimalTipo</td>
     <td>@Model.AnimalRaca</td>
@@ -73,10 +73,14 @@
                 Telefone: @Model.User.PhoneNumber<br />
                 Email: @Model.User.Email<hr />
 
-                <div class="lead">CONSULTAS CADASTRADAS NESTE ANIMAL</div> <br />
+                <div class="lead">CONSULTAS CADASTRADAS NESTE ANIMAL</div>
                 @if (Model.Consultas.Count() <= 0)
                 {
                     <p>Não foram encontradas consultas para este animal!</p>
+                }
+                else
+                {
+                    <p>Total de consultas: @Model.Consultas.Count.ToString()</p>
                 }
 
                 @foreach (Consulta consulta in Model.Consultas)
@@ -87,8 +91,8 @@
                         Data da Consulta: @GetDateLocal(consulta.DataConsulta)<br />
                         Horario da Consulta: @consulta.HorarioConsulta<br />
                         Descrição do Problema: @consulta.DescricaoDoProblema<br />
-                        Valor da Consulta: @consulta.ValorConsulta<br />
                         Diagnóstico da Consulta: @consulta.Diagnostico<br />
+                        Valor da Consulta: @consulta.ValorConsulta<br />
                         @if (consulta.IsVerificado == true)
                         {<div>Consulta Verificada: Sim</div> }
                         else

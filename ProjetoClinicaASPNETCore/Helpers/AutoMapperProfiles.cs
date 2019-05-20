@@ -14,6 +14,7 @@ namespace ProjetoClinicaASPNETCore.Helpers
         {
             CreateMap<Animal, AnimalDTO>().ReverseMap();
             CreateMap<ApplicationUser, ApplicationUserDTO>().ReverseMap();
+            CreateMap<Consulta, ConsultaDTO>().ReverseMap();
         }
     }
 }

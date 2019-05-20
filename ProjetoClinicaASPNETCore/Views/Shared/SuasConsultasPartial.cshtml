@@ -21,8 +21,22 @@
     <td>@GetDateLocal()</td>
     <td>@Model.HorarioConsulta</td>
     <td>@Model.DescricaoDoProblema</td>
-    <td>@Model.Diagnostico</td>
-    <td>@Model.ValorConsulta</td>
+    @if (Model.Diagnostico == null)
+    {
+        <td>...</td>
+    }
+    else
+    {
+        <td>@Model.Diagnostico</td>
+    }
+    @if (Model.ValorConsulta == null)
+    {
+        <td>...</td>
+    }
+    else
+    {
+      <td>@Model.ValorConsulta</td>
+    }
     @if (Model.IsVerificado == false)
     {
         <td>Não</td>
@@ -42,7 +56,7 @@
     @if (Model.IsVerificado == false)
     {
         <td>
-            <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#@Modal()">
+            <button type="button" class="btn btn-outline-danger" data-toggle="modal" data-target="#@Modal()">
                 <i class="fa fa-eraser"></i>
             </button>
         </td>
@@ -50,7 +64,7 @@
     else
     {
         <td>
-            <button type="button" class="btn btn-danger disabled" disabled>
+            <button type="button" class="btn btn-outline-danger disabled" disabled>
                 <i class="fa fa-eraser"></i>
             </button>
         </td>

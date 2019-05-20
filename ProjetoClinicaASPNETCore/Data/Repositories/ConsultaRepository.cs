@@ -36,6 +36,11 @@ namespace ProjetoClinicaASPNETCore.Data.Repositories
             _appDbContext.Remove(entity);
         }
 
+        public void Update<T>(T entity) where T : class
+        {
+            _appDbContext.Update(entity);
+        }
+
         public async Task<bool> SaveChangesAsync()
         {
             return (await _appDbContext.SaveChangesAsync()) > 0;

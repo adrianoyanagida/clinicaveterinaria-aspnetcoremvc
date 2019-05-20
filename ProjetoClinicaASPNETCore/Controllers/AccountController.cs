@@ -83,9 +83,12 @@ namespace ProjetoClinicaASPNETCore.Controllers
         public async Task<IActionResult> Register(ApplicationUserDTO applicationUserDTO)
         {
             var validator = new CPFValidator();
-            if (!validator.IsCpf(applicationUserDTO.CPF))
+            if(applicationUserDTO.CPF != null)
             {
-                ModelState.AddModelError("CPF", "O CPF fornecido é inválido!");
+                if (!validator.IsCpf(applicationUserDTO.CPF))
+                {
+                    ModelState.AddModelError("CPF", "O CPF fornecido é inválido!");
+                }
             }
 
             if (!ModelState.IsValid)

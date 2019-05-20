@@ -1,0 +1,85 @@
+﻿@{
+    Layout = "_AdminLayout";
+}
+@model ConsultaDTO
+
+<div class="text-center">
+    <div class="pt-md-2 pb-md-2 mx-auto">
+        <h1 class="display-4">Consulta número @Model.numeroDaConsulta</h1>
+    </div>
+    <div class="lead">
+        Preencha o formulário abaixo para editar a consulta.
+    </div>
+</div>
+
+
+<br><br>
+
+<div class="row">
+    @*12 - colvalue / 2 = offset*@
+    <div class="col-sm-6 offset-sm-3">
+        <form asp-controller="AdminConsulta" asp-action="Editar" onsubmit="button.disabled = true; return true;">
+            <div class="form-row loginForm">
+                <div class="form-group col-md-4">
+                    <label asp-for="ValorConsulta">Valor da Consulta</label>
+                    <input asp-for="ValorConsulta" class="form-control" placeholder="R$ 0,00" />
+                    <span asp-validation-for="ValorConsulta" class="text-danger"></span>
+                </div>
+                <div class="form-group col-md-4 text-center">
+                    <label asp-for="IsVerificado">Consulta Verificada</label>
+                    <div>
+                        <label class="switch">
+                            <input asp-for="IsVerificado" class="form-control col-md-1" />
+                            <span class="slider round"></span>
+                        </label>
+                    </div>
+                    <span asp-validation-for="IsVerificado" class="text-danger"></span>
+                </div>
+                <div class="form-group col-md-4 text-center">
+                    <label asp-for="IsConcluido">Consulta Concluída</label>
+                    <div>
+                        <label class="switch">
+                            <input asp-for="IsConcluido" />
+                            <span class="slider round"></span>
+                        </label>
+                    </div>
+                    <span asp-validation-for="IsConcluido" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="form-row loginForm">
+                <div class="form-group text-center col-md-12">
+                    <label asp-for="Diagnostico">Diagnóstico da Consulta</label>
+                    <textarea asp-for="Diagnostico" class="form-control" rows="6" placeholder="Digite aqui..."></textarea>
+                    <span asp-validation-for="Diagnostico" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="text-center">
+                <button type="button" class="btn btn-outline-success" data-toggle="modal" data-target="#confirmEdit">
+                    Editar
+                </button>
+            </div>
+            <!-- Modal -->
+            <div class="modal fade" id="confirmEdit" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">Confirmar Edição</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body text-center">
+                            Tem certeza que deseja editar?<br />
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">Voltar</button>
+                            <input type="submit" class="btn btn-outline-success" name="button" value="Confirmar" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+

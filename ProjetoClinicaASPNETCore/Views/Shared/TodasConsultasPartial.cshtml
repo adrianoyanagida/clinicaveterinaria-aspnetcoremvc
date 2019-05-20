@@ -50,6 +50,10 @@
         <td>Sim</td>
     }
     <td>
+        <a  class="btn btn-outline-secondary" asp-controller="AdminConsulta" asp-action="Editar"
+            asp-route-consultaId="@Model.ConsultaId">
+            <i class="fas fa-edit"></i>
+        </a>
         <button type="button" class="btn btn-outline-primary" data-toggle="modal" data-target="#@ModalConsultaDetalhes()">
             <i class="fa fa-eye"></i>
         </button>

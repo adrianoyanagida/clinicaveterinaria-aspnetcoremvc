@@ -13,15 +13,42 @@
     Abaixo você confere todas as consultas cadastradas.
 </div>
 
-<br>
+<br />
+<form>
+    <div class="d-flex">
+        <div class="form-inline mr-auto">
+            <div class="form-group mb-2">
+                <i class="fas fa-align-left"></i>&nbsp; 
+                <label class="mr-2">Buscar por </label>
+                <select id="tdId" class="form-control">
+                    <option value=0>Identificador</option>
+                    <option value=1>Cpf do Cliente</option>
+                    <option value=2>Animal</option>
+                    <option value=3>Veterinário</option>
+                    <option value=4>Data da Consulta</option>
+                    <option value=5>Horario</option>
+                </select>
+            </div>
+        </div>
+        <div class="form-inline">
+            <div class="form-group mb-2">
+                <i class="fas fa-search"></i>&nbsp;
+                <label class="mr-2">Filtro</label>
+                <input type="text" class="form-control mr-2" id="myInput" onkeyup="myFunction()" placeholder="Digite aqui...">
+            </div>
+        </div>
+    </div>
+</form>
+
+
 <div class="table-responsive">
-    <table class="table table-borderless">
-        <thead class="thead-dark">
+    <table class="table table-borderless" id="myTable">
+        <thead class="thead-light">
             <tr class="text-center">
                 <th>ID</th>
                 <th>CPF do cliente</th>
                 <th>Animal </th>
-                <th>Veterinario </th>
+                <th>Veterinario da Consulta </th>
                 <th>Data</th>
                 <th>Horario</th>
                 <th>Aprovada </th>
@@ -38,3 +65,24 @@
     </table>
 </div>
 
+<script>
+    function myFunction() {
+        let blau = +document.getElementById("tdId").value;
+        var input, filter, table, tr, td, i, txtValue;
+        input = document.getElementById("myInput");
+        filter = input.value.toUpperCase();
+        table = document.getElementById("myTable");
+        tr = table.getElementsByTagName("tr");
+        for (i = 0; i < tr.length; i++) {
+            td = tr[i].getElementsByTagName("td")[blau];
+            if (td) {
+                txtValue = td.textContent || td.innerText;
+                if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                    tr[i].style.display = "";
+                } else {
+                    tr[i].style.display = "none";
+                }
+            }
+        }
+    }
+</script>
