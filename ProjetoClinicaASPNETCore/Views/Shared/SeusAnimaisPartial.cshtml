@@ -19,14 +19,21 @@
     <td>@Model.AnimalTipo</td>
     <td>@Model.AnimalRaca</td>
     <td>@GetDateLocal()</td>
-    <td>@Model.Alergico</td>
+    @if (Model.Alergico == null)
+    {
+        <td><i>Não especificado</i></td>
+    }
+    else
+    {
+        <td>@Model.Alergico</td>
+    }
     @*<td>
-        <a class="btn btn-success" asp-controller="Home" asp-action="Delete"
-           asp-route-id="@Model.FormularioId">
-            Excluir
-        </a>
-    </td>
-    <td>
-        <a asp-controller="Editar" asp-action="Edit" asp-route-id="@Model.FormularioId">Editar</a>
-    </td>*@
+            <a class="btn btn-success" asp-controller="Home" asp-action="Delete"
+               asp-route-id="@Model.FormularioId">
+                Excluir
+            </a>
+        </td>
+        <td>
+            <a asp-controller="Editar" asp-action="Edit" asp-route-id="@Model.FormularioId">Editar</a>
+        </td>*@
 </tr>

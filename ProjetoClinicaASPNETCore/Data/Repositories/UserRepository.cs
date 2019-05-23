@@ -17,6 +17,19 @@ namespace ProjetoClinicaASPNETCore.Data.Repositories
             _appDbContext = appDbContext;
         }
 
+        public IEnumerable<ApplicationUser> GetUsers()
+        {
+            var users = _appDbContext.Users
+                .Include(ur => ur.UserRoles)
+                .ThenInclude(r => r.Role)
+                .Include(a => a.Animais)
+                .ThenInclude(c => c.Consultas);
+
+            var usersOrder = users.OrderBy(n => n.NomeCompleto);
+
+            return usersOrder;
+        }
+
         public async Task<ApplicationUser> GetUser(string userId)
         {
             var users = _appDbContext.Users

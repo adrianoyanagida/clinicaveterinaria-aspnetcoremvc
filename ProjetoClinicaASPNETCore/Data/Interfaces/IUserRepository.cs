@@ -8,6 +8,7 @@ namespace ProjetoClinicaASPNETCore.Data.Interfaces
 {
     public interface IUserRepository
     {
+        IEnumerable<ApplicationUser> GetUsers();
         Task<ApplicationUser> GetUser(string userId);
     }
 }

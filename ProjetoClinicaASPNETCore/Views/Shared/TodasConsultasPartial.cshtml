@@ -35,40 +35,34 @@
     <td>@Model.HorarioConsulta</td>
     @if (Model.IsVerificado == false)
     {
-        <td>Não</td>
+        <td>Não&nbsp;aprovado</td>
     }
     else
     {
-        <td>Sim</td>
+        <td>Aprovado</td>
     }
     @if (Model.IsConcluido == false)
     {
-        <td>Não</td>
+        <td>Não&nbsp;concluído</td>
     }
     else
     {
-        <td>Sim</td>
+        <td>Concluído</td>
     }
     <td>
-        <a  class="btn btn-outline-secondary" asp-controller="AdminConsulta" asp-action="Editar"
-            asp-route-consultaId="@Model.ConsultaId">
-            <i class="fas fa-edit"></i>
-        </a>
-        <button type="button" class="btn btn-outline-primary" data-toggle="modal" data-target="#@ModalConsultaDetalhes()">
-            <i class="fa fa-eye"></i>
-        </button>
-
-        <button type="button" class="btn btn-outline-danger" data-toggle="modal" data-target="#@ModalExcluir()">
-            <i class="fa fa-eraser"></i>
-        </button>
+        <div class="btn-group">
+            <a class="btn btn-outline-secondary" asp-controller="AdminConsulta" asp-action="Editar"
+                    asp-route-consultaId="@Model.ConsultaId">
+                <i class="fas fa-edit"></i>
+            </a>&nbsp;
+            <button type="button" class="btn btn-outline-primary" data-toggle="modal" data-target="#@ModalConsultaDetalhes()">
+                <i class="fa fa-eye"></i>
+            </button>&nbsp;
+            <button type="button" class="btn btn-outline-danger" data-toggle="modal" data-target="#@ModalExcluir()">
+                <i class="fa fa-eraser"></i>
+            </button>
+        </div>
     </td>
-
-    @*<td>
-            <a class="btn btn-success" asp-controller="Consulta" asp-action="Editar"
-               asp-route-idConsulta="@Model.ConsultaId">
-                Editar problema
-            </a>
-        </td>*@
 </tr>
 
 <div class="modal fade" id="@ModalConsultaDetalhes()" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -114,8 +108,15 @@
                     Data de Nascimento: @Model.Animal.AnimalDataDeNascimento <br />
                     Tipo: @Model.Animal.AnimalTipo <br />
                     Raça: @Model.Animal.AnimalRaca <br />
-                    Alergias: @Model.Animal.Alergico <hr />
-
+                    @if (Model.Animal.Alergico == null)
+                    {
+                        <i>Alergias: Não especificado</i> <hr />
+                    }
+                    else
+                    {
+                        var msg = $"Alergias: {@Model.Animal.Alergico}";
+                        @msg <hr />
+                    }
                     <div class="lead">Cliente da consulta <br /> (Usuário @Model.Animal.User.Id)</div>
                     Nome: @Model.Animal.User.NomeCompleto <br />
                     Email: @Model.Animal.User.Email <br />

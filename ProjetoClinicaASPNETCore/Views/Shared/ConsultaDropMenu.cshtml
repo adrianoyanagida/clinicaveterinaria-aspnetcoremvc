@@ -9,11 +9,18 @@
 {
     <li class="nav-item dropdown">
         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <i class="fas fa-clipboard-list"></i>&nbsp;
             Consultas
         </a>
         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-            <a class="dropdown-item" asp-controller="Consulta" asp-action="Data" asp-route-category="">Nova consulta</a>
-            <a class="dropdown-item" asp-controller="Consultas" asp-action="SuasConsultas" asp-route-category="">Suas consultas</a>
+            <a class="dropdown-item" asp-controller="Consulta" asp-action="Data" asp-route-category="">
+                <i class="fas fa-plus"></i>&nbsp;
+                Nova consulta
+            </a>
+            <a class="dropdown-item" asp-controller="Consultas" asp-action="SuasConsultas" asp-route-category="">
+                <i class="fas fa-list"></i>&nbsp;
+                Suas consultas
+            </a>
         </div>
     </li>
 }

@@ -9,11 +9,18 @@
 {
     <li class="nav-item dropdown">
         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <i class="fas fa-dog"></i>&nbsp;
             Animais
         </a>
         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-            <a class="dropdown-item" asp-controller="Animal" asp-action="Cadastro" asp-route-category="">Novo animal</a>
-            <a class="dropdown-item" asp-controller="Animais" asp-action="SeusAnimais" asp-route-category="">Seus animais</a>
+            <a class="dropdown-item" asp-controller="Animal" asp-action="Cadastro" asp-route-category="">
+                <i class="fas fa-plus"></i>&nbsp;
+                Novo animal
+            </a>
+            <a class="dropdown-item" asp-controller="Animais" asp-action="SeusAnimais" asp-route-category="">
+                <i class="fas fa-list"></i>&nbsp;
+                Seus animais
+            </a>
         </div>
     </li>
 }

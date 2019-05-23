@@ -82,6 +82,12 @@ body > .container {
     opacity: 1 !important;
 }
 
+/* MODAL */
+.modal-header {
+    background-color: #2ec4b6;
+    color: #ecf0f1;
+}
+
 /* SLIDER */
 
 /* The switch - the box around the slider */

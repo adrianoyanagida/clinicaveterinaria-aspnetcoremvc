@@ -20,10 +20,22 @@
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav mr-auto">
                 <li class="nav-item">
-                    <a class="nav-link" asp-controller="AdminAnimais" asp-action="TodosAnimais">Animais</a>
+                    <a class="nav-link" asp-controller="AdminAnimais" asp-action="TodosAnimais">
+                        <i class="fas fa-dog"></i>&nbsp;
+                        Animais
+                    </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" asp-controller="AdminConsultas" asp-action="TodasConsultas">Consultas</a>
+                    <a class="nav-link" asp-controller="AdminConsultas" asp-action="TodasConsultas">
+                        <i class="fas fa-clipboard-list"></i>&nbsp;
+                        Consultas
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" asp-controller="AdminUsuarios" asp-action="TodosUsuarios">
+                        <i class="fas fa-user"></i>&nbsp;
+                        Usuários
+                    </a>
                 </li>
             </ul>
             <form class="form-inline my-2 my-lg-0">

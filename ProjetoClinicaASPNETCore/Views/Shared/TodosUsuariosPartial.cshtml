@@ -1,0 +1,73 @@
+﻿@model ApplicationUser
+
+@functions {
+    public string ModalDetalhesAnimal()
+    {
+        var modal = $"modalDetalhesAnimalId{@Model.Id.ToString()}";
+        return modal;
+    }
+    public string ModalDonoAnimal()
+    {
+        var modal = $"modalDonoAnimalId{@Model.Id.ToString()}";
+        return modal;
+    }
+    public string ModalExcluir()
+    {
+        var modal = $"modalExcluirId{@Model.Id.ToString()}";
+        return modal;
+    }
+
+    public string GetDateLocal(string toConvert)
+    {
+        if (toConvert != null)
+        {
+            var date = toConvert;
+            DateTime convertedDate = Convert.ToDateTime(date);
+            return convertedDate.ToShortDateString();
+        }
+        else
+            return "";
+    }
+}
+
+<tr class="text-center">
+    <td>@Model.NomeCompleto</td>
+    <td>@Model.CPF</td>
+    <td>@Model.Email</td>
+    <td>@Model.PhoneNumber</td>
+    <td>@GetDateLocal(Model.DataDeNascimento)</td>
+    <td>
+        @for (var i = 0; i < Model.UserRoles.Count(); i++)
+        {
+            if (i == Model.UserRoles.Count() - 1)
+            {
+                @Model.UserRoles[i].Role.Name.ToString();
+
+            }
+            else if (i == Model.UserRoles.Count() - 2)
+            {
+                @(Model.UserRoles[i].Role.Name.ToString() + " e ");
+            }
+            else
+            {
+                @(Model.UserRoles[i].Role.Name.ToString() + ", ");
+            }
+
+        }
+    </td>
+    <td>
+        <div class="btn-group">
+            <a class="btn btn-outline-secondary" asp-controller="AdminAnimal" asp-action="Editar"
+                    asp-route-animalId="@Model.Id">
+                <i class="fas fa-edit"></i>
+            </a>&nbsp;
+            <button type="button" class="btn btn-outline-primary" data-toggle="modal" data-target="#@ModalDetalhesAnimal()">
+                <i class="fas fa-eye"></i>
+            </button>&nbsp;
+            <button type="button" class="btn btn-outline-danger" data-toggle="modal" data-target="#@ModalExcluir()">
+                <i class="fa fa-eraser"></i>
+            </button>
+        </div>
+    </td>
+</tr>
+

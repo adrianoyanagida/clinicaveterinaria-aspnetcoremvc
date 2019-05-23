@@ -6,11 +6,11 @@
 {<p class="alert alert-danger" id="successMessage">@TempData["error"]</p>}
 
 <div class="pt-md-2 pb-md-2 mx-auto text-center">
-    <h1 class="display-4">Consultas</h1>
+    <h1 class="display-4">Usuários</h1>
 </div>
 
 <div class="text-center">
-    Abaixo você confere todas as consultas cadastradas.
+    Abaixo você confere todos os usuários cadastrados.
 </div>
 
 <br />
@@ -18,17 +18,15 @@
     <div class="d-flex">
         <div class="form-inline mr-auto">
             <div class="form-group mb-2">
-                <i class="fas fa-align-left"></i>&nbsp; 
+                <i class="fas fa-align-left"></i>&nbsp;
                 <label class="mr-2">Buscar por </label>
                 <select id="tdId" class="form-control">
-                    <option value=0>Identificador</option>
-                    <option value=1>CPF do cliente</option>
-                    <option value=2>Animal</option>
-                    <option value=3>Veterinário</option>
-                    <option value=4>Data da consulta</option>
-                    <option value=5>Horario</option>
-                    <option value=6>Aprovado</option>
-                    <option value=7>Concluído</option>
+                    <option value=0>Nome completo</option>
+                    <option value=1>CPF</option>
+                    <option value=2>E-mail</option>
+                    <option value=3>Telefone</option>
+                    <option value=4>D. de Nascimento</option>
+                    <option value=5>Funções do Usuário</option>
                 </select>
             </div>
         </div>
@@ -47,21 +45,19 @@
     <table class="table table-borderless" id="myTable">
         <thead class="thead-light">
             <tr class="text-center">
-                <th>ID</th>
-                <th>CPF do cliente</th>
-                <th>Animal </th>
-                <th>Veterinario da consulta </th>
-                <th>Data</th>
-                <th>Horario</th>
-                <th>Aprovada</th>
-                <th>Concluída</th>
+                <th>Nome&nbsp;completo</th>
+                <th>CPF</th>
+                <th>E-mail </th>
+                <th>Telefone</th>
+                <th>D.&nbsp;de&nbsp;nascimento</th>
+                <th>Funções</th>
                 <th>Opções</th>
             </tr>
         </thead>
         @{
-            foreach (Consulta consulta in Model.Consultas)
+            foreach (ApplicationUser usuario in Model.Users)
             {
-                <partial name="TodasConsultasPartial" model="consulta" />
+                <partial name="TodosUsuariosPartial" model="usuario" />
             }
         }
     </table>

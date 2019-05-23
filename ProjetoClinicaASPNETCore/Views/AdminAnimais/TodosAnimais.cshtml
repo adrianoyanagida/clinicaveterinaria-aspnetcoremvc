@@ -31,7 +31,7 @@
             <div class="form-group mb-2">
                 <i class="fas fa-search"></i>&nbsp;
                 <label class="mr-2">Filtro</label>
-                <input type="text" class="form-control mr-2" id="myInput" onkeyup="myFunction()" placeholder="Digite aqui...">
+                <input type="text" class="form-control mr-2" id="myInput" onkeyup="filter()" placeholder="Digite aqui...">
             </div>
         </div>
     </div>
@@ -48,7 +48,7 @@
                 <th>Raça do animal </th>
                 <th>Data de nascimento </th>
                 <th>Alergias </th>
-                <th colspan="3">Opções</th>
+                <th>Opções</th>
             </tr>
         </thead>
         @{
@@ -61,15 +61,15 @@
 </div>
 
 <script>
-    function myFunction() {
-        let blau = +document.getElementById("tdId").value;
+    function filter() {
+        let tdId = +document.getElementById("tdId").value;
         var input, filter, table, tr, td, i, txtValue;
         input = document.getElementById("myInput");
         filter = input.value.toUpperCase();
         table = document.getElementById("myTable");
         tr = table.getElementsByTagName("tr");
         for (i = 0; i < tr.length; i++) {
-            td = tr[i].getElementsByTagName("td")[blau];
+            td = tr[i].getElementsByTagName("td")[tdId];
             if (td) {
                 txtValue = td.textContent || td.innerText;
                 if (txtValue.toUpperCase().indexOf(filter) > -1) {

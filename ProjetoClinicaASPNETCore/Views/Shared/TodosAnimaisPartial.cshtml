@@ -37,23 +37,28 @@
     <td>@Model.AnimalTipo</td>
     <td>@Model.AnimalRaca</td>
     <td>@GetDateLocal(Model.AnimalDataDeNascimento)</td>
-    <td>@Model.Alergico</td>
+    @if (Model.Alergico == null)
+    {
+        <td><i>Não especificado</i></td>
+    }
+    else
+    {
+        <td>@Model.Alergico</td>
+    }
     <td>
-        <a  class="btn btn-outline-secondary" asp-controller="AdminAnimal" asp-action="Editar"
-                   asp-route-animalId="@Model.AnimalId">
-            <i class="fas fa-edit"></i>
-        </a>
-        <button type="button" class="btn btn-outline-primary" data-toggle="modal" data-target="#@ModalDetalhesAnimal()">
-            <i class="fas fa-eye"></i>
-        </button>
-        <button type="button" class="btn btn-outline-danger" data-toggle="modal" data-target="#@ModalExcluir()">
-            <i class="fa fa-eraser"></i>
-        </button>
+        <div class="btn-group">
+            <a class="btn btn-outline-secondary" asp-controller="AdminAnimal" asp-action="Editar"
+               asp-route-animalId="@Model.AnimalId">
+                <i class="fas fa-edit"></i>
+            </a>&nbsp;
+            <button type="button" class="btn btn-outline-primary" data-toggle="modal" data-target="#@ModalDetalhesAnimal()">
+                <i class="fas fa-eye"></i>
+            </button>&nbsp;
+            <button type="button" class="btn btn-outline-danger" data-toggle="modal" data-target="#@ModalExcluir()">
+                <i class="fa fa-eraser"></i>
+            </button>
+        </div>
     </td>
-    @*
-        <td>
-            <a asp-controller="Editar" asp-action="Edit" asp-route-id="@Model.FormularioId">Editar</a>
-        </td>*@
 </tr>
 
 <div class="modal fade" id="@ModalDetalhesAnimal()" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
