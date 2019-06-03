@@ -43,7 +43,7 @@ namespace ProjetoClinicaASPNETCore.Controllers
 
                 _animalRepository.Remove(animal);
                 await _animalRepository.SaveChangesAsync();
-                TempData["success"] = "Animal excluído com sucesso!";
+                TempData["success"] = "Animal excluï¿½do com sucesso!";
                 return RedirectToAction("TodosAnimais");
             }
             catch(System.Exception)

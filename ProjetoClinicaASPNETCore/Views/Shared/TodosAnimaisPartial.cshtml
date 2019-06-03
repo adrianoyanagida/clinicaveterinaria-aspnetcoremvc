@@ -65,20 +65,20 @@
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Detalhes do Animal (@Model.AnimalNome @Model.AnimalId)</h5>
+                <h5 class="modal-title" id="exampleModalLabel">Detalhes (@Model.AnimalNome @Model.AnimalId)</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <div class="modal-body text-center">
-                <div class="lead">DADOS DO DONO</div>
+            <div class="modal-body">
+                <div class="lead text-center">DADOS DO DONO</div>
                 Identificador: @Model.User.Id<br />
                 Nome: @Model.User.NomeCompleto<br />
                 CPF: @Model.User.CPF<br />
                 Telefone: @Model.User.PhoneNumber<br />
                 Email: @Model.User.Email<hr />
 
-                <div class="lead">CONSULTAS CADASTRADAS NESTE ANIMAL</div>
+                <div class="lead text-center">CONSULTAS CADASTRADAS NESTE ANIMAL</div>
                 @if (Model.Consultas.Count() <= 0)
                 {
                     <p>Não foram encontradas consultas para este animal!</p>
@@ -91,7 +91,7 @@
                 @foreach (Consulta consulta in Model.Consultas)
                 {
                     <div>
-                        <div class="lead">Consulta número (@consulta.ConsultaId)</div>
+                        <div class="lead text-center">Consulta (Identificador @consulta.ConsultaId)</div>
                         Veterinário da Consulta: @consulta.Veterinario.VetNome<br />
                         Data da Consulta: @GetDateLocal(consulta.DataConsulta)<br />
                         Horario da Consulta: @consulta.HorarioConsulta<br />
@@ -130,12 +130,12 @@
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <div class="modal-body text-center">
-                <div class="lead">INFORMAÇÕES DO ANIMAL</div>
+            <div class="modal-body">
+                <div class="lead text-center">INFORMAÇÕES DO ANIMAL</div>
                 Animal: @Model.AnimalId<br />
                 Nome do Animal: @Model.AnimalNome<br />
                 Dono do Animal: @Model.User.NomeCompleto<br /> <br />
-                <div class="lead">ATENÇÃO</div>
+                <div class="lead text-center">ATENÇÃO</div>
                 Todas as consultas deste animal serão excluídas!<br />
                 Número de Consultas: @Model.Consultas.Count().ToString()
             </div>

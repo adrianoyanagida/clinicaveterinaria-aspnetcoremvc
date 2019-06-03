@@ -35,19 +35,19 @@
     <td>@Model.HorarioConsulta</td>
     @if (Model.IsVerificado == false)
     {
-        <td>Não&nbsp;aprovado</td>
+        <td class="table-danger">Não</td>
     }
     else
     {
-        <td>Aprovado</td>
+        <td class="table-success">Sim</td>
     }
     @if (Model.IsConcluido == false)
     {
-        <td>Não&nbsp;concluído</td>
+        <td class="table-danger">Não</td>
     }
     else
     {
-        <td>Concluído</td>
+        <td class="table-success">Sim</td>
     }
     <td>
         <div class="btn-group">
@@ -69,17 +69,15 @@
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Detalhes da consulta</h5>
+                <h5 class="modal-title" id="exampleModalLabel">Detalhes</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <div class="modal-body text-center">
+            <div class="modal-body">
                 <div>
-                    <div class="lead">Detalhes (Consulta @Model.ConsultaId)</div>
-                    Identificador Veterinário: @Model.VeterinarioId <br />
-                    Função do Veterinário: @Model.Veterinario.VetFuncao <br />
-                    Nome do Veterinário: @Model.Veterinario.VetNome <br />
+                    <div class="lead text-center">Detalhes da Consulta (Consulta @Model.ConsultaId)</div>
+                    Veterinário: @Model.Veterinario.VetNome - @Model.Veterinario.VetFuncao <br />
                     Data da Consulta: @Model.DataConsulta <br />
                     Horário da Consulta: @Model.HorarioConsulta <br />
                     Descrição do problema: @Model.DescricaoDoProblema <br />
@@ -103,21 +101,22 @@
                     }
                     <hr />
 
-                    <div class="lead">Animal da consulta (Animal @Model.Animal.AnimalId)</div>
+                    <div class="lead text-center">Animal da consulta (Animal @Model.Animal.AnimalId)</div>
                     Nome do Animal: @Model.Animal.AnimalNome <br />
-                    Data de Nascimento: @Model.Animal.AnimalDataDeNascimento <br />
+                    Data de Nascimento: @GetDateLocal(Model.Animal.AnimalDataDeNascimento) <br />
                     Tipo: @Model.Animal.AnimalTipo <br />
                     Raça: @Model.Animal.AnimalRaca <br />
                     @if (Model.Animal.Alergico == null)
                     {
-                        <i>Alergias: Não especificado</i> <hr />
+                        var msg = "Alergias: ";
+                        @msg <i>Não especificado</i>  <hr />
                     }
                     else
                     {
                         var msg = $"Alergias: {@Model.Animal.Alergico}";
                         @msg <hr />
                     }
-                    <div class="lead">Cliente da consulta <br /> (Usuário @Model.Animal.User.Id)</div>
+                    <div class="lead text-center">Cliente da consulta <br /> (Usuário @Model.Animal.User.Id)</div>
                     Nome: @Model.Animal.User.NomeCompleto <br />
                     Email: @Model.Animal.User.Email <br />
                     CPF: @Model.Animal.User.CPF <br />
@@ -144,8 +143,8 @@
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <div class="modal-body text-center">
-                <p class="lead">Tem certeza que deseja excluir essa consulta?</p>
+            <div class="modal-body">
+                <p class="lead text-center">Tem certeza que deseja excluir essa consulta?</p>
                 Identificador: @Model.ConsultaId<br />
                 Veterinário: @Model.Veterinario.VetNome<br />
                 Data: @GetDateLocal(Model.DataConsulta)<br />

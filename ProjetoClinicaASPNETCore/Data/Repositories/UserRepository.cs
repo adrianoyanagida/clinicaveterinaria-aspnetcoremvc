@@ -17,6 +17,20 @@ namespace ProjetoClinicaASPNETCore.Data.Repositories
             _appDbContext = appDbContext;
         }
 
+        public void Update<T>(T entity) where T : class
+        {
+            _appDbContext.Update(entity);
+        }
+        public void Remove<T>(T entity) where T : class
+        {
+            _appDbContext.Remove(entity);
+        }
+
+        public async Task<bool> SaveChangesAsync()
+        {
+            return (await _appDbContext.SaveChangesAsync()) > 0;
+        }
+
         public IEnumerable<ApplicationUser> GetUsers()
         {
             var users = _appDbContext.Users
@@ -27,7 +41,7 @@ namespace ProjetoClinicaASPNETCore.Data.Repositories
 
             var usersOrder = users.OrderBy(n => n.NomeCompleto);
 
-            return usersOrder;
+            return usersOrder.AsNoTracking();
         }
 
         public async Task<ApplicationUser> GetUser(string userId)
@@ -38,7 +52,7 @@ namespace ProjetoClinicaASPNETCore.Data.Repositories
 
             var usuarioById = users.Where(u => u.Id == userId);
 
-            return await usuarioById.FirstOrDefaultAsync();
+            return await usuarioById.AsNoTracking().FirstOrDefaultAsync();
         }
     }
 }

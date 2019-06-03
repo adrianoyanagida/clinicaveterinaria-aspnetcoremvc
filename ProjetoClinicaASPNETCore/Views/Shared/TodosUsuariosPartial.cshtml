@@ -1,9 +1,9 @@
 ﻿@model ApplicationUser
 
 @functions {
-    public string ModalDetalhesAnimal()
+    public string ModalDetalhesUser()
     {
-        var modal = $"modalDetalhesAnimalId{@Model.Id.ToString()}";
+        var modal = $"modalDetalhesUserId{@Model.Id.ToString()}";
         return modal;
     }
     public string ModalDonoAnimal()
@@ -57,11 +57,11 @@
     </td>
     <td>
         <div class="btn-group">
-            <a class="btn btn-outline-secondary" asp-controller="AdminAnimal" asp-action="Editar"
-                    asp-route-animalId="@Model.Id">
+            <a class="btn btn-outline-secondary" asp-controller="AdminUsuario" asp-action="Editar"
+                    asp-route-usuarioId="@Model.Id">
                 <i class="fas fa-edit"></i>
             </a>&nbsp;
-            <button type="button" class="btn btn-outline-primary" data-toggle="modal" data-target="#@ModalDetalhesAnimal()">
+            <button type="button" class="btn btn-outline-primary" data-toggle="modal" data-target="#@ModalDetalhesUser()">
                 <i class="fas fa-eye"></i>
             </button>&nbsp;
             <button type="button" class="btn btn-outline-danger" data-toggle="modal" data-target="#@ModalExcluir()">
@@ -71,3 +71,100 @@
     </td>
 </tr>
 
+<div class="modal fade" id="@ModalDetalhesUser()" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Detalhes</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div>
+                    <div class="lead text-center">Usuário (@Model.NomeCompleto)</div>
+                    Identificador: @Model.Id <br />
+                    Nome de usuário: @Model.UserName <br />
+                    Email: @Model.Email <br />
+                    Telefone: @Model.PhoneNumber <br />
+                    Data de nascimento: @GetDateLocal(Model.DataDeNascimento) <br />
+                    CPF: @Model.CPF <br />
+                    Número de animais do usuário: @Model.Animais.Count.ToString() <br />
+                    @if(Model.Animais.Count > 0)
+                    {
+                        var consultas = 0;
+                        foreach (Animal animal in Model.Animais)
+                        {
+                            foreach(Consulta consulta in animal.Consultas)
+                            {
+                                consultas++;
+                            }
+                        }
+                        var msg = $"Número total de consultas: {consultas.ToString()}";
+                        @msg;
+                    }
+                    else
+                    {
+                        var msg = "Número total de consultas: 0";
+                        @msg;
+                    }<br />
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">Voltar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="@ModalExcluir()" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Excluir usuário</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p class="lead  text-center">Tem certeza que deseja excluir?</p>
+                Identificador: @Model.Id <br />
+                Nome Completo: @Model.NomeCompleto <br>
+                Nome de usuário: @Model.UserName <br />
+                Email: @Model.Email <br />
+                Telefone: @Model.PhoneNumber <br />
+                Data de nascimento: @GetDateLocal(Model.DataDeNascimento) <br />
+                CPF: @Model.CPF <hr>
+                <p class="lead text-center">ATENÇÃO</p>
+                Todos os animais e suas respectivas consultas serão excluidas! <br />
+                Número de animais do usuário: @Model.Animais.Count.ToString() <br />
+                @if(Model.Animais.Count > 0)
+                {
+                    var consultas = 0;
+                    foreach (Animal animal in Model.Animais)
+                    {
+                        foreach(Consulta consulta in animal.Consultas)
+                        {
+                            consultas++;
+                        }
+                    }
+                    var msg = $"Número total de consultas: {consultas.ToString()}";
+                    @msg;
+                }
+                else
+                {
+                    var msg = "Número total de consultas: 0";
+                    @msg;
+                }<br />
+                    
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">Voltar</button>
+                <a class="btn btn-outline-success" asp-controller="AdminUsuarios" asp-action="Delete"
+                   asp-route-idUsuario="@Model.Id">
+                    Excluir
+                </a>
+            </div>
+        </div>
+    </div>
+</div>

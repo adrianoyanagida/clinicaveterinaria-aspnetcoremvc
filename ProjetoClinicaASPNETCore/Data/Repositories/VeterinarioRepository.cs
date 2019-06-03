@@ -26,7 +26,7 @@ namespace ProjetoClinicaASPNETCore.Data.Repositories
                 .Include(v => v.VeterinarioHorarios)
                 .ThenInclude(h => h.Horario);
 
-            var veterinarioById = await veterinarios.FirstOrDefaultAsync(p => p.VeterinarioId == vetId);
+            var veterinarioById = await veterinarios.AsNoTracking().FirstOrDefaultAsync(p => p.VeterinarioId == vetId);
 
             return veterinarioById;
         }

@@ -1,0 +1,98 @@
+﻿@{
+    Layout = "_AdminLayout";
+}
+@model UsuarioDTO
+
+<div class="text-center">
+    <div class="pt-md-2 pb-md-2 mx-auto">
+        <h1 class="display-4">Editar usuário</h1>
+    </div>
+    <div class="lead">
+        Preencha o formulário abaixo para editar o usuário.
+    </div>
+</div>
+
+
+<br><br>
+
+<div class="row">
+    @*12 - colvalue / 2 = offset*@
+    <div class="col-sm-8 offset-sm-2">
+        <form asp-controller="AdminUsuario" asp-action="Editar" onsubmit="button.disabled = true; return true;">
+        <input asp-for="IdDoNotMap" type="hidden" />
+        <h3 class="lead">Informações da conta</h3>
+        <hr>
+        <div class="form-row loginForm">
+            <div class="form-group col-md-5">
+                <label asp-for="UserName"></label>
+                <input asp-for="UserName" type="text" class="form-control" placeholder="exemplo123">
+                <span asp-validation-for="UserName" class="text-danger"></span>
+                @if (TempData["errorUserName"] != null)
+                {
+                    <p class="text-danger">@TempData["errorUserName"]</p>
+                }
+            </div>
+            <div class="form-group col-md-7">
+                <label asp-for="Email"></label>
+                <input asp-for="Email" type="text" class="form-control" placeholder="exemplo@email.com">
+                <span asp-validation-for="Email" class="text-danger"></span>
+                @if (TempData["errorEmail"] != null)
+                {
+                    <p class="text-danger">@TempData["errorEmail"]</p>
+                }
+            </div>
+            </div>
+            <h3 class="lead">Informações adicionais</h3>
+            <hr>
+            <div class="form-row loginForm">
+                <div class="form-group col-md-12">
+                    <label asp-for="NomeCompleto"></label>
+                    <input asp-for="NomeCompleto" type="text" class="form-control" placeholder="Seu nome completo">
+                    <span asp-validation-for="NomeCompleto" class="text-danger"></span>
+                </div>
+                <div class="form-group col-md-4">
+                    <label asp-for="DataDeNascimento"></label>
+                    <input asp-for="DataDeNascimento" type="date" class="form-control">
+                    <span asp-validation-for="DataDeNascimento" class="text-danger"></span>
+                </div>
+                <div class="form-group col-md-4">
+                    <label asp-for="CPF"></label>
+                    <input asp-for="CPF" type="text" class="form-control" placeholder="000.000.000-00">
+                    <span asp-validation-for="CPF" class="text-danger"></span>
+                </div>
+                <div class="form-group col-md-4">
+                    <label asp-for="PhoneNumber"></label>
+                    <input asp-for="PhoneNumber" type="text" class="form-control" placeholder="00 00000 0000">
+                    <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="text-center">
+                <button type="button" class="btn btn-outline-success" data-toggle="modal" data-target="#confirmEdit">
+                    Editar
+                </button>
+            </div>
+            <!-- Modal -->
+            <div class="modal fade" id="confirmEdit" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">Confirmar Edição</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body text-center">
+                            Tem certeza que deseja editar?<br />
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">Voltar</button>
+                            <input type="submit" class="btn btn-outline-success" name="button" value="Confirmar" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+

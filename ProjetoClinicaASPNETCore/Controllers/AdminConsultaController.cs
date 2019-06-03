@@ -36,13 +36,13 @@ namespace ProjetoClinicaASPNETCore.Controllers
             }
 
             var consultaDTO = _mapper.Map<ConsultaDTO>(consulta);
-            consultaDTO.numeroDaConsulta = consulta.ConsultaId;
 
-            TempData["consultaId"] = consulta.ConsultaId;
+            consultaDTO.numeroDaConsulta = consulta.ConsultaId;
             return View(consultaDTO);
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> Editar(ConsultaDTO consultaDTO)
         {
             if(!ModelState.IsValid)
@@ -68,14 +68,9 @@ namespace ProjetoClinicaASPNETCore.Controllers
         }
 
         //
-        private int GetConsultaIdTempData()
-        {
-            return JsonConvert.DeserializeObject<int>(TempData["consultaId"].ToString());
-        }
-
         private Consulta MapConsultaDTO(ConsultaDTO consultaDTO)
         {
-            var consultaToUpdate = _consultaRepository.GetConsultaById(GetConsultaIdTempData()).Result;
+            var consultaToUpdate = _consultaRepository.GetConsultaById(consultaDTO.numeroDaConsulta).Result;
 
             var consulta = _mapper.Map(consultaDTO, consultaToUpdate);
 

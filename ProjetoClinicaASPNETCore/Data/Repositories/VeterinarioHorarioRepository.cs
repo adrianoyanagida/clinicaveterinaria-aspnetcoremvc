@@ -25,7 +25,7 @@ namespace ProjetoClinicaASPNETCore.Data.Repositories
 
             var veterinariosHorariosById = veterinariosHorarios.Where(v => v.VeterinarioId == vetId);
 
-            return veterinariosHorariosById;
+            return veterinariosHorariosById.AsNoTracking();
         }
     }
 }

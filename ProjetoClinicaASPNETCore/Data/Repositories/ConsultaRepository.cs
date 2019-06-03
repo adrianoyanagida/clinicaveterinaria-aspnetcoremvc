@@ -58,7 +58,7 @@ namespace ProjetoClinicaASPNETCore.Data.Repositories
                 .ThenBy(d => d.DataConsulta)
                 .ThenBy(h => h.HorarioConsulta);
 
-            return consultasOrdered;
+            return consultasOrdered.AsNoTracking();
         }
 
         public async Task<Consulta> GetConsultaById(int id)
@@ -68,7 +68,7 @@ namespace ProjetoClinicaASPNETCore.Data.Repositories
                 .Include(a => a.Animal)
                 .ThenInclude(a => a.User);
 
-            var consultaById = await consultas.FirstOrDefaultAsync(i => i.ConsultaId == id);
+            var consultaById = await consultas.AsNoTracking().FirstOrDefaultAsync(i => i.ConsultaId == id);
 
             return consultaById;
         }
@@ -86,7 +86,7 @@ namespace ProjetoClinicaASPNETCore.Data.Repositories
                 .OrderBy(d => d.DataConsulta)
                 .ThenBy(h => h.HorarioConsulta);
 
-            return consultasByUserOrdered;
+            return consultasByUserOrdered.AsNoTracking();
         }
 
         public IEnumerable<Consulta> GetConsultaByDateAndVet(string date, int vetId)
@@ -100,7 +100,7 @@ namespace ProjetoClinicaASPNETCore.Data.Repositories
                 .Where(d => d.DataConsulta == date)
                 .Where(v => v.VeterinarioId == vetId);
 
-            return consultasByDataAndVet;
+            return consultasByDataAndVet.AsNoTracking();
         }
 
         public void CreateConsulta(FormularioViewModel fVM)

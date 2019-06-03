@@ -8,6 +8,9 @@ namespace ProjetoClinicaASPNETCore.Data.DTOs
 {
     public class AnimalDTO
     {
+        [Required]
+        public int IdDoNotMap { get; set; }
+        
         [Required(ErrorMessage = "É necessário preencher o campo 'Nome do Animal'!")]
         [Display(Name = "Nome do Animal *")]
         public string AnimalNome { get; set; }

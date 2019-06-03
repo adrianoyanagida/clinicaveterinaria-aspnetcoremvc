@@ -19,6 +19,7 @@
     @*12 - colvalue / 2 = offset*@
     <div class="col-sm-6 offset-sm-3">
         <form asp-controller="AdminConsulta" asp-action="Editar" onsubmit="button.disabled = true; return true;">
+            <input asp-for="numeroDaConsulta" type="hidden" />
             <div class="form-row loginForm">
                 <div class="form-group col-md-4">
                     <label asp-for="ValorConsulta">Valor da Consulta</label>
@@ -26,7 +27,7 @@
                     <span asp-validation-for="ValorConsulta" class="text-danger"></span>
                 </div>
                 <div class="form-group col-md-4 text-center">
-                    <label asp-for="IsVerificado">Consulta Verificada</label>
+                    <label asp-for="IsVerificado">Consulta Aprovada</label>
                     <div>
                         <label class="switch">
                             <input asp-for="IsVerificado" class="form-control col-md-1" />

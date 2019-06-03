@@ -42,11 +42,12 @@ namespace ProjetoClinicaASPNETCore.Controllers
 
             var animalDTO = _mapper.Map<AnimalDTO>(animal);
 
-            TempData["animalId"] = animal.AnimalId;
+            animalDTO.IdDoNotMap = animal.AnimalId;
             return View(animalDTO);
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> Editar(AnimalDTO animalDTO)
         {
             if(!ModelState.IsValid)
@@ -72,15 +73,9 @@ namespace ProjetoClinicaASPNETCore.Controllers
         }
 
         //Functions
-
-        private int GetAnimalIdTempData()
-        {
-            return JsonConvert.DeserializeObject<int>(TempData["animalId"].ToString());
-        }
-
         private Animal MapAnimalDTO(AnimalDTO animalDTO)
         {
-            var animalToUpdate = _animalRepository.GetAnimalById(GetAnimalIdTempData()).Result;
+            var animalToUpdate = _animalRepository.GetAnimalById(animalDTO.IdDoNotMap).Result;
 
             var animal = _mapper.Map(animalDTO, animalToUpdate);
 

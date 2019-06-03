@@ -82,6 +82,11 @@ body > .container {
     opacity: 1 !important;
 }
 
+/* CONTAINER */
+.container {
+    max-width: 1350px;
+}
+
 /* MODAL */
 .modal-header {
     background-color: #2ec4b6;

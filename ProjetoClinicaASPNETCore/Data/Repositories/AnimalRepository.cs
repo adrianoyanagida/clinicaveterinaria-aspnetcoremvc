@@ -50,7 +50,7 @@ namespace ProjetoClinicaASPNETCore.Data.Repositories
                 .Include(u => u.User)
                 .Include(c => c.Consultas);
 
-            var animalById = await animais.FirstOrDefaultAsync(a => a.AnimalId == id);
+            var animalById = await animais.AsNoTracking().FirstOrDefaultAsync(a => a.AnimalId == id);
 
             return animalById;
         }
@@ -61,7 +61,7 @@ namespace ProjetoClinicaASPNETCore.Data.Repositories
                 .Include(u => u.User)
                 .Include(c => c.Consultas);
 
-            var animaisByUserId = animais.Where(i => i.UserId == id);
+            var animaisByUserId = animais.AsNoTracking().Where(i => i.UserId == id);
 
             return animaisByUserId;
         }
@@ -70,6 +70,7 @@ namespace ProjetoClinicaASPNETCore.Data.Repositories
             _appDbContext.Animais
                 .Include(u => u.User)
                 .Include(c => c.Consultas)
-                .ThenInclude(v => v.Veterinario);
+                .ThenInclude(v => v.Veterinario)
+                .AsNoTracking();
     }
 }
