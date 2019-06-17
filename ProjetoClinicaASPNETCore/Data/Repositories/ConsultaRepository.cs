@@ -111,15 +111,15 @@ namespace ProjetoClinicaASPNETCore.Data.Repositories
 
             var consulta = new Consulta()
             {
-                Veterinario = _veterinarioRepository.GetVetById(fVM.VeterinarioId).Result,
-                Animal = _animalRepository.GetAnimalById(fVM.AnimalId).Result,
+                VeterinarioId = fVM.VeterinarioId,
+                AnimalId = fVM.AnimalId,
                 DataConsulta = dataConsulta,
                 HorarioConsulta = fVM.HorarioEscolhido,
                 DescricaoDoProblema = fVM.DescricaoDoProblema,
                 IsVerificado = false,
                 IsConcluido = false
             };
-            Add(consulta);
+            _appDbContext.Add(consulta);
         }
     }
 }

@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using ProjetoClinicaASPNETCore.Data.DTOs;
 using ProjetoClinicaASPNETCore.Data.Interfaces;
@@ -18,11 +19,13 @@ namespace ProjetoClinicaASPNETCore.Controllers
     [Authorize(Roles = "Administrador, Funcionario")]
     public class AdminUsuarioController : Controller
     {
+        private readonly UserManager<ApplicationUser> _userManager;
         private readonly IUserRepository _userRepository;
         private readonly IMapper _mapper;
 
-        public AdminUsuarioController(IUserRepository userRepository, IMapper mapper)
+        public AdminUsuarioController(UserManager<ApplicationUser> userManager, IUserRepository userRepository, IMapper mapper)
         {
+            _userManager = userManager;
             _userRepository = userRepository;
             _mapper = mapper;
         }
@@ -39,6 +42,9 @@ namespace ProjetoClinicaASPNETCore.Controllers
 
             var usuarioDTO = _mapper.Map<UsuarioDTO>(usuario);
 
+            usuarioDTO.IsCliente = _userManager.IsInRoleAsync(usuario, "Cliente").Result;
+            usuarioDTO.IsAdministrador = _userManager.IsInRoleAsync(usuario, "Administrador").Result;
+            usuarioDTO.IsFuncionario = _userManager.IsInRoleAsync(usuario, "Funcionario").Result;
             usuarioDTO.IdDoNotMap = usuario.Id;
             return View(usuarioDTO);
         }
@@ -66,8 +72,36 @@ namespace ProjetoClinicaASPNETCore.Controllers
             {
                 var usuario = MapUserDTO(usuarioDTO);
                 _userRepository.Update(usuario);
-                await _userRepository.SaveChangesAsync();
+                await _userManager.UpdateNormalizedEmailAsync(usuario);
+                await _userManager.UpdateNormalizedUserNameAsync(usuario);
 
+
+                if(usuarioDTO.IsAdministrador == true)
+                {
+                    await _userManager.AddToRoleAsync(usuario, "Administrador");
+                }
+                else
+                {
+                    await _userManager.RemoveFromRoleAsync(usuario, "Administrador");
+                }
+                if(usuarioDTO.IsCliente == true)
+                {
+                    await _userManager.AddToRoleAsync(usuario, "Cliente");
+                }
+                else
+                {
+                    await _userManager.RemoveFromRoleAsync(usuario, "Cliente");
+                }
+                if(usuarioDTO.IsFuncionario == true)
+                {
+                    await _userManager.AddToRoleAsync(usuario, "Funcionario");
+                }
+                else
+                {
+                    await _userManager.RemoveFromRoleAsync(usuario, "Funcionario");
+                }
+                
+                await _userRepository.SaveChangesAsync();
                 TempData["success"] = "Edição de usuário feita com sucesso!";
                 return RedirectToAction(actionName: "TodosUsuarios", controllerName: "AdminUsuarios");
             }

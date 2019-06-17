@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -101,7 +102,7 @@ namespace ProjetoClinicaASPNETCore.Controllers
 
             if(fVM.HorariosFiltrados.Count <= 0)
             {
-                TempData["erro"] = "Desculpe, parece que não temos mais vagas nesse dia!";
+                TempData["error"] = "Desculpe, parece que não temos mais vagas nesse dia!";
                 return RedirectToAction("Data");
             }
 
@@ -146,7 +147,7 @@ namespace ProjetoClinicaASPNETCore.Controllers
                     return RedirectToAction("Data");
                 }
                 else
-                    return BadRequest();
+                    return this.StatusCode(StatusCodes.Status500InternalServerError, ex);
             }
         }
 

@@ -3,14 +3,12 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
+using ProjetoClinicaASPNETCore.Data.Models;
 
 namespace ProjetoClinicaASPNETCore.Data.DTOs
 {
     public class UsuarioDTO
     {   
-        [Required]
-        public string IdDoNotMap { get; set; }
-
         [Required(ErrorMessage = "É necessário preencher o campo 'Usuário'!")]
         [Display(Name = "Nome de Usuário*")]
         public string UserName { get; set; }
@@ -18,6 +16,7 @@ namespace ProjetoClinicaASPNETCore.Data.DTOs
         [Required(ErrorMessage = "É necessário preencher o campo 'E-mail'!")]
         [Display(Name = "E-mail*")]
         [DataType(DataType.EmailAddress)]
+        [EmailAddress(ErrorMessage = "Endereço de e-mail inválido!")]
         public string Email { get; set; }
 
         [Display(Name = "Nome Completo")]
@@ -33,5 +32,11 @@ namespace ProjetoClinicaASPNETCore.Data.DTOs
         [Display(Name = "Data de Nascimento")]
         [DataType(DataType.Date)]
         public string DataDeNascimento { get; set; }
+
+        //Não Mapear
+        public string IdDoNotMap { get; set; }
+        public bool IsAdministrador { get; set; }
+        public bool IsFuncionario { get; set; }
+        public bool IsCliente { get; set; }
     }
 }

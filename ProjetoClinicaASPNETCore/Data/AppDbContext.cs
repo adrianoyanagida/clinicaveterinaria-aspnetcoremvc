@@ -46,6 +46,10 @@ namespace ProjetoClinicaASPNETCore.Data
                 .IsUnique();
 
             builder.Entity<ApplicationUser>()
+                .HasIndex(u => u.UserName)
+                .IsUnique();
+
+            builder.Entity<ApplicationUser>()
                 .HasIndex(u => u.CPF)
                 .IsUnique();
 

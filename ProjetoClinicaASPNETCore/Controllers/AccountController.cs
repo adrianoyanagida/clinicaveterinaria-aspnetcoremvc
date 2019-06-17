@@ -122,7 +122,7 @@ namespace ProjetoClinicaASPNETCore.Controllers
                     foreach (var err in result.Errors)
                     {
                         if (err.Description.Contains("User name"))
-                            ModelState.AddModelError("UserName", "Nome de usuário indisponível");
+                            ModelState.AddModelError("UserName", "Nome de usuário inválido ou indisponível");
                         if (err.Code == "PasswordTooShort")
                             ModelState.AddModelError("Senha", "Tamanho mínimo de 4 caracteres");
                     }

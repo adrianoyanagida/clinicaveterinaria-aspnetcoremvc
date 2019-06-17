@@ -7,7 +7,7 @@ namespace ProjetoClinicaASPNETCore.Data.DTOs
         public bool IsVerificado { get; set; }
         public bool IsConcluido { get; set;}
 
-        // Não mapear
+        // NÃ£o mapear
         public int numeroDaConsulta { get; set; }
     }
 }

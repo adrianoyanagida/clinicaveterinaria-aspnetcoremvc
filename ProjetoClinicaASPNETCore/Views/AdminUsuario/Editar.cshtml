@@ -19,28 +19,28 @@
     @*12 - colvalue / 2 = offset*@
     <div class="col-sm-8 offset-sm-2">
         <form asp-controller="AdminUsuario" asp-action="Editar" onsubmit="button.disabled = true; return true;">
-        <input asp-for="IdDoNotMap" type="hidden" />
-        <h3 class="lead">Informações da conta</h3>
-        <hr>
-        <div class="form-row loginForm">
-            <div class="form-group col-md-5">
-                <label asp-for="UserName"></label>
-                <input asp-for="UserName" type="text" class="form-control" placeholder="exemplo123">
-                <span asp-validation-for="UserName" class="text-danger"></span>
-                @if (TempData["errorUserName"] != null)
-                {
-                    <p class="text-danger">@TempData["errorUserName"]</p>
-                }
-            </div>
-            <div class="form-group col-md-7">
-                <label asp-for="Email"></label>
-                <input asp-for="Email" type="text" class="form-control" placeholder="exemplo@email.com">
-                <span asp-validation-for="Email" class="text-danger"></span>
-                @if (TempData["errorEmail"] != null)
-                {
-                    <p class="text-danger">@TempData["errorEmail"]</p>
-                }
-            </div>
+            <input asp-for="IdDoNotMap" type="hidden" />
+            <h3 class="lead">Informações da conta</h3>
+            <hr>
+            <div class="form-row loginForm">
+                <div class="form-group col-md-5">
+                    <label asp-for="UserName"></label>
+                    <input asp-for="UserName" type="text" class="form-control" placeholder="exemplo123">
+                    <span asp-validation-for="UserName" class="text-danger"></span>
+                    @if (TempData["errorUserName"] != null)
+                    {
+                        <p class="text-danger">@TempData["errorUserName"]</p>
+                    }
+                </div>
+                <div class="form-group col-md-7">
+                    <label asp-for="Email"></label>
+                    <input asp-for="Email" type="text" class="form-control" placeholder="exemplo@email.com">
+                    <span asp-validation-for="Email" class="text-danger"></span>
+                    @if (TempData["errorEmail"] != null)
+                    {
+                        <p class="text-danger">@TempData["errorEmail"]</p>
+                    }
+                </div>
             </div>
             <h3 class="lead">Informações adicionais</h3>
             <hr>
@@ -64,6 +64,42 @@
                     <label asp-for="PhoneNumber"></label>
                     <input asp-for="PhoneNumber" type="text" class="form-control" placeholder="00 00000 0000">
                     <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="lead">
+                Determinar funções do usuário
+            </div>
+            <hr>
+            <div class="form-row loginForm">
+                <div class="form-group col-md-4 text-center">
+                    <label asp-for="IsAdministrador">Usuário Administrador</label>
+                    <div>
+                        <label class="switch">
+                            <input asp-for="IsAdministrador" class="form-control col-md-1" />
+                            <span class="slider round"></span>
+                        </label>
+                    </div>
+                    <span asp-validation-for="IsAdministrador" class="text-danger"></span>
+                </div>
+                <div class="form-group col-md-4 text-center">
+                    <label asp-for="IsFuncionario">Usuário Funcionário</label>
+                    <div>
+                        <label class="switch">
+                            <input asp-for="IsFuncionario" />
+                            <span class="slider round"></span>
+                        </label>
+                    </div>
+                    <span asp-validation-for="IsFuncionario" class="text-danger"></span>
+                </div>
+                <div class="form-group col-md-4 text-center">
+                    <label asp-for="IsCliente">Usuário Cliente</label>
+                    <div>
+                        <label class="switch">
+                            <input asp-for="IsCliente" />
+                            <span class="slider round"></span>
+                        </label>
+                    </div>
+                    <span asp-validation-for="IsCliente" class="text-danger"></span>
                 </div>
             </div>
             <div class="text-center">

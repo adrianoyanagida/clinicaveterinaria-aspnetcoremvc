@@ -25,6 +25,7 @@ namespace ProjetoClinicaASPNETCore.Data.DTOs
         [Required(ErrorMessage = "É necessário preencher o campo 'E-mail'!")]
         [Display(Name = "E-mail*")]
         [DataType(DataType.EmailAddress)]
+        [EmailAddress(ErrorMessage = "Endereço de e-mail inválido!")]
         public string Email { get; set; }
 
         [Required(ErrorMessage = "É necessário preencher o campo 'CPF'!")]

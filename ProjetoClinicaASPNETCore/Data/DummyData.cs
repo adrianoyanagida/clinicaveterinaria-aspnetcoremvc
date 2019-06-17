@@ -109,6 +109,7 @@ namespace ProjetoClinicaASPNETCore.Data
                         VetFuncao = "Clínico Geral"
                     }
                 );
+                context.SaveChanges();
             }
 
             if (!context.Horarios.Any())
@@ -164,6 +165,7 @@ namespace ProjetoClinicaASPNETCore.Data
                         Hora = "12:30"
                     }
                 );
+                context.SaveChanges();
             }
 
             if (!context.VeterinarioHorarios.Any())
@@ -201,8 +203,8 @@ namespace ProjetoClinicaASPNETCore.Data
                         Horario = GetHorario(6)
                     }
                 );
+                context.SaveChanges();
             }
-            context.SaveChanges();
         }
     }
 }

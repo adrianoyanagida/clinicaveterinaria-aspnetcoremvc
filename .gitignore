@@ -3,6 +3,7 @@
 # .NET Core Project
 bin
 obj
+Migrations/
 
 # compiled output
 /dist
