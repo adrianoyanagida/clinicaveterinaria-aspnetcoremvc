@@ -1,0 +1,95 @@
+﻿@model ApplicationUser
+
+@functions {
+    public string ModalAdicionar()
+    {
+        var modal = $"modalAdicionarId{@Model.Id.ToString()}";
+        return modal;
+    }
+
+    public string GetDateLocal(string toConvert)
+    {
+        if (toConvert != null)
+        {
+            var date = toConvert;
+            DateTime convertedDate = Convert.ToDateTime(date);
+            return convertedDate.ToShortDateString();
+        }
+        else
+            return "";
+    }
+}
+
+<tr class="text-center">
+    <td>@Model.CPF</td>
+    <td>@Model.NomeCompleto</td>
+    <td>@Model.Email</td>
+    <td>@Model.PhoneNumber</td>
+    <td>
+        <div class="btn-group">
+            <button type="button" class="btn btn-outline-primary" data-toggle="modal" data-target="#@ModalAdicionar()">
+                Adicionar
+                <i class="fas fa-dog"></i>
+                <i class="fas fa-plus"></i>
+            </button>
+        </div>
+    </td>
+</tr>
+
+<div class="modal fade bd-example-modal-lg" id="@ModalAdicionar()" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Adicionar novo animal</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div>
+                    <div class="lead text-center">Informações do usuário</div>
+                    <div class="lead text-center">@Model.Id</div>
+                    <div class="text-center">
+                        Nome: <i>@Model.NomeCompleto</i> <br />
+                        CPF: <i>@Model.CPF</i> <br />
+                    </div><hr />
+                    <form onsubmit="button.disabled = true; return true;" action="/AdminAnimal/Cadastrar" method="post">
+                        <input data-val="true" id="IdUserDoNotMap" name="IdUserDoNotMap" value="@Model.Id.ToString()" type="hidden" />
+                        <div class="form-row loginForm">
+                            <div class="form-group col-md-6">
+                                <label for="AnimalNome">Nome do Animal *</label>
+                                <input class="form-control" placeholder="Nome do Animal" type="text" data-val="true" data-val-required="&#xC9; necess&#xE1;rio preencher o campo &#x27;Nome do Animal&#x27;!" id="AnimalNome" name="AnimalNome" value="" required/>
+                                <span class="text-danger field-validation-valid" data-valmsg-for="AnimalNome" data-valmsg-replace="true"></span>
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label for="AnimalTipo">Tipo do Animal *</label>
+                                <input class="form-control" placeholder="Cachorro / Gato / Coelho" type="text" data-val="true" data-val-required="&#xC9; necess&#xE1;rio preencher o campo &#x27;Tipo do Animal&#x27;!" id="AnimalTipo" name="AnimalTipo" value="" required/>
+                                <span class="text-danger field-validation-valid" data-valmsg-for="AnimalTipo" data-valmsg-replace="true"></span>
+                            </div>
+                        </div>
+                        <div class="form-row loginForm">
+                            <div class="form-group col-md-6">
+                                <label for="AnimalRaca">Ra&#xE7;a do Animal</label>
+                                <input class="form-control" placeholder="Poodle, Pastor alemão, etc." type="text" id="AnimalRaca" name="AnimalRaca" value="" />
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label for="AnimalDataDeNascimento">Data de Nascimento</label>
+                                <input class="form-control" type="date" id="AnimalDataDeNascimento" name="AnimalDataDeNascimento" value="" />
+                            </div>
+                        </div>
+                        <div class="form-group col-md-12">
+                            <label for="Alergico">Alergias? Quais?</label>
+                            <textarea class="form-control" rows="2" placeholder="Digite aqui..." id="Alergico" name="Alergico"></textarea>
+                        </div>
+                        <div class="text-center">
+                            <input type="submit" class="btn btn-outline-success text-center" name="button" value="Cadastrar animal" />
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">Voltar</button>
+            </div>
+        </div>
+    </div>
+</div>

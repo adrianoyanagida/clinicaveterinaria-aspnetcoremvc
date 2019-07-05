@@ -16,6 +16,7 @@ namespace ProjetoClinicaASPNETCore.Data.Interfaces
 
         void Update<T>(T entity) where T : class;
         void Remove<T>(T entity) where T : class;
+        void Add<T>(T entity) where T : class;
         Task<bool> SaveChangesAsync();
         Task<Animal> GetAnimalById(int id);
         IEnumerable<Animal> GetAnimaisByUserId(string id);
