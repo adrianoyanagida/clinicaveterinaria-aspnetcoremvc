@@ -103,6 +103,21 @@ namespace ProjetoClinicaASPNETCore.Data.Repositories
             return consultasByDataAndVet.AsNoTracking();
         }
 
+        public IEnumerable<Consulta> GetConsultaByDateAndVetAndTime(string date, int vetId, string time)
+        {
+            var consultas = _appDbContext.Consultas
+                .Include(v => v.Veterinario)
+                .Include(a => a.Animal)
+                .ThenInclude(a => a.User);
+
+            var consultasByDataAndVet = consultas
+                .Where(d => d.DataConsulta == date)
+                .Where(v => v.VeterinarioId == vetId)
+                .Where(t => t.HorarioConsulta == time);
+
+            return consultasByDataAndVet.AsNoTracking();
+        }
+
         public void CreateConsulta(FormularioViewModel fVM)
         {
             DateTime dateConverted = Convert.ToDateTime(fVM.DataConsulta);

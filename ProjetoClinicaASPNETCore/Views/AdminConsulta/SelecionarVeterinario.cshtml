@@ -1,0 +1,51 @@
+﻿@model AdminConsultaVM
+@{ Layout = "_AdminLayout"; }
+
+
+<div class="text-center">
+    <div class="pt-md-2 pb-md-2 mx-auto">
+        <h1 class="display-4">Passo 1: Escolha o Veterinário</h1>
+    </div>
+    Escolha um veterinário para listarmos as datas disponíveis!<br /><hr />
+    Informações <br />
+    <i>
+        Dono: @Model.Animal.User.NomeCompleto<br />
+        CPF: @Model.Animal.User.CPF<br />
+        Animal: @Model.Animal.AnimalNome
+    </i>
+</div>
+
+<div class="form-group col-sm-4 offset-sm-4">
+    @*12 - colvalue / 2 = offset*@
+    @if (TempData["error"] != null)
+    {<p class="alert alert-danger" id="successMessage">@TempData["error"]</p>}
+    <div class="form-row loginForm">
+        <div class="form-group col-md-12">
+            <div class="text-center lead">
+                <label>Selecione o Veterinário</label>
+            </div>
+            <input id="AnimalId" value="@Model.Animal.AnimalId" type="hidden" />
+            <select asp-for="VeterinarioId" class="form-control">
+                @foreach (Veterinario veterinario in Model.Veterinarios)
+                {
+                    <option value="@veterinario.VeterinarioId" label="@veterinario.VetNome - @veterinario.VetFuncao">@veterinario.VeterinarioId</option>
+                }
+            </select>
+        </div>
+        <div class="form-group col-md-12">
+            <button class="btn btn-outline-success form-control" onclick="hrefFormater()" id="route" href="#">
+                Verificar
+            </button>
+        </div>
+    </div>
+</div>
+
+<script language="Javascript" type="text/javascript">
+    function hrefFormater() {
+        var animalId = document.getElementById("AnimalId").value;
+        var vetId = document.getElementById("VeterinarioId").value;
+        var route = "/AdminConsulta/SelecionarData?animalId=" + animalId + "&vetId=" + vetId;
+        document.getElementById("route").href = route; 
+        window.location.href = document.getElementById('route').href;
+    }
+</script>

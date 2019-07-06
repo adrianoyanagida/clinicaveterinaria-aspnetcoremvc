@@ -19,6 +19,7 @@ namespace ProjetoClinicaASPNETCore.Data.Interfaces
         IEnumerable<Consulta> GetConsultas();
         IEnumerable<Consulta> GetConsultasByOwnerId(string userId);
         IEnumerable<Consulta> GetConsultaByDateAndVet(string date, int vetId);
+        IEnumerable<Consulta> GetConsultaByDateAndVetAndTime(string date, int vetId, string time);
         void CreateConsulta(FormularioViewModel fVM);
     }
 }

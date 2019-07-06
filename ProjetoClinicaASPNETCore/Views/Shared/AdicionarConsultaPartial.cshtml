@@ -1,0 +1,33 @@
+﻿@model Animal
+
+<tr class="text-center">
+    <td>@Model.User.CPF</td>
+    <td>@Model.AnimalNome</td>
+
+    @if (Model.AnimalRaca == null)
+    {
+        <td><i>Indefinido</i></td>
+    }
+    else
+    {
+        <td>@Model.AnimalRaca</td>
+    }
+
+    @if (Model.Alergico == null)
+    {
+        <td><i>Indefinido</i></td>
+    }
+    else
+    {
+        <td>@Model.Alergico</td>
+    }
+    <td>
+        <div class="btn-group">
+            <a class="btn btn-outline-primary" asp-controller="AdminConsulta" asp-action="SelecionarVeterinario" 
+               asp-route-animalId="@Model.AnimalId">
+                <i class="fas fa-clipboard-list"></i>&nbsp;
+                <i class="fas fa-plus"></i>
+            </a>
+        </div>
+    </td>
+</tr>

@@ -17,7 +17,7 @@ namespace ProjetoClinicaASPNETCore.Data.Repositories
             _appDbContext = appDbContext;
         }
 
-        public IEnumerable<Veterinario> Veterinarios => _appDbContext.Veterinarios.Include(c => c.Consultas);
+        public IEnumerable<Veterinario> Veterinarios => _appDbContext.Veterinarios.Include(c => c.Consultas).AsNoTracking();
 
         public async Task<Veterinario> GetVetById(int vetId)
         {

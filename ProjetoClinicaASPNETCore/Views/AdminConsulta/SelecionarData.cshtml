@@ -1,0 +1,56 @@
+﻿@model AdminConsultaVM
+@{ Layout = "_AdminLayout"; }
+
+
+<div class="text-center">
+    <div class="pt-md-2 pb-md-2 mx-auto">
+        <h1 class="display-4">Passo 2: Escolha o dia</h1>
+    </div>
+    Nós listamos abaixo, os dias disponíveis para você!<br /><hr />
+    Informações <br />
+    <i>
+        Dono: @Model.Animal.User.NomeCompleto<br />
+        CPF: @Model.Animal.User.CPF<br />
+        Animal: @Model.Animal.AnimalNome<br />
+        Veterinario: @Model.Veterinario.VetNome - @Model.Veterinario.VetFuncao
+    </i>
+</div>
+
+<div class="form-group col-sm-4 offset-sm-4">
+    @*12 - colvalue / 2 = offset*@
+    @if (TempData["error"] != null)
+    {<p class="alert alert-danger" id="successMessage">@TempData["error"]</p>}
+    <div class="form-row loginForm">
+        <div class="form-group col-md-12">
+            <div class="text-center lead">
+                <label>Selecione o dia</label>
+            </div>
+            <input id="AnimalId" value="@Model.Animal.AnimalId" type="hidden" />
+            <input id="VetId" value="@Model.Veterinario.VeterinarioId" type="hidden" />
+            <select class="form-control" id="DiasDisponiveis" name="DiasDisponiveis">
+                @foreach (string dia in Model.DiasDisponiveis)
+                {
+                    <option value="@dia" label="@dia">@dia</option>
+                }
+            </select>
+        </div>
+        <div class="form-group btn-group col-md-12">
+            <button class="btn btn-outline-secondary form-control col-md-3" onclick="history.back()">
+                Voltar
+            </button>
+            <button class="btn btn-outline-success form-control col-md-9" onclick="hrefFormater()" id="route" href="#">
+                Verificar
+            </button>
+        </div>
+    </div>
+</div>
+
+<script language="Javascript" type="text/javascript">
+    function hrefFormater() {
+        var animalId = document.getElementById("AnimalId").value;
+        var vetId = document.getElementById("VetId").value;
+        var route = "/AdminConsulta/SelecionarData?animalId=" + animalId + "&vetId=" + vetId;
+        document.getElementById("route").href = route; 
+        window.location.href = document.getElementById('route').href;
+    }
+</script>
