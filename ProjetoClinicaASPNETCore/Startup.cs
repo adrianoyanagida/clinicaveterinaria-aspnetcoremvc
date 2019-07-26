@@ -33,6 +33,7 @@ namespace ProjetoClinicaASPNETCore
 
         public void ConfigureServices(IServiceCollection services)
         {
+            //teste
             services.AddDbContext<AppDbContext>(options =>options.UseSqlServer(_configurationRoot.GetConnectionString("DefaultConnection")));
 
             //Adiciona um identity Custom chamado ApplicationUser
