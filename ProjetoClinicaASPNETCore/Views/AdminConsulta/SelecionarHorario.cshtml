@@ -1,0 +1,63 @@
+﻿@model AdminConsultaVM
+@{ Layout = "_AdminLayout"; }
+
+@functions {
+    public string GetDateLocal(string toConvert)
+    {
+        if (toConvert != null)
+        {
+            var date = toConvert;
+            DateTime convertedDate = Convert.ToDateTime(date);
+            return convertedDate.ToLongDateString();
+        }
+        else
+            return "";
+    }
+}
+
+<div class="text-center">
+    <div class="pt-md-2 pb-md-2 mx-auto">
+        <h1 class="display-4">Passo 3: Escolha o horário e preencha o formulário</h1>
+    </div>
+    Escolha o horário desejado e preencha o formulário abaixo, por favor descreva bem o problema para ou pode ocasionar de sua consulta não ser aprovada!<br /><hr />
+    Informações <br />
+    <i>
+        Dono: @Model.Animal.User.NomeCompleto<br />
+        CPF: @Model.Animal.User.CPF<br />
+        Animal: @Model.Animal.AnimalNome<br />
+        Veterinário: @Model.Veterinario.VetNome - @Model.Veterinario.VetFuncao<br />
+        Data escolhida: @GetDateLocal(Model.DataEscolhida)
+    </i>
+</div>
+
+<div class="form-group col-sm-4 offset-sm-4">
+    @*12 - colvalue / 2 = offset*@
+    @if (TempData["error"] != null)
+    {<p class="alert alert-danger" id="successMessage">@TempData["error"]</p>}
+    <form asp-controller="AdminConsulta" asp-action="SelecionarHorario" onsubmit="button.disabled = true; return true;">
+        <div class="form-row loginForm">
+            <div class="form-group col-md-12">
+                <div class="text-center lead">
+                    <label>Selecione o horário</label>
+                </div>
+                <input asp-for="Animal.AnimalId" type="hidden" />
+                <input asp-for="Veterinario.VeterinarioId" type="hidden" />
+                <input asp-for="DataEscolhida" type="hidden" />
+                <select asp-for="HorarioEscolhidoId" class="form-control">
+                    @foreach (VeterinarioHorario horario in Model.HorariosDisponiveis)
+                    {
+                        <option value="@horario.HorarioId" label="@horario.Horario.Hora">@horario.Horario.Hora</option>
+                    }
+                </select>
+            </div>
+            <div class="form-group btn-group col-md-12">
+                <button type="button" class="btn btn-outline-secondary form-control col-md-3" onclick="history.back()">
+                    Voltar
+                </button>
+                <button class="btn btn-outline-success form-control col-md-9" name="button">
+                    Confirmar consulta
+                </button>
+            </div>
+        </div>
+    </form>
+</div>

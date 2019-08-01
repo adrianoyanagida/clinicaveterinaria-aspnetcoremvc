@@ -14,7 +14,10 @@ namespace ProjetoClinicaASPNETCore.ViewModels
         public Veterinario Veterinario { get; set; }
         public int VeterinarioId { get; set; }
         public int AnimalId { get; set; }
+        public string DataEscolhida { get; set; }
+        public int HorarioEscolhidoId { get; set; }
 
         public List<string> DiasDisponiveis { get; set; }
+        public List<VeterinarioHorario> HorariosDisponiveis { get; set; }
     }
 }

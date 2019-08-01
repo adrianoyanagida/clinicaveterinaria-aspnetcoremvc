@@ -49,7 +49,8 @@
     function hrefFormater() {
         var animalId = document.getElementById("AnimalId").value;
         var vetId = document.getElementById("VetId").value;
-        var route = "/AdminConsulta/SelecionarData?animalId=" + animalId + "&vetId=" + vetId;
+        var diaEscolhido = document.getElementById("DiasDisponiveis").value;
+        var route = "/AdminConsulta/SelecionarHorario?animalId=" + animalId + "&vetId=" + vetId + "&data=" + diaEscolhido;
         document.getElementById("route").href = route; 
         window.location.href = document.getElementById('route').href;
     }
